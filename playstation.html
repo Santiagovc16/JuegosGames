@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Juegos PlayStation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #1a1a40); /* Fondo oscuro */
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(to right, #0061f2, #0041a8); /* Gradiente azul PlayStation */
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .game-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 3rem;
+        }
+
+        .game {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .game:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .game img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        .game:hover img {
+            opacity: 0.85;
+        }
+
+        footer {
+            background: linear-gradient(to right, #0061f2, #0041a8);
+            text-align: center;
+            padding: 1.5rem 0;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .close:hover {
+            color: #ff5555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Catálogo de Juegos PlayStation</h1>
+    </header>
+    <main>
+        <section class="game-list">
+            <div class="game">
+                <img src="images/juego1.jpg" alt="Juego PlayStation 1" class="game-img">
+            </div>
+            <div class="game">
+                <img src="images/juego2.jpg" alt="Juego PlayStation 2" class="game-img">
+            </div>
+            <div class="game">
+                <img src="images/juego3.jpg" alt="Juego PlayStation 3" class="game-img">
+            </div>
+            <div class="game">
+                <img src="images/juego4.jpg" alt="Juego PlayStation 4" class="game-img">
+            </div>
+            <div class="game">
+                <img src="images/juego5.jpg" alt="Juego PlayStation 5" class="game-img">
+            </div>
+            <div class="game">
+                <img src="images/juego6.jpg" alt="Juego PlayStation 5" class="game-img">
+            </div>
+            <div class="game">
+                <img src="images/juego7.jpg" alt="Juego PlayStation 5" class="game-img">
+            </div>
+            <!-- Agrega más juegos aquí -->
+        </section>
+    </main>
+
+    <!-- Modal para ver imágenes completas -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img id="modalImg" src="" alt="Imagen del Juego">
+    </div>
+
+    <footer>
+        <p>Gamer Edges - PlayStation</p>
+    </footer>
+
+    <script>
+        // Variables para el modal
+        const modal = document.getElementById("myModal");
+        const modalImg = document.getElementById("modalImg");
+        const closeModal = document.querySelector(".close");
+
+        // Obtener todas las imágenes
+        const gameImages = document.querySelectorAll(".game-img");
+
+        // Abrir el modal al hacer clic en una imagen
+        gameImages.forEach(img => {
+            img.addEventListener("click", () => {
+                modal.style.display = "flex";
+                modalImg.src = img.src; // Mostrar la imagen seleccionada en el modal
+            });
+        });
+
+        // Cerrar el modal al hacer clic en el botón de cerrar
+        closeModal.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        // Cerrar el modal al hacer clic fuera de la imagen
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -3,53 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogo Xbox</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Catálogo Xbox</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f4; /* Fondo blanco para la nueva página */
-            color: black;
+            background: linear-gradient(120deg, #0a0a0a, #1c1c1c); /* Fondo oscuro estilo Xbox */
+            color: white;
             overflow-x: hidden;
         }
 
         header {
-            background: linear-gradient(to right, #107c10, #3b8d4e); /* Gradiente verde Xbox */
+            background: linear-gradient(to right, #107c10, #3da64c); /* Gradiente verde Xbox */
             color: white;
             text-align: center;
-            padding: 2rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            border-bottom: 3px solid #107c10;
+            padding: 2.5rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+            border-bottom: 4px solid #0d6c09;
         }
 
         header h1 {
-            font-size: 2.8rem;
+            font-size: 3.5rem; /* Tamaño ajustado para que destaque más */
             font-weight: bold;
             margin: 0;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.7); /* Sombra para resaltar el título */
         }
 
         .game-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Aumenta el tamaño de los elementos */
             gap: 2rem;
-            padding: 2rem;
-            animation: fadeIn 1.5s ease-in-out;
+            padding: 3rem;
         }
 
         .game {
             position: relative;
             overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 15px; /* Ajuste para esquinas suaves */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7); /* Sombra más fuerte */
             transition: transform 0.3s, box-shadow 0.3s;
+            background: linear-gradient(to top, #0d6c09, #3da64c); /* Verde Xbox brillante */
         }
 
         .game:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+            transform: scale(1.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9); /* Resalta al pasar el cursor */
         }
 
         .game img {
@@ -57,98 +58,90 @@
             height: 100%;
             object-fit: cover;
             border-radius: 15px;
-            transition: opacity 0.3s;
-            cursor: pointer; /* Cambiar cursor a mano */
+            transition: opacity 0.3s, transform 0.3s;
+            cursor: pointer;
         }
 
         .game:hover img {
-            opacity: 0.85;
+            opacity: 0.9;
+            transform: scale(1.05);
         }
 
         footer {
-            background: linear-gradient(to right, #107c10, #3b8d4e);
+            background: linear-gradient(to right, #107c10, #3da64c); /* Gradiente similar al encabezado */
             color: white;
             text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+            padding: 1.5rem 0;
+            font-size: 1rem;
+            box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.7);
         }
 
         footer p {
-            font-size: 1rem;
             margin: 0;
         }
 
-        /* Estilos para el modal */
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 10;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-content {
             position: relative;
-            margin: auto;
-            top: 10%;
-            width: 80%;
-            max-width: 1000px;
+            max-width: 85%;
+            max-height: 85%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal img {
-            width: 100%;
-            height: auto;
-            max-height: 80vh;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
 
         .close {
             position: absolute;
             top: 10px;
-            right: 25px;
+            right: 20px;
             color: white;
-            font-size: 35px;
+            font-size: 2.5rem;
             font-weight: bold;
             cursor: pointer;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .close:hover {
+            color: #3da64c;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Catalogo de Juegos Xbox</h1>
+        <h1>Catálogo de Juegos Xbox</h1>
     </header>
     <main>
         <section class="game-list">
-            <!-- Aquí puedes agregar las imágenes de los juegos de Xbox -->
             <div class="game">
                 <img src="images2/juego1.jpg" alt="Juego Xbox 1" class="game-img">
             </div>
-            <div class="game">
-                <img src="images2/xbox-juego2.jpg" alt="Juego Xbox 2" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images2/xbox-juego3.jpg" alt="Juego Xbox 3" class="game-img">
-            </div>
-            <!-- Agregar más juegos de Xbox aquí -->
+            
         </section>
     </main>
 
-    <!-- Modal para mostrar imagen en grande -->
     <div id="myModal" class="modal">
-        <span class="close">×</span>
+        <span class="close">&times;</span>
         <div class="modal-content">
             <img id="modal-img" src="" alt="Imagen del Juego">
         </div>
@@ -159,7 +152,6 @@
     </footer>
 
     <script>
-        // Función para abrir el modal y mostrar la imagen grande
         const modal = document.getElementById("myModal");
         const modalImg = document.getElementById("modal-img");
         const closeBtn = document.querySelector(".close");
@@ -167,17 +159,15 @@
 
         images.forEach(image => {
             image.addEventListener("click", () => {
-                modal.style.display = "block";
-                modalImg.src = image.src;  // Asigna la fuente de la imagen clickeada al modal
+                modal.style.display = "flex";
+                modalImg.src = image.src;
             });
         });
 
-        // Cerrar el modal al hacer clic en la X
         closeBtn.addEventListener("click", () => {
             modal.style.display = "none";
         });
 
-        // Cerrar el modal si el usuario hace clic fuera de la imagen
         window.addEventListener("click", (event) => {
             if (event.target === modal) {
                 modal.style.display = "none";

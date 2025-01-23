@@ -3,215 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogos De Juegos Playstation  Xbox Nintendo Switch</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Catálogos de Juegos</title>
     <style>
-        /* Estilo general para el body con un fondo de gradiente más dinámico */
         body {
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* Gradiente oscuro con colores vibrantes */
-            color: white;
-            overflow-x: hidden;
-        }
-
-        /* Header con un fondo brillante y un gradiente moderno */
-        header {
-            background: linear-gradient(to right, #ff6a00, #ee0979); /* Gradiente cálido y brillante */
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* Fondo oscuro y dinámico */
             color: white;
             text-align: center;
+        }
+
+        header {
+            background: linear-gradient(to right, #4c4b63, #6a097d); /* Gradiente para el encabezado */
             padding: 2rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
             border-bottom: 3px solid #ff6a00;
         }
 
         header h1 {
-            font-size: 2.8rem;
-            font-weight: bold;
+            font-size: 3rem;
             margin: 0;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        /* Estilo de la lista de juegos, ahora con un gradiente de fondo */
-        .game-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        .button-container {
+            margin: 3rem 0;
+            display: flex;
+            justify-content: center;
             gap: 2rem;
-            padding: 2rem;
-            animation: fadeIn 1.5s ease-in-out;
+            flex-wrap: wrap;
         }
 
-        .game {
-            position: relative;
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .game:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-        }
-
-        .game img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 15px;
-            transition: opacity 0.3s;
-        }
-
-        .game:hover img {
-            opacity: 0.85;
-        }
-
-        /* Estilos del footer con gradiente oscuro y efecto de resplandor */
-        footer {
-            background: linear-gradient(to right, #ff6a00, #ee0979);
+        .catalog-btn {
+            background: linear-gradient(to right, #6a097d, #c060a1); /* Gradiente para los botones */
             color: white;
-            text-align: center;
+            padding: 1rem 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .catalog-btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(to right, #8c2e9b, #d44ca5); /* Cambio de gradiente al pasar el cursor */
+        }
+
+        footer {
+            background: linear-gradient(to right, #ff6a00, #ee0979); /* Gradiente del pie de página */
             padding: 1rem 0;
+            font-size: 1rem;
             margin-top: 2rem;
             box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
         }
-
-        footer p {
-            font-size: 1rem;
-            margin: 0;
-        }
-
-        /* Estilo para el modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .modal-content {
-            position: relative;
-            margin: auto;
-            top: 10%;
-            width: 80%;
-            max-width: 1000px;
-        }
-
-        .modal img {
-            width: 100%;
-            height: auto;
-            max-height: 80vh; /* Limita la altura máxima de la imagen */
-            object-fit: contain;
-        }
-
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            color: white;
-            font-size: 35px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Colores personalizados para las plataformas */
-        .playstation {
-            color: #0061f2; /* Azul brillante para PlayStation */
-        }
-
-        .xbox {
-            color: #107c10; /* Verde brillante para Xbox */
-            cursor: pointer; /* Cursor de mano para indicar que es clickable */
-        }
-
-        .switch {
-            color: #00e6de; /* Rojo brillante para Nintendo Switch */
-        }
-
     </style>
 </head>
 <body>
     <header>
-        <h1>Catalogos De Juegos <span class="playstation">PlayStation</span> <a href="xbox-catalogo.html" class="xbox">Xbox</a> <a href="nintendo-switch-catalogo.html" class="switch">Nintendo Switch</a></h1>
+        <h1>Catálogos de Juegos</h1>
     </header>
     <main>
-        <section class="game-list">
-            <div class="game">
-                <img src="images/juego1.jpg" alt="Juego 1" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego2.jpg" alt="Juego 2" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego3.jpg" alt="Juego 3" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego4.jpg" alt="Juego 4" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego5.jpg" alt="Juego 5" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego6.jpg" alt="Juego 6" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego7.jpg" alt="Juego 7" class="game-img">
-            </div>
-            
-        </section>
-    </main>
-    
-    <!-- Modal para mostrar imagen en grande -->
-    <div id="myModal" class="modal">
-        <span class="close">×</span>
-        <div class="modal-content">
-            <img id="modal-img" src="" alt="Imagen del Juego">
+        <div class="button-container">
+            <a href="playstation.html" class="catalog-btn">PlayStation</a>
+            <a href="xbox-catalogo.html" class="catalog-btn">Xbox</a>
+            <a href="nintendo-switch-catalogo.html" class="catalog-btn">Nintendo Switch</a>
         </div>
-    </div>
-
+    </main>
     <footer>
-        <p>Gamer Edges</p>
+        <p>Gamer Edges - Catálogos de Juegos</p>
     </footer>
-
-    <script>
-        // Función para abrir el modal y mostrar la imagen grande
-        const modal = document.getElementById("myModal");
-        const modalImg = document.getElementById("modal-img");
-        const closeBtn = document.querySelector(".close");
-        const images = document.querySelectorAll(".game-img");
-
-        images.forEach(image => {
-            image.addEventListener("click", () => {
-                modal.style.display = "block";
-                modalImg.src = image.src;  // Asigna la fuente de la imagen clickeada al modal
-            });
-        });
-
-        // Cerrar el modal al hacer clic en la X
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-
-        // Cerrar el modal si el usuario hace clic fuera de la imagen
-        window.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        });
-    </script>
 </body>
 </html>
