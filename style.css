@@ -1,137 +1,52 @@
-<style>
-    /* Estilo general para el body con un fondo de gradiente más dinámico */
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* Gradiente oscuro con colores vibrantes */
-        color: white;
-        overflow-x: hidden;
-    }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
 
-    /* Header con un fondo brillante y un gradiente moderno */
-    header {
-        background: linear-gradient(to right, #ff6a00, #ee0979); /* Gradiente cálido y brillante */
-        color: white;
-        text-align: center;
-        padding: 2rem 0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        border-bottom: 3px solid #ff6a00;
-    }
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
 
-    header h1 {
-        font-size: 2.8rem;
-        font-weight: bold;
-        margin: 0;
-        letter-spacing: 1px;
-    }
+h1 {
+    margin: 0;
+}
 
-    /* Estilo de la lista de juegos, ahora con un gradiente de fondo */
-    .game-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        padding: 2rem;
-        animation: fadeIn 1.5s ease-in-out;
-    }
+main {
+    padding: 2rem;
+}
 
-    .game {
-        position: relative;
-        overflow: hidden;
-        border-radius: 15px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
+.game-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
 
-    .game:hover {
-        transform: scale(1.05);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-    }
+.game {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    width: 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-    .game img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 15px;
-        transition: opacity 0.3s;
-    }
+.game img {
+    max-width: 100%;
+    border-radius: 4px;
+}
 
-    .game:hover img {
-        opacity: 0.85;
-    }
-
-    /* Estilos del footer con gradiente oscuro y efecto de resplandor */
-    footer {
-        background: linear-gradient(to right, #ff6a00, #ee0979);
-        color: white;
-        text-align: center;
-        padding: 1rem 0;
-        margin-top: 2rem;
-        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
-    }
-
-    footer p {
-        font-size: 1rem;
-        margin: 0;
-    }
-
-    /* Estilo para el modal */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    .modal-content {
-        position: relative;
-        margin: auto;
-        top: 10%;
-        width: 80%;
-        max-width: 1000px;
-    }
-
-    .modal img {
-        width: 100%;
-        height: auto;
-        max-height: 80vh; /* Limita la altura máxima de la imagen */
-        object-fit: contain;
-    }
-
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 25px;
-        color: white;
-        font-size: 35px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-
-    /* Colores personalizados para las plataformas */
-    .playstation {
-        color: #0061f2; /* Azul brillante para PlayStation */
-    }
-
-    .xbox {
-        color: #107c10; /* Verde brillante para Xbox */
-    }
-
-    .switch {
-        color: #e60012; /* Rojo brillante para Nintendo Switch */
-    }
-
-</style>
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+    margin-top: 2rem;
+}
