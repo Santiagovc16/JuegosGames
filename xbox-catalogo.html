@@ -46,6 +46,7 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7); /* Sombra más fuerte */
             transition: transform 0.3s, box-shadow 0.3s;
             background: linear-gradient(to top, #0d6c09, #3da64c); /* Verde Xbox brillante */
+            height: 350px; /* Altura constante para las imágenes */
         }
 
         .game:hover {
@@ -56,7 +57,7 @@
         .game img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Asegura que la imagen se ajuste bien al contenedor */
             border-radius: 15px;
             transition: opacity 0.3s, transform 0.3s;
             cursor: pointer;
@@ -96,17 +97,18 @@
 
         .modal-content {
             position: relative;
-            max-width: 85%;
-            max-height: 85%;
+            max-width: 60%;
+            max-height: 100%;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         .modal img {
             max-width: 100%;
             max-height: 100%;
-            object-fit: contain;
+            object-fit: contain; /* Ajuste para mantener la proporción de la imagen */
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
@@ -136,14 +138,17 @@
             <div class="game">
                 <img src="images2/juego1.jpg" alt="Juego Xbox 1" class="game-img">
             </div>
-            
+            <div class="game">
+                <img src="images2/juego2.jpg" alt="Juego Xbox 2" class="game-img">
+            </div>
         </section>
     </main>
 
+    <!-- Modal -->
     <div id="myModal" class="modal">
         <span class="close">&times;</span>
         <div class="modal-content">
-            <img id="modal-img" src="" alt="Imagen del Juego">
+            <img id="modal-img" src="images2/juego1.jpg" alt="Imagen del juego seleccionado">
         </div>
     </div>
 
@@ -157,17 +162,24 @@
         const closeBtn = document.querySelector(".close");
         const images = document.querySelectorAll(".game-img");
 
+        // Mostrar el modal con juego1.jpg de la carpeta images2 al cargar la página
+        modal.style.display = "flex";
+        modalImg.src = "images2/juego1.jpg"; // Imagen predeterminada al cargar la página
+
+        // Abrir el modal al hacer clic en una imagen
         images.forEach(image => {
             image.addEventListener("click", () => {
                 modal.style.display = "flex";
-                modalImg.src = image.src;
+                modalImg.src = image.src; // Mostrar la imagen seleccionada en el modal
             });
         });
 
+        // Cerrar el modal al hacer clic en el botón "X"
         closeBtn.addEventListener("click", () => {
             modal.style.display = "none";
         });
 
+        // Cerrar el modal al hacer clic fuera de la imagen
         window.addEventListener("click", (event) => {
             if (event.target === modal) {
                 modal.style.display = "none";
