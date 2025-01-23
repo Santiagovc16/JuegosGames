@@ -3,27 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogos De Juegos Playstation  Xbox Nintendo Switch</title>
+    <title>Catalogo Xbox</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilo general para el body con un fondo de gradiente más dinámico */
         body {
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* Gradiente oscuro con colores vibrantes */
-            color: white;
+            background-color: #f4f4f4; /* Fondo blanco para la nueva página */
+            color: black;
             overflow-x: hidden;
         }
 
-        /* Header con un fondo brillante y un gradiente moderno */
         header {
-            background: linear-gradient(to right, #ff6a00, #ee0979); /* Gradiente cálido y brillante */
+            background: linear-gradient(to right, #107c10, #3b8d4e); /* Gradiente verde Xbox */
             color: white;
             text-align: center;
             padding: 2rem 0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            border-bottom: 3px solid #ff6a00;
+            border-bottom: 3px solid #107c10;
         }
 
         header h1 {
@@ -33,7 +31,6 @@
             letter-spacing: 1px;
         }
 
-        /* Estilo de la lista de juegos, ahora con un gradiente de fondo */
         .game-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -61,15 +58,15 @@
             object-fit: cover;
             border-radius: 15px;
             transition: opacity 0.3s;
+            cursor: pointer; /* Cambiar cursor a mano */
         }
 
         .game:hover img {
             opacity: 0.85;
         }
 
-        /* Estilos del footer con gradiente oscuro y efecto de resplandor */
         footer {
-            background: linear-gradient(to right, #ff6a00, #ee0979);
+            background: linear-gradient(to right, #107c10, #3b8d4e);
             color: white;
             text-align: center;
             padding: 1rem 0;
@@ -82,7 +79,7 @@
             margin: 0;
         }
 
-        /* Estilo para el modal */
+        /* Estilos para el modal */
         .modal {
             display: none;
             position: fixed;
@@ -105,7 +102,7 @@
         .modal img {
             width: 100%;
             height: auto;
-            max-height: 80vh; /* Limita la altura máxima de la imagen */
+            max-height: 80vh;
             object-fit: contain;
         }
 
@@ -127,54 +124,28 @@
                 opacity: 1;
             }
         }
-
-        /* Colores personalizados para las plataformas */
-        .playstation {
-            color: #0061f2; /* Azul brillante para PlayStation */
-        }
-
-        .xbox {
-            color: #107c10; /* Verde brillante para Xbox */
-            cursor: pointer; /* Cursor de mano para indicar que es clickable */
-        }
-
-        .switch {
-            color: #00e6de; /* Rojo brillante para Nintendo Switch */
-        }
-
     </style>
 </head>
 <body>
     <header>
-        <h1>Catalogos De Juegos <span class="playstation">PlayStation</span> <a href="xbox-catalogo.html" class="xbox">Xbox</a> <a href="nintendo-switch-catalogo.html" class="switch">Nintendo Switch</a></h1>
+        <h1>Catalogo de Juegos Xbox</h1>
     </header>
     <main>
         <section class="game-list">
+            <!-- Aquí puedes agregar las imágenes de los juegos de Xbox -->
             <div class="game">
-                <img src="images/juego1.jpg" alt="Juego 1" class="game-img">
+                <img src="images2/juego1.jpg" alt="Juego Xbox 1" class="game-img">
             </div>
             <div class="game">
-                <img src="images/juego2.jpg" alt="Juego 2" class="game-img">
+                <img src="images2/xbox-juego2.jpg" alt="Juego Xbox 2" class="game-img">
             </div>
             <div class="game">
-                <img src="images/juego3.jpg" alt="Juego 3" class="game-img">
+                <img src="images2/xbox-juego3.jpg" alt="Juego Xbox 3" class="game-img">
             </div>
-            <div class="game">
-                <img src="images/juego4.jpg" alt="Juego 4" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego5.jpg" alt="Juego 5" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego6.jpg" alt="Juego 6" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego7.jpg" alt="Juego 7" class="game-img">
-            </div>
-            
+            <!-- Agregar más juegos de Xbox aquí -->
         </section>
     </main>
-    
+
     <!-- Modal para mostrar imagen en grande -->
     <div id="myModal" class="modal">
         <span class="close">×</span>
@@ -184,7 +155,7 @@
     </div>
 
     <footer>
-        <p>Gamer Edges</p>
+        <p>Gamer Edges - Xbox</p>
     </footer>
 
     <script>
