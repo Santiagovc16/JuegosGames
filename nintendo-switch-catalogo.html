@@ -3,68 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo Nintendo Switch</title>
+    <title>Nintendo </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --nintendo-red: #e60012;
             --nintendo-dark: #0f0c29;
             --accent-yellow: #ffdf6c;
+            --hologram-blue: #00f7ff;
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0a081f 100%);
             color: #f5f5f5;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(rgba(230, 0, 18, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(230, 0, 18, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridScan 10s linear infinite;
         }
 
         header {
-            background: linear-gradient(to right, var(--nintendo-red), #c00000);
-            padding: 3rem 0;
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.6);
             position: relative;
-            z-index: 2;
+            padding: 6rem 0;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-bottom: 5rem;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                var(--nintendo-red) 0%,
+                transparent 50%,
+                var(--hologram-blue) 100%);
+            opacity: 0.1;
+            animation: hologram 8s infinite linear;
         }
 
         header h1 {
-            font-size: 3.2rem;
+            font-size: 4.5rem;
+            text-align: center;
             margin: 0;
-            letter-spacing: 3px;
             text-transform: uppercase;
-            font-weight: 700;
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            color: var(--accent-yellow);
-            animation: slideDown 0.8s ease-out;
+            letter-spacing: 0.8rem;
+            background: linear-gradient(45deg, var(--accent-yellow), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(230, 0, 18, 0.5);
+            animation: titleFloat 3s ease-in-out infinite;
         }
 
         .game-list {
-            flex: 1;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-            padding: 4rem 2rem;
-            max-width: 1400px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            padding: 2rem;
+            max-width: 1600px;
             margin: 0 auto;
-            width: 100%;
+            perspective: 2000px;
+            position: relative;
+            z-index: 1;
         }
 
         .game-card {
             position: relative;
-            border-radius: 20px;
+            border-radius: 25px;
             overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
-            background: linear-gradient(145deg, #2c2c4a, #1a1a2e);
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(45deg, #2c2c4a 0%, #1a1a2e 100%);
         }
 
         .game-card:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            transform: rotateY(10deg) rotateX(5deg) translateZ(30px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(230, 0, 18, 0.3);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(45deg, var(--nintendo-red), var(--hologram-blue));
+            border-radius: 28px;
+            filter: blur(30px);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+
+        .game-card:hover::before {
+            opacity: 0.4;
         }
 
         .game-image-container {
@@ -72,6 +122,7 @@
             width: 100%;
             padding-top: 150%;
             overflow: hidden;
+            border-radius: 25px;
         }
 
         .game-image {
@@ -81,12 +132,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s, filter 0.4s;
+            transform-origin: center;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .game-card:hover .game-image {
-            transform: scale(1.1);
-            filter: brightness(1.1);
+            transform: scale(1.15) rotateZ(2deg);
+            filter: brightness(1.2) contrast(1.1);
         }
 
         .game-info {
@@ -94,193 +146,336 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 2rem 1.5rem;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
             opacity: 0;
-            transition: opacity 0.3s;
+            transform: translateY(100%);
+            transition: all 0.4s;
         }
 
         .game-card:hover .game-info {
             opacity: 1;
+            transform: translateY(0);
         }
 
         .game-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 700;
             color: var(--accent-yellow);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+            margin: 0 0 1rem 0;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
         }
 
-        /* Modal mejorado */
-        .modal {
+        .game-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Modal Holográfico */
+        .holo-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.98);
             justify-content: center;
             align-items: center;
-            animation: modalFade 0.3s ease-out;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
-        .modal-content {
+        .holo-content {
             position: relative;
-            max-width: 90%;
-            max-height: 90vh;
-            background: #1a1a2e;
-            border-radius: 20px;
+            width: 80%;
+            max-width: 1200px;
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 30px;
+            border: 2px solid var(--nintendo-red);
+            box-shadow: 0 0 60px rgba(230, 0, 18, 0.4);
             overflow: hidden;
-            box-shadow: 0 0 40px rgba(230, 0, 18, 0.3);
+            transform-style: preserve-3d;
         }
 
-        .modal-image {
-            width: 100%;
-            height: 70vh;
-            object-fit: contain;
-        }
-
-        .modal-close {
+        .holo-close {
             position: absolute;
             top: 1.5rem;
             right: 1.5rem;
             color: var(--accent-yellow);
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             cursor: pointer;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            text-shadow: 0 0 15px rgba(230, 0, 18, 0.5);
         }
 
-        .modal-close:hover {
+        .holo-close:hover {
             color: var(--nintendo-red);
+            transform: rotate(90deg) scale(1.2);
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 3rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 500px;
+            object-fit: contain;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            color: var(--accent-yellow);
+            margin: 0;
+        }
+
+        .modal-description {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .modal-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--nintendo-red);
         }
 
         footer {
-            background: linear-gradient(to right, var(--nintendo-red), #a00000);
-            padding: 2rem 0;
+            margin-top: 8rem;
+            padding: 4rem;
+            background: linear-gradient(to top, var(--nintendo-red), transparent);
             text-align: center;
-            font-size: 1.1rem;
-            margin-top: auto;
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 1;
+            clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
         }
 
-        @keyframes slideDown {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes gridScan {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
         }
 
-        @keyframes modalFade {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes hologram {
+            0% { transform: rotate(0deg) scale(2); }
+            100% { transform: rotate(360deg) scale(2); }
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
         @media (max-width: 768px) {
             header h1 {
-                font-size: 2.2rem;
-                padding: 0 1rem;
+                font-size: 2.5rem;
+                letter-spacing: 0.3rem;
             }
-
+            
             .game-list {
                 grid-template-columns: 1fr;
-                padding: 2rem 1rem;
-                gap: 2rem;
             }
-
-            .modal-content {
-                max-width: 95%;
+            
+            .modal-body {
+                grid-template-columns: 1fr;
+                padding: 2rem;
             }
-
+            
             .modal-image {
-                height: 60vh;
+                height: 300px;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Catálogo Nintendo Switch</h1>
-    </header>
+    <div class="cyber-grid"></div>
     
+    <header>
+        <h1>Nintendo Switch  </h1>
+    </header>
+
     <main>
         <section class="game-list">
             <div class="game-card">
                 <div class="game-image-container">
-                    <img src="images3/juego1.jpg" alt="The Legend of Zelda: Tears of the Kingdom" class="game-image">
+                    <img src="images3/juego1.jpg" alt="The Legend of Zelda" class="game-image">
                     <div class="game-info">
                         <h3 class="game-title">The Legend of Zelda: Tears of the Kingdom</h3>
+                        <div class="game-details">
+                            <span>RPG</span>
+                            <span>⭐ 5.0</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="game-card">
                 <div class="game-image-container">
                     <img src="images3/juego2.jpg" alt="Super Mario Odyssey" class="game-image">
                     <div class="game-info">
                         <h3 class="game-title">Super Mario Odyssey</h3>
+                        <div class="game-details">
+                            <span>Aventura</span>
+                            <span>⭐ 4.9</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="game-card">
                 <div class="game-image-container">
-                    <img src="images3/juego3.jpg" alt="Animal Crossing: New Horizons" class="game-image">
+                    <img src="images3/juego3.jpg" alt="Animal Crossing" class="game-image">
                     <div class="game-info">
                         <h3 class="game-title">Animal Crossing: New Horizons</h3>
+                        <div class="game-details">
+                            <span>Simulación</span>
+                            <span>⭐ 4.8</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Modal -->
-    <div class="modal" id="imageModal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <img class="modal-image" src="" alt="Vista ampliada del juego">
+    <!-- Modal Holográfico -->
+    <div class="holo-modal" id="holoModal">
+        <div class="holo-content">
+            <span class="holo-close">&times;</span>
+            <div class="modal-body">
+                <img class="modal-image" src="" alt="Detalle del juego">
+                <div class="modal-info">
+                    <h2 class="modal-title">Título del Juego</h2>
+                    <p class="modal-description">Descripción detallada del juego con características especiales y detalles de la jugabilidad.</p>
+                    <div class="modal-features">
+                        <div class="feature-card">
+                            <h4>⭐ Calificación</h4>
+                            <p>5.0/5.0</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🎮 Género</h4>
+                            <p>Aventura RPG</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>⏱️ Duración</h4>
+                            <p>60+ horas</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>👥 Jugadores</h4>
+                            <p>1-4</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <footer>
-        <p>© 2024 Gamer Edge - Nintendo Switch</p>
+        <p>© 2024 Nintendo Matrix - Magic in Every Pixel</p>
     </footer>
 
     <script>
-        // Configuración del modal
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.querySelector('.modal-image');
-        const closeModal = document.querySelector('.modal-close');
-        const gameCards = document.querySelectorAll('.game-card');
+        // Sistema de partículas interactivas
+        const particles = [];
+        const particleCount = 100;
 
-        // Abrir modal
-        gameCards.forEach(card => {
+        class Particle {
+            constructor() {
+                this.element = document.createElement('div');
+                this.element.style.cssText = `
+                    position: fixed;
+                    width: 8px;
+                    height: 8px;
+                    background: radial-gradient(${Math.random() > 0.5 ? 'var(--nintendo-red)' : 'var(--hologram-blue)'}, transparent);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1;
+                `;
+                document.body.appendChild(this.element);
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.life = Math.random() * 5 + 2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= 0.01;
+
+                this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
+                this.element.style.opacity = this.life;
+
+                if (this.life <= 0) this.reset();
+            }
+        }
+
+        // Inicializar partículas
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animación de partículas
+        function animateParticles() {
+            particles.forEach(p => p.update());
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Control del Modal Holográfico
+        const modal = document.getElementById('holoModal');
+        const modalImage = document.querySelector('.modal-image');
+        const modalTitle = document.querySelector('.modal-title');
+        const modalDescription = document.querySelector('.modal-description');
+        const closeModal = document.querySelector('.holo-close');
+
+        document.querySelectorAll('.game-card').forEach(card => {
             card.addEventListener('click', () => {
-                const imageSrc = card.querySelector('img').src;
-                const imageAlt = card.querySelector('img').alt;
+                const img = card.querySelector('img');
                 modal.style.display = 'flex';
-                modalImage.src = imageSrc;
-                modalImage.alt = imageAlt;
+                modalImage.src = img.src;
+                modalTitle.textContent = img.alt;
+                document.body.style.overflow = 'hidden';
             });
         });
 
-        // Cerrar modal
         closeModal.addEventListener('click', () => {
             modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
 
-        // Cerrar al hacer clic fuera
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        // Cerrar con tecla ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                modal.style.display = 'none';
-            }
+        // Efecto de seguimiento del mouse
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth - 0.5;
+            const y = e.clientY / window.innerHeight - 0.5;
+            
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.style.transform = `rotateY(${x * 15}deg) rotateX(${y * -10}deg) scale(1.05)`;
+            });
         });
     </script>
 </body>
