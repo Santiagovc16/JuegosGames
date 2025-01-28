@@ -3,81 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogos de Juegos</title>
+    <title>Next-Gen Consolas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --ps-color: #006fcd;
+            --xbox-color: #107c10;
+            --nintendo-color: #e60012;
+            --neon-effect: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* Fondo oscuro y dinámico */
+            background: radial-gradient(circle at center, #0a081f 0%, #1a1a2e 100%);
             color: white;
-            text-align: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridScan 8s linear infinite;
         }
 
         header {
-            background: linear-gradient(to right, #4c4b63, #6a097d); /* Gradiente para el encabezado */
-            padding: 2rem 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-            border-bottom: 3px solid #ff6a00;
+            position: relative;
+            padding: 4rem 0;
+            background: linear-gradient(45deg, rgba(0,0,0,0.5), transparent);
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+            margin-bottom: 5rem;
+            overflow: hidden;
+            z-index: 1;
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 4rem;
+            text-align: center;
             margin: 0;
-            letter-spacing: 2px;
             text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            background: linear-gradient(45deg, #fff, #00f7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+            animation: titleFloat 3s ease-in-out infinite;
         }
 
         .button-container {
-            margin: 3rem 0;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            padding: 2rem;
+            max-width: 1500px;
+            margin: 0 auto;
+            perspective: 2000px;
+            position: relative;
+            z-index: 1;
         }
 
         .catalog-btn {
-            background: linear-gradient(to right, #6a097d, #c060a1); /* Gradiente para los botones */
-            color: white;
-            padding: 1rem 2rem;
-            font-size: 1.5rem;
-            font-weight: bold;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 2.5rem;
+            font-size: 2rem;
             border: none;
-            border-radius: 50px;
+            border-radius: 25px;
             cursor: pointer;
             text-transform: uppercase;
             text-decoration: none;
-            transition: transform 0.3s, background 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.6s var(--neon-effect);
+            transform-style: preserve-3d;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .catalog-btn::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, var(--btn-color-1), var(--btn-color-2));
+            border-radius: inherit;
+            filter: blur(25px);
+            opacity: 0.5;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+
+        .catalog-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, 
+                rgba(255,255,255,0.1) 0%,
+                rgba(255,255,255,0) 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
         .catalog-btn:hover {
-            transform: scale(1.1);
-            background: linear-gradient(to right, #8c2e9b, #d44ca5); /* Cambio de gradiente al pasar el cursor */
+            transform: translateY(-10px) rotateX(15deg) rotateY(10deg) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .catalog-btn:hover::before {
+            opacity: 0.8;
+        }
+
+        .catalog-btn:hover::after {
+            opacity: 1;
+        }
+
+        .catalog-btn i {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+            transition: transform 0.4s;
+        }
+
+        .catalog-btn:hover i {
+            transform: scale(1.2) rotate(15deg);
+        }
+
+        /* Efectos específicos por botón */
+        .ps-btn {
+            --btn-color-1: #006fcd;
+            --btn-color-2: #004a8f;
+        }
+
+        .ps-btn:hover {
+            animation: psPulse 1.5s infinite;
+        }
+
+        .xbox-btn {
+            --btn-color-1: #107c10;
+            --btn-color-2: #0a4e0a;
+        }
+
+        .xbox-btn:hover {
+            animation: xboxVibrate 0.8s infinite;
+        }
+
+        .nintendo-btn {
+            --btn-color-1: #e60012;
+            --btn-color-2: #a0000c;
+        }
+
+        .nintendo-btn:hover {
+            animation: nintendoShake 0.5s infinite;
         }
 
         footer {
-            background: linear-gradient(to right, #ff6a00, #ee0979); /* Gradiente del pie de página */
-            padding: 1rem 0;
-            font-size: 1rem;
-            margin-top: 2rem;
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+            margin-top: 8rem;
+            padding: 3rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border-top: 2px solid rgba(255,255,255,0.1);
+        }
+
+        /* Animaciones personalizadas */
+        @keyframes psPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(0, 111, 205, 0.3); }
+            50% { box-shadow: 0 0 60px rgba(0, 111, 205, 0.6); }
+        }
+
+        @keyframes xboxVibrate {
+            0%, 100% { transform: translateY(-10px) rotate(0.5deg); }
+            50% { transform: translateY(-10px) rotate(-0.5deg); }
+        }
+
+        @keyframes nintendoShake {
+            0%, 100% { transform: translateY(-10px) translateX(1px); }
+            50% { transform: translateY(-10px) translateX(-1px); }
+        }
+
+        @keyframes gridScan {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 30px; }
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Efecto de partículas */
+        .particles {
+            position: fixed;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .button-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .catalog-btn {
+                font-size: 1.6rem;
+                padding: 2rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="cyber-grid"></div>
+    
     <header>
-        <h1>Catálogos de Juegos</h1>
+        <h1>Next-Gen Consolas</h1>
     </header>
+
     <main>
         <div class="button-container">
-            <a href="playstation.html" class="catalog-btn">PlayStation</a>
-            <a href="xbox-catalogo.html" class="catalog-btn">Xbox</a>
-            <a href="nintendo-switch-catalogo.html" class="catalog-btn">Nintendo Switch</a>
+            <a href="playstation.html" class="catalog-btn ps-btn">
+                <i class="fab fa-playstation"></i>
+                PlayStation 5
+            </a>
+            <a href="xbox-catalogo.html" class="catalog-btn xbox-btn">
+                <i class="fab fa-xbox"></i>
+                Xbox Series X
+            </a>
+            <a href="nintendo-switch-catalogo.html" class="catalog-btn nintendo-btn">
+                <i class="fas fa-gamepad"></i>
+                Nintendo Switch
+            </a>
         </div>
     </main>
+
     <footer>
-        <p>Gamer Edges - Catálogos de Juegos</p>
+        <p>© 2024 Next-Gen Universe - Todos los derechos reservados</p>
     </footer>
+
+    <script>
+        // Efecto de partículas interactivas
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.createElement('div');
+            particles.className = 'particles';
+            particles.style.cssText = `
+                left: ${e.clientX}px;
+                top: ${e.clientY}px;
+                width: 8px;
+                height: 8px;
+                background: radial-gradient(${Math.random() > 0.5 ? 'var(--btn-color-1)' : 'var(--btn-color-2)'}, transparent);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                animation: particle 1s forwards;
+            `;
+            
+            document.body.appendChild(particles);
+            
+            setTimeout(() => {
+                particles.remove();
+            }, 1000);
+        });
+
+        // Efecto de sonido al hover
+        const hoverSound = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
+        document.querySelectorAll('.catalog-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                hoverSound.play();
+            });
+        });
+
+        // Efecto de parallax
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 30;
+            const y = (window.innerHeight / 2 - e.pageY) / 30;
+            
+            document.querySelectorAll('.catalog-btn').forEach(btn => {
+                btn.style.transform = `translateY(-10px) rotateY(${x}deg) rotateX(${y}deg) scale(1.05)`;
+            });
+        });
+    </script>
 </body>
 </html>

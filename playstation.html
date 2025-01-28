@@ -3,183 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Juegos PlayStation</title>
+    <title>PlayStation Nexus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --ps-blue: #0061f2;
+            --ps-neon: #00f7ff;
+            --hologram-1: rgba(0, 97, 242, 0.4);
+            --hologram-2: rgba(0, 247, 255, 0.4);
+        }
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #1a1a40); /* Fondo oscuro */
+            background: radial-gradient(circle at center, #0f0c29 0%, #1a1a40 100%);
             color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(var(--hologram-1) 1px, transparent 1px),
+                linear-gradient(90deg, var(--hologram-1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridScan 8s linear infinite;
         }
 
         header {
-            background: linear-gradient(to right, #0061f2, #0041a8); /* Gradiente azul PlayStation */
-            padding: 2rem 0;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+            position: relative;
+            padding: 4rem 0;
+            background: linear-gradient(45deg, var(--ps-blue), transparent);
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+            margin-bottom: 5rem;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent 45%,
+                var(--ps-neon) 50%,
+                transparent 55%);
+            animation: hologram 6s infinite linear;
+            opacity: 0.1;
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 4rem;
+            text-align: center;
             margin: 0;
-            letter-spacing: 2px;
             text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            background: linear-gradient(45deg, #fff, var(--ps-neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+            animation: titleFloat 3s ease-in-out infinite;
         }
 
         .game-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            padding: 3rem;
-        }
-
-        .game {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            padding: 2rem;
+            max-width: 1500px;
+            margin: 0 auto;
+            perspective: 2000px;
             position: relative;
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 1;
         }
 
-        .game:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
-        }
-
-        .game img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .game-card {
+            position: relative;
             border-radius: 15px;
-            transition: opacity 0.3s;
+            transform-style: preserve-3d;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
             cursor: pointer;
+            overflow: hidden;
+            min-height: 400px;
+            background: linear-gradient(45deg, #1a1a40, #0f0c29);
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
-        .game:hover img {
-            opacity: 0.85;
+        .game-card:hover {
+            transform: rotateY(15deg) rotateX(10deg) translateZ(50px);
         }
 
-        footer {
-            background: linear-gradient(to right, #0061f2, #0041a8);
-            text-align: center;
-            padding: 1.5rem 0;
-            color: white;
-            margin-top: 2rem;
+        .game-card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, var(--ps-blue), var(--ps-neon));
+            border-radius: 17px;
+            filter: blur(20px);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: -1;
         }
 
-        /* Modal */
-        .modal {
+        .game-card:hover::before {
+            opacity: 0.6;
+        }
+
+        .game-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            opacity: 0;
+            transform: translateY(100%);
+            transition: all 0.5s;
+        }
+
+        .game-card:hover .game-info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .holo-modal {
             display: none;
             position: fixed;
-            z-index: 10;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             justify-content: center;
             align-items: center;
+            z-index: 1000;
         }
 
-        .modal img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+        .holo-content {
+            position: relative;
+            width: 80%;
+            max-width: 1200px;
+            background: rgba(16, 16, 48, 0.9);
+            border-radius: 20px;
+            border: 2px solid var(--ps-blue);
+            box-shadow: 0 0 50px rgba(0, 97, 242, 0.5);
+            overflow: hidden;
         }
 
-        .close {
+        .holo-close {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 1rem;
+            right: 1rem;
+            color: var(--ps-neon);
             font-size: 2.5rem;
-            color: white;
-            font-weight: bold;
             cursor: pointer;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s;
+            z-index: 1001;
         }
 
-        .close:hover {
+        .holo-close:hover {
             color: #ff5555;
+        }
+
+        footer {
+            margin-top: 8rem;
+            padding: 3rem;
+            background: linear-gradient(to top, var(--ps-blue), transparent);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes gridScan {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 30px; }
+        }
+
+        @keyframes hologram {
+            0% { transform: rotate(0deg) translateX(-50%); }
+            100% { transform: rotate(360deg) translateX(50%); }
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .game-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-card {
+                min-height: 300px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="cyber-grid"></div>
+    
     <header>
-        <h1>Catálogo de Juegos PlayStation</h1>
+        <h1>PlayStation Nexus</h1>
     </header>
+
     <main>
         <section class="game-list">
-            <!-- Lista de juegos PlayStation -->
-            <div class="game">
-                <img src="images/juego1.jpg" alt="Juego PlayStation 1" class="game-img">
+            <div class="game-card">
+                <div class="game-info">
+                    <h3>Horizon Forbidden West</h3>
+                    <p>Explora un mundo posapocalíptico</p>
+                </div>
             </div>
-            <div class="game">
-                <img src="images/juego2.jpg" alt="Juego PlayStation 2" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego3.jpg" alt="Juego PlayStation 3" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego4.jpg" alt="Juego PlayStation 4" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego5.jpg" alt="Juego PlayStation 5" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego6.jpg" alt="Juego PlayStation 5" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images/juego7.jpg" alt="Juego PlayStation 5" class="game-img">
-            </div>
+            
+            <!-- Agrega más juegos aquí -->
         </section>
     </main>
 
-    <!-- Modal para ver imágenes completas -->
-    <div id="myModal" class="modal">
-        <span class="close">&times;</span>
-        <img id="modalImg" src="" alt="Imagen del Juego">
+    <div id="holoModal" class="holo-modal">
+        <span class="holo-close">&times;</span>
+        <div class="holo-content">
+            <!-- Espacio reservado para contenido futuro -->
+        </div>
     </div>
 
     <footer>
-        <p>Gamer Edges - PlayStation</p>
+        <p>PlayStation® Universe - Experiencia Next-Gen</p>
     </footer>
 
     <script>
-        // Variables para el modal
-        const modal = document.getElementById("myModal");
-        const modalImg = document.getElementById("modalImg");
-        const closeModal = document.querySelector(".close");
+        // Control del Modal
+        const modal = document.getElementById('holoModal');
+        const closeBtn = document.querySelector('.holo-close');
 
-        // Obtener todas las imágenes de los juegos
-        const gameImages = document.querySelectorAll(".game-img");
-
-        // Abrir el modal al hacer clic en una imagen
-        gameImages.forEach(img => {
-            img.addEventListener("click", () => {
-                modal.style.display = "flex";
-                modalImg.src = img.src; // Mostrar la imagen seleccionada en el modal
-            });
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
 
-        // Cerrar el modal al hacer clic en el botón de cerrar
-        closeModal.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-
-        // Cerrar el modal al hacer clic fuera de la imagen
-        modal.addEventListener("click", (e) => {
+        window.addEventListener('click', (e) => {
             if (e.target === modal) {
-                modal.style.display = "none";
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
         });
 
-        // Abrir el modal automáticamente con la primera imagen
-        window.onload = () => {
-            modal.style.display = "flex";
-            modalImg.src = "images/juego1.jpg"; // Mostrar la imagen de juego1.jpg por defecto
-        };
+        // Optimización de Partículas
+        let particleCount = 0;
+        const maxParticles = 50;
+
+        document.addEventListener('mousemove', (e) => {
+            if (particleCount < maxParticles) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    width: 8px;
+                    height: 8px;
+                    background: radial-gradient(${Math.random() > 0.5 ? 'var(--ps-blue)' : 'var(--ps-neon)'}, transparent);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    left: ${e.clientX}px;
+                    top: ${e.clientY}px;
+                    animation: particle 1s forwards;
+                `;
+                document.body.appendChild(particle);
+                particleCount++;
+
+                setTimeout(() => {
+                    particle.remove();
+                    particleCount--;
+                }, 1000);
+            }
+        });
     </script>
 </body>
 </html>

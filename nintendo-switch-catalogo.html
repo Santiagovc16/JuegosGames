@@ -4,186 +4,282 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo Nintendo Switch</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --nintendo-red: #e60012;
+            --nintendo-dark: #0f0c29;
+            --accent-yellow: #ffdf6c;
+        }
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(120deg, #1e1f29, #2a2b3d);
+            background: linear-gradient(135deg, #1a1a2e, #2d2d44);
             color: #f5f5f5;
-            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
-            background: linear-gradient(to right, #ff1e56, #ffac41);
-            color: #ffffff;
-            text-align: center;
-            padding: 2.5rem 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-            border-bottom: 4px solid #0f0c29;
+            background: linear-gradient(to right, var(--nintendo-red), #c00000);
+            padding: 3rem 0;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.6);
+            position: relative;
+            z-index: 2;
         }
 
         header h1 {
-            font-size: 3.5rem;
-            font-weight: bold;
+            font-size: 3.2rem;
             margin: 0;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            color: #ffdf6c;
-            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            font-weight: 700;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            color: var(--accent-yellow);
+            animation: slideDown 0.8s ease-out;
         }
 
         .game-list {
+            flex: 1;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            padding: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .game {
-            overflow: hidden;
+        .game-card {
+            position: relative;
             border-radius: 20px;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8);
-            transition: transform 0.4s, box-shadow 0.4s;
-            background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+            background: linear-gradient(145deg, #2c2c4a, #1a1a2e);
         }
 
-        .game:hover {
-            transform: scale(1.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 1);
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
         }
 
-        .game img {
+        .game-image-container {
+            position: relative;
+            width: 100%;
+            padding-top: 150%;
+            overflow: hidden;
+        }
+
+        .game-image {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 20px;
-            transition: opacity 0.3s, transform 0.3s;
-            cursor: pointer;
+            transition: transform 0.4s, filter 0.4s;
         }
 
-        .game:hover img {
-            opacity: 0.9;
-            transform: scale(1.05);
+        .game-card:hover .game-image {
+            transform: scale(1.1);
+            filter: brightness(1.1);
         }
 
-        footer {
-            background: linear-gradient(to right, #000428, #004e92);
-            color: #f5f5f5;
-            text-align: center;
-            padding: 1.5rem 0;
-            margin-top: 3rem;
-            font-size: 1.1rem;
-            box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.7);
+        .game-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        /* Modal styles */
+        .game-card:hover .game-info {
+            opacity: 1;
+        }
+
+        .game-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--accent-yellow);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Modal mejorado */
         .modal {
             display: none;
             position: fixed;
-            z-index: 10;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            display: flex;
-            align-items: center;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
             justify-content: center;
+            align-items: center;
+            animation: modalFade 0.3s ease-out;
         }
 
         .modal-content {
-            width: 50%;
-            height: 90%;
-            max-width: 1200px;
-            max-height: 800px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            background: #1a1a2e;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(230, 0, 18, 0.3);
         }
 
-        .modal img {
-            max-width: 100%;
-            max-height: 100%;
+        .modal-image {
+            width: 100%;
+            height: 70vh;
             object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
 
-        .close {
+        .modal-close {
             position: absolute;
-            top: 15px;
-            right: 25px;
-            color: #ffdf6c;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: var(--accent-yellow);
             font-size: 2.5rem;
-            font-weight: bold;
             cursor: pointer;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+            transition: color 0.3s;
         }
 
-        .close:hover {
-            color: #ff1e56;
+        .modal-close:hover {
+            color: var(--nintendo-red);
+        }
+
+        footer {
+            background: linear-gradient(to right, var(--nintendo-red), #a00000);
+            padding: 2rem 0;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: auto;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes modalFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+                padding: 0 1rem;
+            }
+
+            .game-list {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+                gap: 2rem;
+            }
+
+            .modal-content {
+                max-width: 95%;
+            }
+
+            .modal-image {
+                height: 60vh;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Catálogo de Juegos Nintendo Switch</h1>
+        <h1>Catálogo Nintendo Switch</h1>
     </header>
+    
     <main>
         <section class="game-list">
-            <div class="game">
-                <img src="images3/juego1.jpg" alt="Juego Nintendo 1" class="game-img">
+            <div class="game-card">
+                <div class="game-image-container">
+                    <img src="images3/juego1.jpg" alt="The Legend of Zelda: Tears of the Kingdom" class="game-image">
+                    <div class="game-info">
+                        <h3 class="game-title">The Legend of Zelda: Tears of the Kingdom</h3>
+                    </div>
+                </div>
             </div>
-            <div class="game">
-                <img src="images3/juego2.jpg" alt="Juego Nintendo 2" class="game-img">
+            
+            <div class="game-card">
+                <div class="game-image-container">
+                    <img src="images3/juego2.jpg" alt="Super Mario Odyssey" class="game-image">
+                    <div class="game-info">
+                        <h3 class="game-title">Super Mario Odyssey</h3>
+                    </div>
+                </div>
             </div>
-            <div class="game">
-                <img src="images3/juego3.jpg" alt="Juego Nintendo 3" class="game-img">
+            
+            <div class="game-card">
+                <div class="game-image-container">
+                    <img src="images3/juego3.jpg" alt="Animal Crossing: New Horizons" class="game-image">
+                    <div class="game-info">
+                        <h3 class="game-title">Animal Crossing: New Horizons</h3>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
     <!-- Modal -->
-    <div id="myModal" class="modal">
-        <span class="close">&times;</span>
+    <div class="modal" id="imageModal">
         <div class="modal-content">
-            <img id="modal-img" src="images3/juego1.jpg" alt="Imagen del juego seleccionado">
+            <span class="modal-close">&times;</span>
+            <img class="modal-image" src="" alt="Vista ampliada del juego">
         </div>
     </div>
 
     <footer>
-        <p>Gamer Edges - Nintendo Switch</p>
+        <p>© 2024 Gamer Edge - Nintendo Switch</p>
     </footer>
 
     <script>
-        // Variables del modal
-        const modal = document.getElementById("myModal");
-        const modalImg = document.getElementById("modal-img");
-        const closeBtn = document.querySelector(".close");
-        const images = document.querySelectorAll(".game-img");
+        // Configuración del modal
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.querySelector('.modal-image');
+        const closeModal = document.querySelector('.modal-close');
+        const gameCards = document.querySelectorAll('.game-card');
 
-        // Mostrar el modal con juego1.jpg al cargar la página
-        modal.style.display = "flex";
-        modalImg.src = "images3/juego1.jpg"; // Imagen predeterminada al cargar la página
-
-        // Abrir el modal al hacer clic en una imagen
-        images.forEach(image => {
-            image.addEventListener("click", () => {
-                modal.style.display = "flex";
-                modalImg.src = image.src; // Mostrar la imagen seleccionada en el modal
+        // Abrir modal
+        gameCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const imageSrc = card.querySelector('img').src;
+                const imageAlt = card.querySelector('img').alt;
+                modal.style.display = 'flex';
+                modalImage.src = imageSrc;
+                modalImage.alt = imageAlt;
             });
         });
 
-        // Cerrar el modal al hacer clic en el botón "X"
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
+        // Cerrar modal
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
         });
 
-        // Cerrar el modal al hacer clic fuera de la imagen
-        modal.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                modal.style.display = "none";
+        // Cerrar al hacer clic fuera
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Cerrar con tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                modal.style.display = 'none';
             }
         });
     </script>
