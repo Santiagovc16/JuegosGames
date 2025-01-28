@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --ps-color: #006fcd;
-            --xbox-color: #107c10;
-            --nintendo-color: #e60012;
+            --ps-color: #0f32ce;
+            --xbox-color: #03852e;
+            --nintendo-color: #f72216;
             --neon-effect: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
@@ -52,10 +52,10 @@
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 0.5rem;
-            background: linear-gradient(45deg, #fff, #00f7ff);
+            background: linear-gradient(45deg, var(--ps-color), var(--xbox-color), var(--nintendo-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
             animation: titleFloat 3s ease-in-out infinite;
         }
 
@@ -131,40 +131,37 @@
 
         .catalog-btn i {
             font-size: 2.5rem;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
-            transition: transform 0.4s;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+            transition: transform 0.4s, color 0.4s;
+            color: white;
         }
 
         .catalog-btn:hover i {
             transform: scale(1.2) rotate(15deg);
         }
 
-        /* Efectos específicos por botón */
         .ps-btn {
-            --btn-color-1: #006fcd;
-            --btn-color-2: #004a8f;
+            --btn-color-1: #029be8;
+            --btn-color-2: #91e1ea;
         }
-
-        .ps-btn:hover {
-            animation: psPulse 1.5s infinite;
+        .ps-btn span {
+            color: var(--ps-color);
         }
 
         .xbox-btn {
-            --btn-color-1: #107c10;
-            --btn-color-2: #0a4e0a;
+            --btn-color-1: #04461a;
+            --btn-color-2: #30a153;
         }
-
-        .xbox-btn:hover {
-            animation: xboxVibrate 0.8s infinite;
+        .xbox-btn span {
+            color: var(--xbox-color);
         }
 
         .nintendo-btn {
-            --btn-color-1: #e60012;
-            --btn-color-2: #a0000c;
+            --btn-color-1: #ff4136;
+            --btn-color-2: #d62c2c;
         }
-
-        .nintendo-btn:hover {
-            animation: nintendoShake 0.5s infinite;
+        .nintendo-btn span {
+            color: var(--nintendo-color);
         }
 
         footer {
@@ -177,22 +174,6 @@
             border-top: 2px solid rgba(255,255,255,0.1);
         }
 
-        /* Animaciones personalizadas */
-        @keyframes psPulse {
-            0%, 100% { box-shadow: 0 0 30px rgba(0, 111, 205, 0.3); }
-            50% { box-shadow: 0 0 60px rgba(0, 111, 205, 0.6); }
-        }
-
-        @keyframes xboxVibrate {
-            0%, 100% { transform: translateY(-10px) rotate(0.5deg); }
-            50% { transform: translateY(-10px) rotate(-0.5deg); }
-        }
-
-        @keyframes nintendoShake {
-            0%, 100% { transform: translateY(-10px) translateX(1px); }
-            50% { transform: translateY(-10px) translateX(-1px); }
-        }
-
         @keyframes gridScan {
             0% { background-position: 0 0; }
             100% { background-position: 30px 30px; }
@@ -201,13 +182,6 @@
         @keyframes titleFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
-        }
-
-        /* Efecto de partículas */
-        .particles {
-            position: fixed;
-            pointer-events: none;
-            z-index: 2;
         }
 
         @media (max-width: 768px) {
@@ -238,15 +212,15 @@
         <div class="button-container">
             <a href="playstation.html" class="catalog-btn ps-btn">
                 <i class="fab fa-playstation"></i>
-                PlayStation 5
+                <span>PlayStation 5 - 4</span>
             </a>
             <a href="xbox-catalogo.html" class="catalog-btn xbox-btn">
                 <i class="fab fa-xbox"></i>
-                Xbox Series X
+                <span>Xbox Series X - S</span>
             </a>
             <a href="nintendo-switch-catalogo.html" class="catalog-btn nintendo-btn">
                 <i class="fas fa-gamepad"></i>
-                Nintendo Switch
+                <span>Nintendo Switch</span>
             </a>
         </div>
     </main>
@@ -256,44 +230,22 @@
     </footer>
 
     <script>
-        // Efecto de partículas interactivas
-        document.addEventListener('mousemove', (e) => {
-            const particles = document.createElement('div');
-            particles.className = 'particles';
-            particles.style.cssText = `
-                left: ${e.clientX}px;
-                top: ${e.clientY}px;
-                width: 8px;
-                height: 8px;
-                background: radial-gradient(${Math.random() > 0.5 ? 'var(--btn-color-1)' : 'var(--btn-color-2)'}, transparent);
-                border-radius: 50%;
-                position: fixed;
-                pointer-events: none;
-                animation: particle 1s forwards;
-            `;
-            
-            document.body.appendChild(particles);
-            
-            setTimeout(() => {
-                particles.remove();
-            }, 1000);
-        });
-
-        // Efecto de sonido al hover
-        const hoverSound = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
+        // Cambia el color del ícono al hacer hover en cada botón
         document.querySelectorAll('.catalog-btn').forEach(btn => {
-            btn.addEventListener('mouseenter', () => {
-                hoverSound.play();
-            });
-        });
-
-        // Efecto de parallax
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.pageX) / 30;
-            const y = (window.innerHeight / 2 - e.pageY) / 30;
+            const icon = btn.querySelector('i'); // Selecciona el ícono dentro del botón
             
-            document.querySelectorAll('.catalog-btn').forEach(btn => {
-                btn.style.transform = `translateY(-10px) rotateY(${x}deg) rotateX(${y}deg) scale(1.05)`;
+            btn.addEventListener('mouseenter', () => {
+                if (btn.classList.contains('ps-btn')) {
+                    icon.style.color = 'var(--ps-color)';
+                } else if (btn.classList.contains('xbox-btn')) {
+                    icon.style.color = 'var(--xbox-color)';
+                } else if (btn.classList.contains('nintendo-btn')) {
+                    icon.style.color = 'var(--nintendo-color)';
+                }
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                icon.style.color = 'white'; // Restablece el color a blanco
             });
         });
     </script>
