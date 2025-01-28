@@ -3,187 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo Xbox</title>
+    <title>Xbox Cyber Nexus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --neon-green: #0dffc2;
+            --cyber-purple: #bd00ff;
+            --matrix-green: #00ff4c;
+            --bg-dark: #001100;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(120deg, #0a0a0a, #1c1c1c); /* Fondo oscuro estilo Xbox */
-            color: white;
+            font-family: 'Orbitron', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #000, var(--bg-dark));
+            color: var(--neon-green);
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
+        .cyber-grid {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0, 255, 100, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 100, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridScan 8s linear infinite;
+        }
+
         header {
-            background: linear-gradient(to right, #107c10, #3da64c); /* Gradiente verde Xbox */
-            color: white;
+            background: rgba(0, 0, 0, 0.9);
             text-align: center;
-            padding: 2.5rem 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-            border-bottom: 4px solid #0d6c09;
+            padding: 4rem 0;
+            border-bottom: 3px solid var(--neon-green);
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
         }
 
         header h1 {
-            font-size: 3.5rem; /* Tamaño ajustado para que destaque más */
-            font-weight: bold;
+            font-size: 4rem;
             margin: 0;
-            letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.7); /* Sombra para resaltar el título */
+            background: linear-gradient(45deg, var(--neon-green), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: neonPulse 1.5s infinite alternate;
         }
 
         .game-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Aumenta el tamaño de los elementos */
-            gap: 2rem;
-            padding: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            padding: 5rem;
+            perspective: 2000px;
         }
 
-        .game {
+        .game-card {
             position: relative;
-            overflow: hidden;
-            border-radius: 15px; /* Ajuste para esquinas suaves */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7); /* Sombra más fuerte */
-            transition: transform 0.3s, box-shadow 0.3s;
-            background: linear-gradient(to top, #0d6c09, #3da64c); /* Verde Xbox brillante */
-            height: 350px; /* Altura constante para las imágenes */
-        }
-
-        .game:hover {
-            transform: scale(1.08);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9); /* Resalta al pasar el cursor */
-        }
-
-        .game img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Asegura que la imagen se ajuste bien al contenedor */
             border-radius: 15px;
-            transition: opacity 0.3s, transform 0.3s;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            background: #000;
+            box-shadow: 0 0 30px rgba(0, 255, 100, 0.2);
         }
 
-        .game:hover img {
-            opacity: 0.9;
-            transform: scale(1.05);
+        .game-card:hover {
+            transform: perspective(1000px) rotateX(10deg) rotateY(10deg) translateZ(50px);
         }
 
-        footer {
-            background: linear-gradient(to right, #107c10, #3da64c); /* Gradiente similar al encabezado */
-            color: white;
-            text-align: center;
-            padding: 1.5rem 0;
-            font-size: 1rem;
-            box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.7);
+        .game-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.5s, filter 0.5s;
         }
 
-        footer p {
-            margin: 0;
-        }
-
-        /* Modal Styles */
-        .modal {
+        .holo-modal {
             display: none;
             position: fixed;
-            z-index: 10;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            align-items: center;
+            background: rgba(0, 0, 0, 0.95);
             justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
 
-        .modal-content {
+        .holo-content {
             position: relative;
-            max-width: 60%;
-            max-height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            width: 80%;
+            max-width: 1200px;
+            background: rgba(0, 17, 0, 0.9);
+            border-radius: 15px;
+            border: 3px solid var(--neon-green);
+            box-shadow: 0 0 50px rgba(0, 255, 100, 0.5);
         }
 
-        .modal img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain; /* Ajuste para mantener la proporción de la imagen */
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        @keyframes neonPulse {
+            from { text-shadow: 0 0 10px var(--matrix-green); }
+            to { text-shadow: 0 0 30px var(--matrix-green); }
         }
 
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            color: white;
-            font-size: 2.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
-        }
-
-        .close:hover {
-            color: #3da64c;
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            .game-list { padding: 2rem; }
         }
     </style>
 </head>
 <body>
+    <div class="cyber-grid"></div>
+    
     <header>
-        <h1>Catálogo de Juegos Xbox</h1>
+        <h1>Xbox Cyber Nexus</h1>
     </header>
+
     <main>
         <section class="game-list">
-            <div class="game">
-                <img src="images2/juego1.jpg" alt="Juego Xbox 1" class="game-img">
-            </div>
-            <div class="game">
-                <img src="images2/juego2.jpg" alt="Juego Xbox 2" class="game-img">
-            </div>
+            <!-- Juegos aquí -->
         </section>
     </main>
 
-    <!-- Modal -->
-    <div id="myModal" class="modal">
-        <span class="close">&times;</span>
-        <div class="modal-content">
-            <img id="modal-img" src="images2/juego1.jpg" alt="Imagen del juego seleccionado">
+    <div class="holo-modal" id="holoModal">
+        <div class="holo-content">
+            <!-- Contenido del modal -->
         </div>
     </div>
 
-    <footer>
-        <p>Gamer Edges - Xbox</p>
-    </footer>
-
     <script>
-        const modal = document.getElementById("myModal");
-        const modalImg = document.getElementById("modal-img");
-        const closeBtn = document.querySelector(".close");
-        const images = document.querySelectorAll(".game-img");
-
-        // Mostrar el modal con juego1.jpg de la carpeta images2 al cargar la página
-        modal.style.display = "flex";
-        modalImg.src = "images2/juego1.jpg"; // Imagen predeterminada al cargar la página
-
-        // Abrir el modal al hacer clic en una imagen
-        images.forEach(image => {
-            image.addEventListener("click", () => {
-                modal.style.display = "flex";
-                modalImg.src = image.src; // Mostrar la imagen seleccionada en el modal
-            });
-        });
-
-        // Cerrar el modal al hacer clic en el botón "X"
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-
-        // Cerrar el modal al hacer clic fuera de la imagen
-        window.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                modal.style.display = "none";
+        // Sistema de partículas dinámicas
+        function createParticles() {
+            const container = document.createElement('div');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    width: 2px;
+                    height: 2px;
+                    background: ${Math.random() > 0.5 ? 'var(--neon-green)' : 'var(--cyber-purple)'};
+                    border-radius: 50%;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    animation: float ${5 + Math.random() * 10}s infinite;
+                `;
+                container.appendChild(particle);
             }
+            document.body.appendChild(container);
+        }
+        createParticles();
+
+        // Control del Modal
+        const modal = document.getElementById('holoModal');
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', () => modal.style.display = 'flex');
         });
     </script>
 </body>

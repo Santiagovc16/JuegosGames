@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nintendo </title>
+    <title>Nintendo Cyberverse</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --nintendo-red: #e60012;
-            --nintendo-dark: #0f0c29;
-            --accent-yellow: #ffdf6c;
+            --main-red: #e60012;
+            --neon-yellow: #ffdf6c;
             --hologram-blue: #00f7ff;
+            --bg-dark: #0a081f;
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #0a081f 100%);
-            color: #f5f5f5;
+            background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg-dark) 100%);
+            color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -52,10 +52,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, 
-                var(--nintendo-red) 0%,
-                transparent 50%,
-                var(--hologram-blue) 100%);
+            background: linear-gradient(45deg, var(--main-red), transparent 50%, var(--hologram-blue));
             opacity: 0.1;
             animation: hologram 8s infinite linear;
         }
@@ -66,7 +63,7 @@
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 0.8rem;
-            background: linear-gradient(45deg, var(--accent-yellow), #ffffff);
+            background: linear-gradient(45deg, var(--neon-yellow), #ffffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 40px rgba(230, 0, 18, 0.5);
@@ -99,22 +96,6 @@
         .game-card:hover {
             transform: rotateY(10deg) rotateX(5deg) translateZ(30px) scale(1.05);
             box-shadow: 0 25px 50px rgba(230, 0, 18, 0.3);
-        }
-
-        .game-card::before {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            background: linear-gradient(45deg, var(--nintendo-red), var(--hologram-blue));
-            border-radius: 28px;
-            filter: blur(30px);
-            opacity: 0;
-            transition: opacity 0.4s;
-            z-index: -1;
-        }
-
-        .game-card:hover::before {
-            opacity: 0.4;
         }
 
         .game-image-container {
@@ -158,22 +139,6 @@
             transform: translateY(0);
         }
 
-        .game-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--accent-yellow);
-            margin: 0 0 1rem 0;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-        }
-
-        .game-details {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Modal Holográfico */
         .holo-modal {
             display: none;
             position: fixed;
@@ -194,81 +159,19 @@
             max-width: 1200px;
             background: rgba(26, 26, 46, 0.95);
             border-radius: 30px;
-            border: 2px solid var(--nintendo-red);
+            border: 2px solid var(--main-red);
             box-shadow: 0 0 60px rgba(230, 0, 18, 0.4);
             overflow: hidden;
-            transform-style: preserve-3d;
         }
 
         .holo-close {
             position: absolute;
             top: 1.5rem;
             right: 1.5rem;
-            color: var(--accent-yellow);
+            color: var(--neon-yellow);
             font-size: 2.8rem;
             cursor: pointer;
             transition: all 0.3s;
-            text-shadow: 0 0 15px rgba(230, 0, 18, 0.5);
-        }
-
-        .holo-close:hover {
-            color: var(--nintendo-red);
-            transform: rotate(90deg) scale(1.2);
-        }
-
-        .modal-body {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            padding: 3rem;
-        }
-
-        .modal-image {
-            width: 100%;
-            height: 500px;
-            object-fit: contain;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .modal-info {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .modal-title {
-            font-size: 2.5rem;
-            color: var(--accent-yellow);
-            margin: 0;
-        }
-
-        .modal-description {
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-
-        .modal-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 15px;
-            border: 1px solid var(--nintendo-red);
-        }
-
-        footer {
-            margin-top: 8rem;
-            padding: 4rem;
-            background: linear-gradient(to top, var(--nintendo-red), transparent);
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
         }
 
         @keyframes gridScan {
@@ -287,23 +190,8 @@
         }
 
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5rem;
-                letter-spacing: 0.3rem;
-            }
-            
-            .game-list {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal-body {
-                grid-template-columns: 1fr;
-                padding: 2rem;
-            }
-            
-            .modal-image {
-                height: 300px;
-            }
+            header h1 { font-size: 2.5rem; }
+            .game-list { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -311,93 +199,24 @@
     <div class="cyber-grid"></div>
     
     <header>
-        <h1>Nintendo Switch  </h1>
+        <h1>Nintendo Switch</h1>
     </header>
 
     <main>
         <section class="game-list">
-            <div class="game-card">
-                <div class="game-image-container">
-                    <img src="images3/juego1.jpg" alt="The Legend of Zelda" class="game-image">
-                    <div class="game-info">
-                        <h3 class="game-title">The Legend of Zelda: Tears of the Kingdom</h3>
-                        <div class="game-details">
-                            <span>RPG</span>
-                            <span>⭐ 5.0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <div class="game-image-container">
-                    <img src="images3/juego2.jpg" alt="Super Mario Odyssey" class="game-image">
-                    <div class="game-info">
-                        <h3 class="game-title">Super Mario Odyssey</h3>
-                        <div class="game-details">
-                            <span>Aventura</span>
-                            <span>⭐ 4.9</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <div class="game-image-container">
-                    <img src="images3/juego3.jpg" alt="Animal Crossing" class="game-image">
-                    <div class="game-info">
-                        <h3 class="game-title">Animal Crossing: New Horizons</h3>
-                        <div class="game-details">
-                            <span>Simulación</span>
-                            <span>⭐ 4.8</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Juegos aquí -->
         </section>
     </main>
 
-    <!-- Modal Holográfico -->
     <div class="holo-modal" id="holoModal">
         <div class="holo-content">
             <span class="holo-close">&times;</span>
-            <div class="modal-body">
-                <img class="modal-image" src="" alt="Detalle del juego">
-                <div class="modal-info">
-                    <h2 class="modal-title">Título del Juego</h2>
-                    <p class="modal-description">Descripción detallada del juego con características especiales y detalles de la jugabilidad.</p>
-                    <div class="modal-features">
-                        <div class="feature-card">
-                            <h4>⭐ Calificación</h4>
-                            <p>5.0/5.0</p>
-                        </div>
-                        <div class="feature-card">
-                            <h4>🎮 Género</h4>
-                            <p>Aventura RPG</p>
-                        </div>
-                        <div class="feature-card">
-                            <h4>⏱️ Duración</h4>
-                            <p>60+ horas</p>
-                        </div>
-                        <div class="feature-card">
-                            <h4>👥 Jugadores</h4>
-                            <p>1-4</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Contenido del modal -->
         </div>
     </div>
 
-    <footer>
-        <p>© 2024 Nintendo Matrix - Magic in Every Pixel</p>
-    </footer>
-
     <script>
-        // Sistema de partículas interactivas
-        const particles = [];
-        const particleCount = 100;
-
+        // Sistema de partículas
         class Particle {
             constructor() {
                 this.element = document.createElement('div');
@@ -405,10 +224,9 @@
                     position: fixed;
                     width: 8px;
                     height: 8px;
-                    background: radial-gradient(${Math.random() > 0.5 ? 'var(--nintendo-red)' : 'var(--hologram-blue)'}, transparent);
+                    background: radial-gradient(${Math.random() > 0.5 ? 'var(--main-red)' : 'var(--hologram-blue)'}, transparent);
                     border-radius: 50%;
                     pointer-events: none;
-                    z-index: 1;
                 `;
                 document.body.appendChild(this.element);
                 this.reset();
@@ -417,66 +235,28 @@
             reset() {
                 this.x = Math.random() * window.innerWidth;
                 this.y = Math.random() * window.innerHeight;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
                 this.life = Math.random() * 5 + 2;
             }
 
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
                 this.life -= 0.01;
-
                 this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
                 this.element.style.opacity = this.life;
-
                 if (this.life <= 0) this.reset();
             }
         }
 
-        // Inicializar partículas
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-
-        // Animación de partículas
-        function animateParticles() {
+        const particles = Array.from({ length: 100 }, () => new Particle());
+        function animate() {
             particles.forEach(p => p.update());
-            requestAnimationFrame(animateParticles);
+            requestAnimationFrame(animate);
         }
-        animateParticles();
+        animate();
 
-        // Control del Modal Holográfico
+        // Control del Modal
         const modal = document.getElementById('holoModal');
-        const modalImage = document.querySelector('.modal-image');
-        const modalTitle = document.querySelector('.modal-title');
-        const modalDescription = document.querySelector('.modal-description');
-        const closeModal = document.querySelector('.holo-close');
-
-        document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const img = card.querySelector('img');
-                modal.style.display = 'flex';
-                modalImage.src = img.src;
-                modalTitle.textContent = img.alt;
-                document.body.style.overflow = 'hidden';
-            });
-        });
-
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-
-        // Efecto de seguimiento del mouse
-        document.addEventListener('mousemove', (e) => {
-            const x = e.clientX / window.innerWidth - 0.5;
-            const y = e.clientY / window.innerHeight - 0.5;
-            
-            document.querySelectorAll('.game-card').forEach(card => {
-                card.style.transform = `rotateY(${x * 15}deg) rotateX(${y * -10}deg) scale(1.05)`;
-            });
-        });
+        const closeBtn = document.querySelector('.holo-close');
+        closeBtn.addEventListener('click', () => modal.style.display = 'none');
     </script>
 </body>
 </html>
