@@ -54,10 +54,7 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: linear-gradient(45deg, 
-        transparent 45%,
-        var(--ps-neon) 50%,
-        transparent 55%);
+      background: linear-gradient(45deg, transparent 45%, var(--ps-neon) 50%, transparent 55%);
       animation: hologram 6s infinite linear;
       opacity: 0.1;
     }
@@ -76,15 +73,11 @@
     }
 
     .game-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
       padding: 2rem;
-      max-width: 1500px;
-      margin: 0 auto;
-      perspective: 2000px;
-      position: relative;
-      z-index: 1;
     }
 
     .game-card {
@@ -94,7 +87,8 @@
       transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
       cursor: pointer;
       overflow: hidden;
-      min-height: 400px;
+      width: 300px;
+      height: 300px;
       background: linear-gradient(45deg, #1a1a40, #0f0c29);
       border: 2px solid rgba(255, 255, 255, 0.1);
     }
@@ -119,21 +113,10 @@
       opacity: 0.6;
     }
 
-    .game-info {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 2rem;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-      opacity: 0;
-      transform: translateY(100%);
-      transition: all 0.5s;
-    }
-
-    .game-card:hover .game-info {
-      opacity: 1;
-      transform: translateY(0);
+    .game-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .holo-modal {
@@ -242,6 +225,12 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-10px); }
     }
+
+    @keyframes pulseText {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+      100% { opacity: 1; transform: scale(1); }
+    }
   </style>
 </head>
 <body>
@@ -249,22 +238,18 @@
   <header>
     <h1>PlayStation 4 - 5</h1>
   </header>
+
   <main>
     <section class="game-list">
-      <div class="game-card">
-        <div class="game-info">
-          <h3>Horizon Forbidden West</h3>
-          <p>Explora un mundo posapocalíptico</p>
-        </div>
+      <div style="text-align: center; font-size: 1.5rem; color: var(--ps-neon); margin-bottom: 1rem; letter-spacing: 1px; text-shadow: 0 0 10px var(--ps-neon); animation: pulseText 2s infinite;">
+        <i class="fas fa-mouse-pointer"></i> Presiona clic para ver catálogo
       </div>
       <div class="game-card" onclick="abrirCatalogo()">
-        <div class="game-info">
-          <h3>Ver Catálogo de Juegos</h3>
-          <p>Haz clic para ver el catálogo completo</p>
-        </div>
+        <img src="catalogo/Diapositiva1.png" alt="Vista previa del catálogo">
       </div>
     </section>
   </main>
+
   <div id="holoModal" class="holo-modal">
     <span class="holo-close">&times;</span>
     <div class="holo-content">
@@ -275,9 +260,11 @@
       </div>
     </div>
   </div>
+
   <footer>
     <p>PlayStation® Universe - Experiencia Next-Gen</p>
   </footer>
+
   <script>
     const modal = document.getElementById('holoModal');
     const closeBtn = document.querySelector('.holo-close');
@@ -293,26 +280,37 @@
       "catalogo/Diapositiva9.png"
     ];
     let indiceActual = 0;
+
     function moverCarrusel(direccion) {
       indiceActual += direccion;
       if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
       if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
       document.getElementById("carruselImagen").src = imagenesCatalogo[indiceActual];
     }
+
     function abrirCatalogo() {
       modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     }
+
     closeBtn.addEventListener('click', () => {
       modal.style.display = 'none';
       document.body.style.overflow = 'auto';
     });
+
     window.addEventListener('click', (e) => {
       if (e.target === modal) {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
       }
     });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
   </script>
 </body>
+
 </html>
