@@ -1,262 +1,248 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nintendo Cyberverse</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --main-red: #e60012;
-            --neon-yellow: #ffdf6c;
-            --hologram-blue: #00f7ff;
-            --bg-dark: #0a081f;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nintendo Cyberverse</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --main-red: #e60012;
+      --neon-yellow: #ffdf6c;
+      --hologram-blue: #00f7ff;
+      --bg-dark: #0a081f;
+    }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg-dark) 100%);
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg-dark) 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        .cyber-grid {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background-image: 
-                linear-gradient(rgba(230, 0, 18, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(230, 0, 18, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-            z-index: 0;
-            animation: gridScan 10s linear infinite;
-        }
+    .cyber-grid {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      background-image: 
+        linear-gradient(rgba(230, 0, 18, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(230, 0, 18, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+      animation: gridScan 10s linear infinite;
+    }
 
-        header {
-            position: relative;
-            padding: 6rem 0;
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-            margin-bottom: 5rem;
-            overflow: hidden;
-            z-index: 1;
-        }
+    header {
+      position: relative;
+      padding: 6rem 0;
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+      margin-bottom: 5rem;
+      overflow: hidden;
+      z-index: 1;
+    }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, var(--main-red), transparent 50%, var(--hologram-blue));
-            opacity: 0.1;
-            animation: hologram 8s infinite linear;
-        }
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--main-red), transparent 50%, var(--hologram-blue));
+      opacity: 0.1;
+      animation: hologram 8s infinite linear;
+    }
 
-        header h1 {
-            font-size: 4.5rem;
-            text-align: center;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 0.8rem;
-            background: linear-gradient(45deg, var(--neon-yellow), #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 40px rgba(230, 0, 18, 0.5);
-            animation: titleFloat 3s ease-in-out infinite;
-        }
+    header h1 {
+      font-size: 4.5rem;
+      text-align: center;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.8rem;
+      background: linear-gradient(45deg, var(--neon-yellow), #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px rgba(230, 0, 18, 0.5);
+      animation: titleFloat 3s ease-in-out infinite;
+    }
 
-        .game-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 4rem;
-            padding: 2rem;
-            max-width: 1600px;
-            margin: 0 auto;
-            perspective: 2000px;
-            position: relative;
-            z-index: 1;
-        }
+    .game-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem;
+      z-index: 1;
+    }
 
-        .game-card {
-            position: relative;
-            border-radius: 25px;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            cursor: pointer;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-            background: linear-gradient(45deg, #2c2c4a 0%, #1a1a2e 100%);
-        }
+    .game-card {
+      border-radius: 20px;
+      overflow: hidden;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(45deg, #2c2c4a 0%, #1a1a2e 100%);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
 
-        .game-card:hover {
-            transform: rotateY(10deg) rotateX(5deg) translateZ(30px) scale(1.05);
-            box-shadow: 0 25px 50px rgba(230, 0, 18, 0.3);
-        }
+    .game-card:hover {
+      transform: scale(1.05);
+    }
 
-        .game-image-container {
-            position: relative;
-            width: 100%;
-            padding-top: 150%;
-            overflow: hidden;
-            border-radius: 25px;
-        }
+    .game-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        .game-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform-origin: center;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
+    .game-guide {
+      text-align: center;
+      font-size: 1.5rem;
+      color: var(--neon-yellow);
+      text-shadow: 0 0 15px var(--neon-yellow);
+      animation: pulseText 2s infinite;
+    }
 
-        .game-card:hover .game-image {
-            transform: scale(1.15) rotateZ(2deg);
-            filter: brightness(1.2) contrast(1.1);
-        }
+    .holo-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.98);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
 
-        .game-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 2rem;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
-            opacity: 0;
-            transform: translateY(100%);
-            transition: all 0.4s;
-        }
+    .holo-content {
+      position: relative;
+      width: 90%;
+      height: 90vh;
+      max-width: 1400px;
+      background: rgba(26, 26, 46, 0.95);
+      border-radius: 30px;
+      border: 3px solid var(--main-red);
+      box-shadow: 0 0 60px rgba(230, 0, 18, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .game-card:hover .game-info {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .holo-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      color: var(--neon-yellow);
+      font-size: 2.8rem;
+      cursor: pointer;
+      z-index: 1001;
+    }
 
-        .holo-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.98);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
+    .carrusel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2.5rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: var(--neon-yellow);
+      cursor: pointer;
+      padding: 1rem;
+      border-radius: 50%;
+      z-index: 10;
+      transition: background 0.3s;
+    }
 
-        .holo-content {
-            position: relative;
-            width: 80%;
-            max-width: 1200px;
-            background: rgba(26, 26, 46, 0.95);
-            border-radius: 30px;
-            border: 2px solid var(--main-red);
-            box-shadow: 0 0 60px rgba(230, 0, 18, 0.4);
-            overflow: hidden;
-        }
+    .carrusel-btn.left { left: 10px; }
+    .carrusel-btn.right { right: 10px; }
 
-        .holo-close {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            color: var(--neon-yellow);
-            font-size: 2.8rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    .carrusel-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
 
-        @keyframes gridScan {
-            0% { background-position: 0 0; }
-            100% { background-position: 40px 40px; }
-        }
+    @keyframes pulseText {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+      100% { opacity: 1; transform: scale(1); }
+    }
 
-        @keyframes hologram {
-            0% { transform: rotate(0deg) scale(2); }
-            100% { transform: rotate(360deg) scale(2); }
-        }
+    @keyframes gridScan {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
 
-        @keyframes titleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
+    @keyframes hologram {
+      0% { transform: rotate(0deg) scale(2); }
+      100% { transform: rotate(360deg) scale(2); }
+    }
 
-        @media (max-width: 768px) {
-            header h1 { font-size: 2.5rem; }
-            .game-list { grid-template-columns: 1fr; }
-        }
-    </style>
+    @keyframes titleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+  </style>
 </head>
 <body>
-    <div class="cyber-grid"></div>
-    
-    <header>
-        <h1>Nintendo Switch</h1>
-    </header>
+  <div class="cyber-grid"></div>
+  <header>
+    <h1>Nintendo Switch</h1>
+  </header>
 
-    <main>
-        <section class="game-list">
-            <!-- Juegos aquí -->
-        </section>
-    </main>
+  <main>
+    <section class="game-list">
+      <div class="game-guide"><i class="fas fa-mouse-pointer"></i> Haz clic para ver el catálogo</div>
+      <div class="game-card" onclick="abrirCatalogo()">
+        <img src="catalogo3/Diapositiva1.png" alt="Vista previa Nintendo">
+      </div>
+    </section>
+  </main>
 
-    <div class="holo-modal" id="holoModal">
-        <div class="holo-content">
-            <span class="holo-close">&times;</span>
-            <!-- Contenido del modal -->
-        </div>
+  <div class="holo-modal" id="holoModal">
+    <div class="holo-content">
+      <span class="holo-close" onclick="cerrarCatalogo()">&times;</span>
+      <button class="carrusel-btn left" onclick="moverCarrusel(-1)">&#10094;</button>
+      <img id="carruselImagen" src="catalogo3/Diapositiva1.png" alt="Catálogo Nintendo" style="max-height: 90vh; max-width: 100%; border-radius: 20px;">
+      <button class="carrusel-btn right" onclick="moverCarrusel(1)">&#10095;</button>
     </div>
+  </div>
 
-    <script>
-        // Sistema de partículas
-        class Particle {
-            constructor() {
-                this.element = document.createElement('div');
-                this.element.style.cssText = `
-                    position: fixed;
-                    width: 8px;
-                    height: 8px;
-                    background: radial-gradient(${Math.random() > 0.5 ? 'var(--main-red)' : 'var(--hologram-blue)'}, transparent);
-                    border-radius: 50%;
-                    pointer-events: none;
-                `;
-                document.body.appendChild(this.element);
-                this.reset();
-            }
+  <script>
+    const modal = document.getElementById('holoModal');
+    const imagenesCatalogo = [
+      "catalogo3/Diapositiva1.png",
+      "catalogo3/Diapositiva2.png",
+      "catalogo3/Diapositiva3.png",
+      "catalogo3/Diapositiva4.png"
+    ];
+    let indiceActual = 0;
 
-            reset() {
-                this.x = Math.random() * window.innerWidth;
-                this.y = Math.random() * window.innerHeight;
-                this.life = Math.random() * 5 + 2;
-            }
+    function abrirCatalogo() {
+      modal.style.display = 'flex';
+      document.getElementById("carruselImagen").src = imagenesCatalogo[indiceActual];
+    }
 
-            update() {
-                this.life -= 0.01;
-                this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
-                this.element.style.opacity = this.life;
-                if (this.life <= 0) this.reset();
-            }
-        }
+    function cerrarCatalogo() {
+      modal.style.display = 'none';
+    }
 
-        const particles = Array.from({ length: 100 }, () => new Particle());
-        function animate() {
-            particles.forEach(p => p.update());
-            requestAnimationFrame(animate);
-        }
-        animate();
+    function moverCarrusel(direccion) {
+      indiceActual += direccion;
+      if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
+      if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
+      document.getElementById("carruselImagen").src = imagenesCatalogo[indiceActual];
+    }
 
-        // Control del Modal
-        const modal = document.getElementById('holoModal');
-        const closeBtn = document.querySelector('.holo-close');
-        closeBtn.addEventListener('click', () => modal.style.display = 'none');
-    </script>
+    window.addEventListener('click', e => {
+      if (e.target === modal) cerrarCatalogo();
+    });
+  </script>
 </body>
 </html>
