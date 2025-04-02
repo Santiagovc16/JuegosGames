@@ -1,293 +1,318 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayStation </title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --ps-blue: #0061f2;
-            --ps-neon: #00f7ff;
-            --hologram-1: rgba(0, 97, 242, 0.4);
-            --hologram-2: rgba(0, 247, 255, 0.4);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlayStation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at center, #0f0c29 0%, #1a1a40 100%);
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+  <style>
+    :root {
+      --ps-blue: #0061f2;
+      --ps-neon: #00f7ff;
+      --hologram-1: rgba(0, 97, 242, 0.4);
+      --hologram-2: rgba(0, 247, 255, 0.4);
+    }
 
-        .cyber-grid {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background-image: 
-                linear-gradient(var(--hologram-1) 1px, transparent 1px),
-                linear-gradient(90deg, var(--hologram-1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            pointer-events: none;
-            z-index: 0;
-            animation: gridScan 8s linear infinite;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #0f0c29 0%, #1a1a40 100%);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        header {
-            position: relative;
-            padding: 4rem 0;
-            background: linear-gradient(45deg, var(--ps-blue), transparent);
-            clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-            margin-bottom: 5rem;
-            overflow: hidden;
-            z-index: 1;
-        }
+    .cyber-grid {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      background-image: 
+        linear-gradient(var(--hologram-1) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hologram-1) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+      z-index: 0;
+      animation: gridScan 8s linear infinite;
+    }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, 
-                transparent 45%,
-                var(--ps-neon) 50%,
-                transparent 55%);
-            animation: hologram 6s infinite linear;
-            opacity: 0.1;
-        }
+    header {
+      position: relative;
+      padding: 4rem 0;
+      background: linear-gradient(45deg, var(--ps-blue), transparent);
+      clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+      margin-bottom: 5rem;
+      overflow: hidden;
+      z-index: 1;
+    }
 
-        header h1 {
-            font-size: 4rem;
-            text-align: center;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5rem;
-            background: linear-gradient(45deg, #fff, var(--ps-neon));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
-            animation: titleFloat 3s ease-in-out infinite;
-        }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, 
+        transparent 45%,
+        var(--ps-neon) 50%,
+        transparent 55%);
+      animation: hologram 6s infinite linear;
+      opacity: 0.1;
+    }
 
-        .game-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            padding: 2rem;
-            max-width: 1500px;
-            margin: 0 auto;
-            perspective: 2000px;
-            position: relative;
-            z-index: 1;
-        }
+    header h1 {
+      font-size: 4rem;
+      text-align: center;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5rem;
+      background: linear-gradient(45deg, #fff, var(--ps-neon));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+      animation: titleFloat 3s ease-in-out infinite;
+    }
 
-        .game-card {
-            position: relative;
-            border-radius: 15px;
-            transform-style: preserve-3d;
-            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-            cursor: pointer;
-            overflow: hidden;
-            min-height: 400px;
-            background: linear-gradient(45deg, #1a1a40, #0f0c29);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-        }
+    .game-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      padding: 2rem;
+      max-width: 1500px;
+      margin: 0 auto;
+      perspective: 2000px;
+      position: relative;
+      z-index: 1;
+    }
 
-        .game-card:hover {
-            transform: rotateY(15deg) rotateX(10deg) translateZ(50px);
-        }
+    .game-card {
+      position: relative;
+      border-radius: 15px;
+      transform-style: preserve-3d;
+      transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+      cursor: pointer;
+      overflow: hidden;
+      min-height: 400px;
+      background: linear-gradient(45deg, #1a1a40, #0f0c29);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
 
-        .game-card::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(45deg, var(--ps-blue), var(--ps-neon));
-            border-radius: 17px;
-            filter: blur(20px);
-            opacity: 0;
-            transition: opacity 0.5s;
-            z-index: -1;
-        }
+    .game-card:hover {
+      transform: rotateY(15deg) rotateX(10deg) translateZ(50px);
+    }
 
-        .game-card:hover::before {
-            opacity: 0.6;
-        }
+    .game-card::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(45deg, var(--ps-blue), var(--ps-neon));
+      border-radius: 17px;
+      filter: blur(20px);
+      opacity: 0;
+      transition: opacity 0.5s;
+      z-index: -1;
+    }
 
-        .game-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 2rem;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-            opacity: 0;
-            transform: translateY(100%);
-            transition: all 0.5s;
-        }
+    .game-card:hover::before {
+      opacity: 0.6;
+    }
 
-        .game-card:hover .game-info {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .game-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+      opacity: 0;
+      transform: translateY(100%);
+      transition: all 0.5s;
+    }
 
-        .holo-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+    .game-card:hover .game-info {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        .holo-content {
-            position: relative;
-            width: 80%;
-            max-width: 1200px;
-            background: rgba(16, 16, 48, 0.9);
-            border-radius: 20px;
-            border: 2px solid var(--ps-blue);
-            box-shadow: 0 0 50px rgba(0, 97, 242, 0.5);
-            overflow: hidden;
-        }
+    .holo-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
 
-        .holo-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            color: var(--ps-neon);
-            font-size: 2.5rem;
-            cursor: pointer;
-            transition: color 0.3s;
-            z-index: 1001;
-        }
+    .holo-content {
+      position: relative;
+      width: 95%;
+      height: 95vh;
+      max-width: 1600px;
+      background: rgba(16, 16, 48, 0.95);
+      border-radius: 20px;
+      border: 2px solid var(--ps-blue);
+      box-shadow: 0 0 50px rgba(0, 97, 242, 0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .holo-close:hover {
-            color: #ff5555;
-        }
+    .carrusel-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: black;
+    }
 
-        footer {
-            margin-top: 8rem;
-            padding: 3rem;
-            background: linear-gradient(to top, var(--ps-blue), transparent);
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
+    .carrusel-container img {
+      width: auto;
+      height: 90vh;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+      transition: all 0.5s;
+    }
 
-        @keyframes gridScan {
-            0% { background-position: 0 0; }
-            100% { background-position: 30px 30px; }
-        }
+    .carrusel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2.5rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: var(--ps-neon);
+      cursor: pointer;
+      padding: 1rem;
+      border-radius: 50%;
+      z-index: 10;
+      transition: background 0.3s;
+    }
 
-        @keyframes hologram {
-            0% { transform: rotate(0deg) translateX(-50%); }
-            100% { transform: rotate(360deg) translateX(50%); }
-        }
+    .carrusel-btn:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
 
-        @keyframes titleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+    .carrusel-btn.left { left: 10px; }
+    .carrusel-btn.right { right: 10px; }
 
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5rem;
-            }
-            
-            .game-list {
-                grid-template-columns: 1fr;
-            }
-            
-            .game-card {
-                min-height: 300px;
-            }
-        }
-    </style>
+    .holo-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: var(--ps-neon);
+      font-size: 2.5rem;
+      cursor: pointer;
+      transition: color 0.3s;
+      z-index: 1001;
+    }
+
+    .holo-close:hover {
+      color: #ff5555;
+    }
+
+    footer {
+      margin-top: 8rem;
+      padding: 3rem;
+      background: linear-gradient(to top, var(--ps-blue), transparent);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes gridScan {
+      0% { background-position: 0 0; }
+      100% { background-position: 30px 30px; }
+    }
+
+    @keyframes hologram {
+      0% { transform: rotate(0deg) translateX(-50%); }
+      100% { transform: rotate(360deg) translateX(50%); }
+    }
+
+    @keyframes titleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
 </head>
 <body>
-    <div class="cyber-grid"></div>
-    
-    <header>
-        <h1>PlayStation 4  - 5 </h1>
-    </header>
-
-    <main>
-        <section class="game-list">
-            <div class="game-card">
-                <div class="game-info">
-                    <h3>Horizon Forbidden West</h3>
-                    <p>Explora un mundo posapocalíptico</p>
-                </div>
-            </div>
-            
-            <!-- Agrega más juegos aquí -->
-        </section>
-    </main>
-
-    <div id="holoModal" class="holo-modal">
-        <span class="holo-close">&times;</span>
-        <div class="holo-content">
-            <!-- Espacio reservado para contenido futuro -->
+  <div class="cyber-grid"></div>
+  <header>
+    <h1>PlayStation 4 - 5</h1>
+  </header>
+  <main>
+    <section class="game-list">
+      <div class="game-card">
+        <div class="game-info">
+          <h3>Horizon Forbidden West</h3>
+          <p>Explora un mundo posapocalíptico</p>
         </div>
+      </div>
+      <div class="game-card" onclick="abrirCatalogo()">
+        <div class="game-info">
+          <h3>Ver Catálogo de Juegos</h3>
+          <p>Haz clic para ver el catálogo completo</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="holoModal" class="holo-modal">
+    <span class="holo-close">&times;</span>
+    <div class="holo-content">
+      <div class="carrusel-container">
+        <button class="carrusel-btn left" onclick="moverCarrusel(-1)">&#10094;</button>
+        <img id="carruselImagen" src="catalogo/Diapositiva1.png" alt="Catálogo" />
+        <button class="carrusel-btn right" onclick="moverCarrusel(1)">&#10095;</button>
+      </div>
     </div>
-
-    <footer>
-        <p>PlayStation® Universe - Experiencia Next-Gen</p>
-    </footer>
-
-    <script>
-        // Control del Modal
-        const modal = document.getElementById('holoModal');
-        const closeBtn = document.querySelector('.holo-close');
-
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        // Optimización de Partículas
-        let particleCount = 0;
-        const maxParticles = 50;
-
-        document.addEventListener('mousemove', (e) => {
-            if (particleCount < maxParticles) {
-                const particle = document.createElement('div');
-                particle.style.cssText = `
-                    position: fixed;
-                    width: 8px;
-                    height: 8px;
-                    background: radial-gradient(${Math.random() > 0.5 ? 'var(--ps-blue)' : 'var(--ps-neon)'}, transparent);
-                    border-radius: 50%;
-                    pointer-events: none;
-                    left: ${e.clientX}px;
-                    top: ${e.clientY}px;
-                    animation: particle 1s forwards;
-                `;
-                document.body.appendChild(particle);
-                particleCount++;
-
-                setTimeout(() => {
-                    particle.remove();
-                    particleCount--;
-                }, 1000);
-            }
-        });
-    </script>
+  </div>
+  <footer>
+    <p>PlayStation® Universe - Experiencia Next-Gen</p>
+  </footer>
+  <script>
+    const modal = document.getElementById('holoModal');
+    const closeBtn = document.querySelector('.holo-close');
+    const imagenesCatalogo = [
+      "catalogo/Diapositiva1.png",
+      "catalogo/Diapositiva2.png",
+      "catalogo/Diapositiva3.png",
+      "catalogo/Diapositiva4.png",
+      "catalogo/Diapositiva5.png",
+      "catalogo/Diapositiva6.png",
+      "catalogo/Diapositiva7.png",
+      "catalogo/Diapositiva8.png",
+      "catalogo/Diapositiva9.png"
+    ];
+    let indiceActual = 0;
+    function moverCarrusel(direccion) {
+      indiceActual += direccion;
+      if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
+      if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
+      document.getElementById("carruselImagen").src = imagenesCatalogo[indiceActual];
+    }
+    function abrirCatalogo() {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+  </script>
 </body>
 </html>
