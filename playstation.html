@@ -232,10 +232,41 @@
       50% { opacity: 0.7; transform: scale(1.05); }
       100% { opacity: 1; transform: scale(1); }
     }
+
+    .ps-controls {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      display: flex;
+      gap: 1rem;
+      z-index: 1001;
+    }
+
+    .ps-controls button {
+      background: rgba(0, 247, 255, 0.1);
+      border: 2px solid var(--ps-neon);
+      border-radius: 50%;
+      padding: 1rem;
+      font-size: 1.5rem;
+      color: var(--ps-neon);
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .ps-controls button:hover {
+      background: rgba(0, 247, 255, 0.3);
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
   <div class="cyber-grid"></div>
+  <audio id="bgMusic" loop>
+    <source src="assets/audio/playstation-theme.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
   <header>
     <h1>PlayStation 4 - 5</h1>
   </header>
@@ -259,6 +290,14 @@
         </a>
       </div>
     </section>
+    <div class="ps-controls">
+      <button class="audio-btn" id="audioBtn">
+        <i class="fas fa-music"></i>
+      </button>
+      <button class="star-btn">
+        <i class="fas fa-star"></i>
+      </button>
+    </div>
   </main>
 
   <div id="holoModal" class="holo-modal">
@@ -277,6 +316,35 @@
   </footer>
 
   <script>
+    let bgMusic;
+    let audioActivo = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      bgMusic = document.getElementById('bgMusic');
+      document.body.addEventListener('pointerdown', iniciarMusica, { once: true });
+    });
+
+    function iniciarMusica() {
+      console.log("Intentando reproducir música...");
+      if (!audioActivo) {
+        bgMusic.volume = 0.4;
+        bgMusic.play().catch(e => console.warn("Reproducción bloqueada:", e));
+        audioActivo = true;
+      }
+    }
+
+    const audioBtn = document.getElementById('audioBtn');
+    audioBtn.addEventListener('click', () => {
+      if (audioActivo) {
+        bgMusic.pause();
+        audioBtn.innerHTML = '<i class="fas fa-music"></i>';
+      } else {
+        bgMusic.play();
+        audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      }
+      audioActivo = !audioActivo;
+    });
+
     const modal = document.getElementById('holoModal');
     const closeBtn = document.querySelector('.holo-close');
     const imagenesCatalogo = [
