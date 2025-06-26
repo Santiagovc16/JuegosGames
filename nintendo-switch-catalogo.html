@@ -422,6 +422,19 @@
     const bgMusic = document.getElementById('bgMusic');
     let audioActivo = false;
 
+    // Reproducir música tras la primera interacción del usuario
+    function iniciarMusica() {
+      if (!audioActivo) {
+        bgMusic.volume = 0.5;
+        bgMusic.play().then(() => {
+          audioActivo = true;
+          audioBtn.innerHTML = '<i class="fas fa-pause" style="color: #000;"></i>';
+        }).catch(e => console.warn('Reproducción bloqueada:', e));
+        window.removeEventListener('click', iniciarMusica);
+      }
+    }
+    window.addEventListener('click', iniciarMusica);
+
     audioBtn.addEventListener('click', () => {
       if (audioActivo) {
         bgMusic.pause();
