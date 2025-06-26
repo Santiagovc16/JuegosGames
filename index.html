@@ -290,15 +290,15 @@
 
     <main>
         <div class="button-container">
-            <a href="#" class="catalog-btn ps-btn">
+            <a href="playstation.html" class="catalog-btn ps-btn">
                 <i class="fab fa-playstation"></i>
                 <span>PlayStation 5 - 4</span>
             </a>
-            <a href="#" class="catalog-btn xbox-btn">
+            <a href="xbox-catalogo.html" class="catalog-btn xbox-btn">
                 <i class="fab fa-xbox"></i>
                 <span>Xbox Series X - S</span>
             </a>
-            <a href="#" class="catalog-btn nintendo-btn">
+            <a href="nintendo-switch-catalogo.html" class="catalog-btn nintendo-btn">
                 <i class="fas fa-gamepad"></i>
                 <span>Nintendo Switch</span>
             </a>
@@ -338,29 +338,32 @@
                 icon.style.color = 'white';
             });
 
-            // Efecto holográfico al hacer clic
+            // Efecto holográfico solo si se mantiene pulsada la tecla Alt
             btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const overlay = document.querySelector('.hologram-overlay');
-                const img = document.getElementById('hologram-img');
-                const title = document.getElementById('hologram-title');
-                const desc = document.getElementById('hologram-desc');
+                if (e.altKey) { // Si se mantiene Alt pulsada al hacer clic
+                    e.preventDefault(); // Solo aquí previene la navegación
+                    const overlay = document.querySelector('.hologram-overlay');
+                    const img = document.getElementById('hologram-img');
+                    const title = document.getElementById('hologram-title');
+                    const desc = document.getElementById('hologram-desc');
 
-                if (btn.classList.contains('ps-btn')) {
-                    img.src = 'https://cdn-icons-png.flaticon.com/512/5962/5962385.png';
-                    title.textContent = 'PlayStation 5';
-                    desc.textContent = 'La nueva generación de consolas Sony. ¡Experimenta gráficos 4K, velocidad de carga ultrarrápida y una nueva era de juegos!';
-                } else if (btn.classList.contains('xbox-btn')) {
-                    img.src = 'https://cdn-icons-png.flaticon.com/512/732/732221.png';
-                    title.textContent = 'Xbox Series X';
-                    desc.textContent = 'La consola más potente de Microsoft. Disfruta de juegos en 4K, HDR y una experiencia de juego increíblemente rápida.';
-                } else if (btn.classList.contains('nintendo-btn')) {
-                    img.src = 'https://cdn-icons-png.flaticon.com/512/2580/2580996.png';
-                    title.textContent = 'Nintendo Switch';
-                    desc.textContent = 'Juega donde quieras, como quieras. Combina la potencia de una consola de sobremesa con la portabilidad de una consola portátil.';
+                    if (btn.classList.contains('ps-btn')) {
+                        img.src = 'https://cdn-icons-png.flaticon.com/512/5962/5962385.png';
+                        title.textContent = 'PlayStation 5';
+                        desc.textContent = 'La nueva generación de consolas Sony. ¡Experimenta gráficos 4K, velocidad de carga ultrarrápida y una nueva era de juegos!';
+                    } else if (btn.classList.contains('xbox-btn')) {
+                        img.src = 'https://cdn-icons-png.flaticon.com/512/732/732221.png';
+                        title.textContent = 'Xbox Series X';
+                        desc.textContent = 'La consola más potente de Microsoft. Disfruta de juegos en 4K, HDR y una experiencia de juego increíblemente rápida.';
+                    } else if (btn.classList.contains('nintendo-btn')) {
+                        img.src = 'https://cdn-icons-png.flaticon.com/512/2580/2580996.png';
+                        title.textContent = 'Nintendo Switch';
+                        desc.textContent = 'Juega donde quieras, como quieras. Combina la potencia de una consola de sobremesa con la portabilidad de una consola portátil.';
+                    }
+
+                    overlay.classList.add('active');
                 }
-
-                overlay.classList.add('active');
+                // Si no se pulsa Alt, la navegación funciona normalmente
             });
         });
 
@@ -386,6 +389,12 @@
         });
         */
         // Si no quieres usar particles.js, puedes eliminar el div #particles-js y su estilo
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelector('.hologram-overlay').classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
