@@ -282,6 +282,9 @@
 </head>
 <body>
     <div class="cyber-grid"></div>
+    <audio id="gameRadio" loop autoplay controls style="position: fixed; left: -9999px; top: -9999px;">
+      <source src="https://stream.nightride.fm/nightride.mp3" type="audio/mpeg">
+    </audio>
     <div id="particles-js"></div>
     
     <header>
@@ -302,6 +305,11 @@
                 <i class="fas fa-gamepad"></i>
                 <span>Nintendo Switch</span>
             </a>
+        </div>
+        <div style="position: fixed; bottom: 2rem; left: 2rem; z-index: 1001;">
+          <button id="toggleRadioBtn" style="background: rgba(255,255,255,0.1); border: 2px solid white; color: white; font-size: 1.2rem; border-radius: 10px; padding: 0.5rem 1rem; cursor: pointer;">
+            🔊
+          </button>
         </div>
     </main>
 
@@ -394,6 +402,39 @@
             if (e.key === 'Escape') {
                 document.querySelector('.hologram-overlay').classList.remove('active');
             }
+        });
+
+        // Iniciar la emisora de videojuegos y botón de mute (bloque robusto)
+        window.addEventListener('DOMContentLoaded', () => {
+            const radio = document.getElementById('gameRadio');
+            const toggleBtn = document.getElementById('toggleRadioBtn');
+
+            const iniciar = () => {
+                if (!radio) return;
+                radio.volume = 0.6;
+
+                if (radio.readyState >= 2) {
+                    radio.play().then(() => {
+                        console.log("🎧 Radio en reproducción");
+                    }).catch(err => console.warn("❌ Error al reproducir:", err));
+                } else {
+                    radio.addEventListener('canplay', () => {
+                        radio.play().then(() => {
+                            console.log("🎧 Radio comenzó tras 'canplay'");
+                        }).catch(err => console.warn("❌ Error tras canplay:", err));
+                    }, { once: true });
+                }
+
+                window.removeEventListener('pointerdown', iniciar);
+            };
+
+            window.addEventListener('pointerdown', iniciar);
+
+            // Botón de mute
+            toggleBtn.addEventListener('click', () => {
+                radio.muted = !radio.muted;
+                toggleBtn.textContent = radio.muted ? '🔇' : '🔊';
+            });
         });
     </script>
 </body>
