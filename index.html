@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next-Gen Consolas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --ps-color: #0f32ce;
@@ -34,6 +35,14 @@
             pointer-events: none;
             z-index: 0;
             animation: gridScan 8s linear infinite;
+        }
+
+        /* Efecto de partículas */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
 
         header {
@@ -184,25 +193,96 @@
             50% { transform: translateY(-10px); }
         }
 
+        /* Estilos para el efecto holográfico */
+        .hologram-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        .hologram-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .hologram {
+            width: 80%;
+            max-width: 600px;
+            height: 70vh;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.2));
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: hologramFloat 4s ease-in-out infinite;
+        }
+        .hologram img {
+            max-width: 60%;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.7));
+        }
+        .hologram h2 {
+            font-size: 2.5rem;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+        .hologram p {
+            font-size: 1.2rem;
+            max-width: 80%;
+            text-align: center;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+        }
+        .hologram-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+        @keyframes hologramFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2.5rem;
             }
-            
             .button-container {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
-            
             .catalog-btn {
                 font-size: 1.6rem;
                 padding: 2rem;
+            }
+            .hologram {
+                width: 90%;
+                height: 60vh;
             }
         }
     </style>
 </head>
 <body>
     <div class="cyber-grid"></div>
+    <div id="particles-js"></div>
     
     <header>
         <h1>Next-Gen Consolas</h1>
@@ -210,15 +290,15 @@
 
     <main>
         <div class="button-container">
-            <a href="playstation.html" class="catalog-btn ps-btn">
+            <a href="#" class="catalog-btn ps-btn">
                 <i class="fab fa-playstation"></i>
                 <span>PlayStation 5 - 4</span>
             </a>
-            <a href="xbox-catalogo.html" class="catalog-btn xbox-btn">
+            <a href="#" class="catalog-btn xbox-btn">
                 <i class="fab fa-xbox"></i>
                 <span>Xbox Series X - S</span>
             </a>
-            <a href="nintendo-switch-catalogo.html" class="catalog-btn nintendo-btn">
+            <a href="#" class="catalog-btn nintendo-btn">
                 <i class="fas fa-gamepad"></i>
                 <span>Nintendo Switch</span>
             </a>
@@ -229,10 +309,20 @@
         <p>© 2024 Next-Gen Universe - Todos los derechos reservados</p>
     </footer>
 
+    <!-- Overlay holográfico -->
+    <div class="hologram-overlay">
+        <button class="hologram-close"><i class="fas fa-times"></i></button>
+        <div class="hologram">
+            <img id="hologram-img" src="https://cdn-icons-png.flaticon.com/512/5962/5962385.png" alt="Consola">
+            <h2 id="hologram-title">PlayStation 5</h2>
+            <p id="hologram-desc">La nueva generación de consolas Sony. ¡Experimenta gráficos 4K, velocidad de carga ultrarrápida y una nueva era de juegos!</p>
+        </div>
+    </div>
+
     <script>
-        // Cambia el color del ícono al hacer hover en cada botón
+        // Cambia el color del ícono al hacer hover
         document.querySelectorAll('.catalog-btn').forEach(btn => {
-            const icon = btn.querySelector('i'); // Selecciona el ícono dentro del botón
+            const icon = btn.querySelector('i');
             
             btn.addEventListener('mouseenter', () => {
                 if (btn.classList.contains('ps-btn')) {
@@ -245,9 +335,57 @@
             });
 
             btn.addEventListener('mouseleave', () => {
-                icon.style.color = 'white'; // Restablece el color a blanco
+                icon.style.color = 'white';
+            });
+
+            // Efecto holográfico al hacer clic
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const overlay = document.querySelector('.hologram-overlay');
+                const img = document.getElementById('hologram-img');
+                const title = document.getElementById('hologram-title');
+                const desc = document.getElementById('hologram-desc');
+
+                if (btn.classList.contains('ps-btn')) {
+                    img.src = 'https://cdn-icons-png.flaticon.com/512/5962/5962385.png';
+                    title.textContent = 'PlayStation 5';
+                    desc.textContent = 'La nueva generación de consolas Sony. ¡Experimenta gráficos 4K, velocidad de carga ultrarrápida y una nueva era de juegos!';
+                } else if (btn.classList.contains('xbox-btn')) {
+                    img.src = 'https://cdn-icons-png.flaticon.com/512/732/732221.png';
+                    title.textContent = 'Xbox Series X';
+                    desc.textContent = 'La consola más potente de Microsoft. Disfruta de juegos en 4K, HDR y una experiencia de juego increíblemente rápida.';
+                } else if (btn.classList.contains('nintendo-btn')) {
+                    img.src = 'https://cdn-icons-png.flaticon.com/512/2580/2580996.png';
+                    title.textContent = 'Nintendo Switch';
+                    desc.textContent = 'Juega donde quieras, como quieras. Combina la potencia de una consola de sobremesa con la portabilidad de una consola portátil.';
+                }
+
+                overlay.classList.add('active');
             });
         });
+
+        // Cerrar overlay
+        document.querySelector('.hologram-close').addEventListener('click', () => {
+            document.querySelector('.hologram-overlay').classList.remove('active');
+        });
+
+        // Efecto de partículas (requiere la librería particles.js)
+        // Puedes agregar el script: <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        // y luego la configuración (ejemplo en comentario):
+        /*
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+            }
+        });
+        */
+        // Si no quieres usar particles.js, puedes eliminar el div #particles-js y su estilo
     </script>
 </body>
 </html>
