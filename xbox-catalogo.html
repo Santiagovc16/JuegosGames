@@ -192,10 +192,41 @@
       header h1 { font-size: 2.5rem; }
       .game-card { width: 90vw; height: 90vw; }
     }
+    .xbox-controls {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      display: flex;
+      gap: 1rem;
+      z-index: 1001;
+    }
+
+    .xbox-controls button {
+      background: rgba(0, 255, 100, 0.1);
+      border: 2px solid var(--neon-green);
+      border-radius: 50%;
+      padding: 1rem;
+      font-size: 1.5rem;
+      color: var(--neon-green);
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 10px rgba(0, 255, 100, 0.3);
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .xbox-controls button:hover {
+      background: rgba(0, 255, 100, 0.3);
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
   <div class="cyber-grid"></div>
+
+  <audio id="bgMusic" loop>
+    <source src="assets/audio/halo2-theme.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
 
   <header>
     <h1>Xbox Series X </h1>
@@ -209,6 +240,14 @@
       <img src="catalogo2/Diapositiva1.png" alt="Vista previa catálogo Xbox">
     </div>
   </main>
+  <div class="xbox-controls">
+    <button class="audio-btn" id="audioBtn">
+      <i class="fas fa-music"></i>
+    </button>
+    <button class="star-btn">
+      <i class="fas fa-star"></i>
+    </button>
+  </div>
 
   <div class="holo-modal" id="holoModal">
     <div class="holo-content">
@@ -225,6 +264,15 @@
   </footer>
 
   <script>
+    let bgMusic;
+    let audioActivo = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      bgMusic = document.getElementById('bgMusic');
+      // Iniciar la música al tocar cualquier parte del cuerpo del documento
+      document.body.addEventListener('pointerdown', iniciarMusica, { once: true });
+    });
+
     const modal = document.getElementById('holoModal');
     const imagenesCatalogo = [
       "catalogo2/Diapositiva1.png",
@@ -234,6 +282,15 @@
       "catalogo2/Diapositiva5.png"
     ];
     let indiceActual = 0;
+
+    function iniciarMusica() {
+      console.log("Intentando reproducir música...");
+      if (!audioActivo) {
+        bgMusic.volume = 0.4;
+        bgMusic.play().catch(e => console.warn("Reproducción bloqueada:", e));
+        audioActivo = true;
+      }
+    }
 
     function abrirCatalogo() {
       modal.style.display = 'flex';
@@ -250,11 +307,19 @@
     window.addEventListener('click', e => {
       if (e.target === modal) modal.style.display = 'none';
     });
+
+    const audioBtn = document.getElementById('audioBtn');
+    audioBtn.addEventListener('click', () => {
+      if (audioActivo) {
+        bgMusic.pause();
+        audioBtn.innerHTML = '<i class="fas fa-music"></i>';
+      } else {
+        bgMusic.play();
+        audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      }
+      audioActivo = !audioActivo;
+    });
   </script>
-
-
-  
 
 </body>
 </html>
-  
