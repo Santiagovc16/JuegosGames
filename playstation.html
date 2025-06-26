@@ -163,7 +163,8 @@
       object-fit: contain;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
-      transition: all 0.5s;
+      transition: opacity 0.2s ease-in-out;
+      opacity: 1;
     }
 
     .carrusel-btn {
@@ -361,10 +362,15 @@
     let indiceActual = 0;
 
     function moverCarrusel(direccion) {
-      indiceActual += direccion;
-      if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
-      if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
-      document.getElementById("carruselImagen").src = imagenesCatalogo[indiceActual];
+      const img = document.getElementById("carruselImagen");
+      img.style.opacity = 0;
+      setTimeout(() => {
+        indiceActual += direccion;
+        if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
+        if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
+        img.src = imagenesCatalogo[indiceActual];
+        img.style.opacity = 1;
+      }, 150);
     }
 
     function abrirCatalogo() {
