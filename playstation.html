@@ -1,401 +1,819 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PlayStation</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlayStation | Catálogo Profesional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     :root {
-      --ps-blue: #0061f2;
-      --ps-neon: #00f7ff;
-      --hologram-1: rgba(0, 97, 242, 0.4);
-      --hologram-2: rgba(0, 247, 255, 0.4);
+      --ps-blue: #2d7bff;
+      --ps-cyan: #72d8ff;
+      --ps-dark: #070d21;
+      --ps-surface: rgba(16, 24, 48, 0.78);
+      --ps-surface-strong: rgba(10, 16, 35, 0.94);
+      --ps-line: rgba(114, 216, 255, 0.26);
+      --text-main: #edf4ff;
+      --text-soft: #a8bddc;
+      --shadow: 0 18px 38px rgba(0, 0, 0, 0.4);
     }
 
+    * { box-sizing: border-box; }
+
+    html,
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at center, #0f0c29 0%, #1a1a40 100%);
-      color: white;
-      min-height: 100vh;
+      min-height: 100%;
+      color: var(--text-main);
+      font-family: 'Manrope', sans-serif;
+      background: radial-gradient(circle at 10% 0, #17336f 0, #0d1a3f 40%, var(--ps-dark) 100%);
       overflow-x: hidden;
     }
 
-    .cyber-grid {
+    body::before {
+      content: '';
       position: fixed;
-      width: 100vw;
-      height: 100vh;
-      background-image: 
-        linear-gradient(var(--hologram-1) 1px, transparent 1px),
-        linear-gradient(90deg, var(--hologram-1) 1px, transparent 1px);
-      background-size: 30px 30px;
+      inset: 0;
       pointer-events: none;
       z-index: 0;
-      animation: gridScan 8s linear infinite;
+      background-image:
+        linear-gradient(rgba(114, 216, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(114, 216, 255, 0.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.3;
+      animation: grid 14s linear infinite;
     }
 
-    header {
+    .flare {
+      position: fixed;
+      width: 250px;
+      height: 250px;
+      border-radius: 999px;
+      filter: blur(28px);
+      background: rgba(45, 123, 255, 0.45);
+      top: -90px;
+      right: 6%;
+      z-index: 0;
+      pointer-events: none;
+      animation: float 9s ease-in-out infinite;
+    }
+
+    .page {
       position: relative;
-      padding: 4rem 0;
-      background: linear-gradient(45deg, var(--ps-blue), transparent);
-      clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-      margin-bottom: 5rem;
-      overflow: hidden;
       z-index: 1;
+      width: min(1140px, 100% - 2rem);
+      margin: 0 auto;
+      padding-bottom: 5rem;
     }
 
-    header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent 45%, var(--ps-neon) 50%, transparent 55%);
-      animation: hologram 6s infinite linear;
-      opacity: 0.1;
-    }
-
-    header h1 {
-      font-size: 4rem;
-      text-align: center;
-      margin: 0;
-      text-transform: uppercase;
-      letter-spacing: 0.5rem;
-      background: linear-gradient(45deg, #fff, var(--ps-neon));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
-      animation: titleFloat 3s ease-in-out infinite;
-    }
-
-    .game-list {
+    .topbar {
+      margin-top: 1rem;
+      border-radius: 16px;
+      border: 1px solid var(--ps-line);
+      background: rgba(8, 15, 32, 0.7);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      padding: 0.75rem 0.9rem;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
-      padding: 2rem;
+      justify-content: space-between;
+      gap: 0.8rem;
     }
 
-    .game-card {
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .subnav {
       position: relative;
-      border-radius: 15px;
-      transform-style: preserve-3d;
-      transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .subnav-toggle {
+      border: 1px solid var(--ps-line);
+      border-radius: 999px;
+      background: rgba(16, 25, 49, 0.75);
+      color: var(--text-main);
+      font: inherit;
+      padding: 0.5rem 0.82rem;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-weight: 700;
+    }
+
+    .subnav-menu {
+      position: absolute;
+      top: calc(100% + 9px);
+      right: 0;
+      width: 220px;
+      border: 1px solid var(--ps-line);
+      border-radius: 12px;
+      background: var(--ps-surface-strong);
+      box-shadow: var(--shadow);
+      padding: 0.45rem;
+      display: none;
+    }
+
+    .subnav.open .subnav-menu {
+      display: block;
+      animation: show 180ms ease;
+    }
+
+    .subnav-menu a,
+    .subnav-menu button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text-main);
+      font: inherit;
+      text-decoration: none;
+      border-radius: 8px;
+      padding: 0.55rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .subnav-menu a:hover,
+    .subnav-menu button:hover { background: rgba(114, 216, 255, 0.12); }
+
+    .hero {
+      margin-top: 1.2rem;
+      border-radius: 24px;
+      border: 1px solid var(--ps-line);
+      background: linear-gradient(140deg, rgba(22, 34, 68, 0.95) 0, rgba(9, 15, 32, 0.92) 65%);
+      box-shadow: var(--shadow);
+      padding: clamp(1.2rem, 2.2vw, 2rem);
+      position: relative;
       overflow: hidden;
-      width: 300px;
-      height: 300px;
-      background: linear-gradient(45deg, #1a1a40, #0f0c29);
-      border: 2px solid rgba(255, 255, 255, 0.1);
     }
 
-    .game-card:hover {
-      transform: rotateY(15deg) rotateX(10deg) translateZ(50px);
-    }
-
-    .game-card::before {
+    .hero::after {
       content: '';
       position: absolute;
-      inset: -2px;
-      background: linear-gradient(45deg, var(--ps-blue), var(--ps-neon));
-      border-radius: 17px;
-      filter: blur(20px);
-      opacity: 0;
-      transition: opacity 0.5s;
-      z-index: -1;
+      right: -120px;
+      top: -120px;
+      width: 320px;
+      height: 320px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(114, 216, 255, 0.28), transparent 72%);
     }
 
-    .game-card:hover::before {
-      opacity: 0.6;
+    .eyebrow {
+      display: inline-flex;
+      gap: 0.4rem;
+      align-items: center;
+      border: 1px solid var(--ps-line);
+      border-radius: 999px;
+      padding: 0.3rem 0.64rem;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #acdfff;
+      background: rgba(114, 216, 255, 0.1);
+      font-weight: 700;
     }
 
-    .game-card img {
+    h1 {
+      margin: 0.8rem 0 0.5rem;
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      line-height: 0.95;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 66ch;
+      color: var(--text-soft);
+      line-height: 1.55;
+    }
+
+    .content {
+      margin-top: 1rem;
+      display: grid;
+      gap: 0.9rem;
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .panel {
+      border-radius: 18px;
+      border: 1px solid var(--ps-line);
+      background: var(--ps-surface);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .preview {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 200px;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .preview img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid var(--ps-line);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+      display: block;
+    }
+
+    .title {
+      margin: 0 0 0.4rem;
+      font-size: 1.22rem;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .text {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.45;
+      font-size: 0.95rem;
+    }
+
+    .actions {
+      margin-top: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .btn {
+      border: 1px solid var(--ps-line);
+      border-radius: 10px;
+      padding: 0.62rem 0.92rem;
+      font: inherit;
+      color: var(--text-main);
+      text-decoration: none;
+      background: rgba(13, 21, 43, 0.86);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--ps-blue), #50b6ff);
+      color: #041327;
+      border-color: transparent;
+      font-weight: 800;
+    }
+
+    .features {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.56rem;
+    }
+
+    .features li {
+      border: 1px solid var(--ps-line);
+      border-radius: 10px;
+      padding: 0.65rem;
+      color: var(--text-soft);
+      background: rgba(13, 22, 43, 0.74);
+      font-size: 0.93rem;
+    }
+
+    .features i {
+      color: var(--ps-cyan);
+      margin-right: 0.42rem;
+    }
+
+    .ps-controls {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 80;
+      display: flex;
+      gap: 0.56rem;
+    }
+
+    .ps-controls button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--ps-line);
+      background: rgba(8, 15, 32, 0.92);
+      color: var(--ps-cyan);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .achievement-toast {
+      position: fixed;
+      left: 1rem;
+      bottom: 1rem;
+      width: min(360px, calc(100vw - 2rem));
+      border-radius: 14px;
+      border: 1px solid var(--ps-line);
+      background: rgba(11, 18, 38, 0.95);
+      box-shadow: var(--shadow);
+      padding: 0.85rem;
+      transform: translateY(22px);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 79;
+    }
+
+    .achievement-toast.show { animation: toast 3s ease forwards; }
+
+    .a-title {
+      margin: 0;
+      color: var(--ps-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-size: 0.79rem;
+      font-weight: 800;
+    }
+
+    .a-body {
+      margin-top: 0.3rem;
+      color: var(--text-soft);
+      font-size: 0.94rem;
+      line-height: 1.4;
+    }
+
+    .a-points {
+      margin-top: 0.4rem;
+      display: inline-block;
+      border-radius: 999px;
+      padding: 0.2rem 0.58rem;
+      background: linear-gradient(135deg, var(--ps-cyan), #69a7ff);
+      color: #031425;
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 800;
     }
 
     .holo-modal {
-      display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      justify-content: center;
+      inset: 0;
+      display: none;
       align-items: center;
-      z-index: 1000;
+      justify-content: center;
+      background: rgba(4, 9, 20, 0.9);
+      z-index: 95;
+      padding: 1rem;
+      backdrop-filter: blur(8px);
     }
 
     .holo-content {
+      width: min(1280px, 100%);
+      height: min(90vh, 860px);
+      border: 1px solid var(--ps-line);
+      border-radius: 18px;
+      background: rgba(7, 12, 28, 0.95);
+      box-shadow: var(--shadow);
       position: relative;
-      width: 95%;
-      height: 95vh;
-      max-width: 1600px;
-      background: rgba(16, 16, 48, 0.95);
-      border-radius: 20px;
-      border: 2px solid var(--ps-blue);
-      box-shadow: 0 0 50px rgba(0, 97, 242, 0.5);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .holo-close {
+      position: absolute;
+      right: 0.8rem;
+      top: 0.8rem;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--ps-line);
+      background: rgba(12, 19, 40, 0.85);
+      color: var(--ps-cyan);
+      cursor: pointer;
+      font-size: 1.5rem;
+      line-height: 1;
+      z-index: 2;
     }
 
     .carrusel-container {
-      position: relative;
       width: 100%;
       height: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--ps-line);
+      background: #03070f;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: black;
+      position: relative;
+      overflow: hidden;
+      touch-action: pan-y;
     }
 
     .carrusel-container img {
-      width: auto;
-      height: 90vh;
+      max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
-      transition: opacity 0.2s ease-in-out;
-      opacity: 1;
+      transition: opacity 140ms ease;
     }
 
     .carrusel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 2.5rem;
-      background: rgba(0, 0, 0, 0.5);
-      border: none;
-      color: var(--ps-neon);
-      cursor: pointer;
-      padding: 1rem;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      z-index: 10;
-      transition: background 0.3s;
-    }
-
-    .carrusel-btn:hover {
-      background: rgba(0, 0, 0, 0.8);
-    }
-
-    .carrusel-btn.left { left: 10px; }
-    .carrusel-btn.right { right: 10px; }
-
-    .holo-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      color: var(--ps-neon);
-      font-size: 2.5rem;
+      border: 1px solid var(--ps-line);
+      background: rgba(11, 19, 39, 0.86);
+      color: var(--ps-cyan);
+      font-size: 1.35rem;
       cursor: pointer;
-      transition: color 0.3s;
-      z-index: 1001;
+      z-index: 2;
     }
 
-    .holo-close:hover {
-      color: #ff5555;
+    .carrusel-btn.left { left: 0.8rem; }
+    .carrusel-btn.right { right: 0.8rem; }
+
+    .carrusel-counter {
+      position: absolute;
+      bottom: 0.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 1px solid var(--ps-line);
+      border-radius: 999px;
+      background: rgba(11, 19, 39, 0.86);
+      color: var(--text-main);
+      padding: 0.28rem 0.56rem;
+      font-size: 0.82rem;
     }
 
     footer {
-      margin-top: 8rem;
-      padding: 3rem;
-      background: linear-gradient(to top, var(--ps-blue), transparent);
+      margin-top: 1.2rem;
+      color: var(--text-soft);
       text-align: center;
-      position: relative;
-      z-index: 1;
+      font-size: 0.84rem;
     }
 
-    @keyframes gridScan {
-      0% { background-position: 0 0; }
-      100% { background-position: 30px 30px; }
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--ps-cyan);
+      outline-offset: 2px;
     }
 
-    @keyframes hologram {
-      0% { transform: rotate(0deg) translateX(-50%); }
-      100% { transform: rotate(360deg) translateX(50%); }
+    @keyframes grid {
+      from { background-position: 0 0; }
+      to { background-position: 32px 32px; }
     }
 
-    @keyframes titleFloat {
+    @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(22px); }
     }
 
-    @keyframes pulseText {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.05); }
-      100% { opacity: 1; transform: scale(1); }
+    @keyframes toast {
+      0% { opacity: 0; transform: translateY(22px); }
+      12%, 84% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(22px); }
     }
 
-    .ps-controls {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      display: flex;
-      gap: 1rem;
-      z-index: 1001;
+    @keyframes show {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .ps-controls button {
-      background: rgba(0, 247, 255, 0.1);
-      border: 2px solid var(--ps-neon);
-      border-radius: 50%;
-      padding: 1rem;
-      font-size: 1.5rem;
-      color: var(--ps-neon);
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-      transition: transform 0.3s, background 0.3s;
+    @media (max-width: 920px) {
+      .content { grid-template-columns: 1fr; }
+      .preview { grid-template-columns: 1fr; }
     }
 
-    .ps-controls button:hover {
-      background: rgba(0, 247, 255, 0.3);
-      transform: scale(1.1);
+    @media (max-width: 700px) {
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .ps-controls { right: 0.75rem; bottom: 0.75rem; }
+      .carrusel-btn { width: 38px; height: 38px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="cyber-grid"></div>
+  <div class="flare" aria-hidden="true"></div>
+
   <audio id="bgMusic" loop>
     <source src="assets/audio/playstation-theme.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio.
   </audio>
-  <header>
-    <h1>PlayStation 4 - 5</h1>
-  </header>
 
-  <main>
-    <section class="game-list">
-      <div style="text-align: center; font-size: 1.5rem; color: var(--ps-neon); margin-bottom: 1rem; letter-spacing: 1px; text-shadow: 0 0 10px var(--ps-neon); animation: pulseText 2s infinite;">
-        <i class="fas fa-mouse-pointer"></i> Presiona clic para ver catálogo
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <i class="fab fa-playstation"></i>
+        <strong>PlayStation Catalog Pro</strong>
       </div>
-      <div class="game-card" onclick="abrirCatalogo()">
-        <img src="catalogo/Diapositiva1.png" alt="Vista previa del catálogo">
-      </div>
-      <div style="text-align: center; margin-top: 2rem;">
-        <a href="catalogo/catalogo.zip" download style="padding: 1rem 2rem; background: var(--ps-blue); color: white; text-decoration: none; border-radius: 10px; font-size: 1.2rem; box-shadow: 0 0 10px var(--ps-neon); transition: background 0.3s;">
-          <i class="fas fa-download"></i> Descargar Catálogo
-        </a>
-      </div>
-      <div style="text-align: center; margin-top: 1rem;">
-        <a href="catalogo/catalogo.pdf" download style="padding: 1rem 2rem; background: var(--ps-blue); color: white; text-decoration: none; border-radius: 10px; font-size: 1.2rem; box-shadow: 0 0 10px var(--ps-neon); transition: background 0.3s;">
-          <i class="fas fa-file-pdf"></i> Descargar Catálogo en PDF
-        </a>
-      </div>
+      <nav class="subnav" aria-label="Navegación del catálogo">
+        <button class="subnav-toggle" id="subnavToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="subnavMenu">
+          <i class="fas fa-bars"></i>
+          Menú
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="subnav-menu" id="subnavMenu" role="menu">
+          <a role="menuitem" href="index.html"><i class="fas fa-house"></i> Inicio</a>
+          <a role="menuitem" href="playstation.html"><i class="fab fa-playstation"></i> PlayStation</a>
+          <a role="menuitem" href="xbox-catalogo.html"><i class="fab fa-xbox"></i> Xbox</a>
+          <a role="menuitem" href="nintendo-switch-catalogo.html"><i class="fas fa-ghost"></i> Nintendo</a>
+          <button role="menuitem" type="button" id="subnavOpenCatalogo"><i class="fas fa-images"></i> Abrir catálogo</button>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <span class="eyebrow"><i class="fas fa-bolt"></i> Colección 2026</span>
+      <h1>PlayStation 4 - 5</h1>
+      <p class="lead">Experiencia de catálogo optimizada para demo comercial: navegación de diapositivas, descargas directas y controles interactivos para presentar en tienda o reunión con cliente.</p>
     </section>
-    <div class="ps-controls">
-      <button class="audio-btn" id="audioBtn">
-        <i class="fas fa-music"></i>
-      </button>
-      <button class="star-btn">
-        <i class="fas fa-star"></i>
-      </button>
-    </div>
-  </main>
 
-  <div id="holoModal" class="holo-modal">
-    <span class="holo-close">&times;</span>
+    <section class="content">
+      <article class="panel preview">
+        <div>
+          <h2 class="title">Presentación Principal</h2>
+          <p class="text">Abre el catálogo en pantalla completa y navega por 9 diapositivas en modo carrusel. Compatible con teclado, gestos táctiles y botones laterales.</p>
+          <div class="actions">
+            <button class="btn btn-primary" id="openCatalogBtn" type="button"><i class="fas fa-play"></i> Ver catálogo</button>
+            <a class="btn" href="catalogo/catalogo.zip" download><i class="fas fa-download"></i> Descargar ZIP</a>
+            <a class="btn" href="catalogo/catalogo.pdf" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-pdf"></i> Ver PDF</a>
+          </div>
+        </div>
+        <img src="catalogo/Diapositiva1.png" alt="Vista previa del catálogo PlayStation" loading="lazy">
+      </article>
+
+      <aside class="panel">
+        <h2 class="title">Puntos de Venta</h2>
+        <ul class="features">
+          <li><i class="fas fa-check"></i> Catálogo completo con navegación rápida y visual premium.</li>
+          <li><i class="fas fa-check"></i> Ideal para presentación de producto frente al cliente.</li>
+          <li><i class="fas fa-check"></i> Botones flotantes para audio y logros en tiempo real.</li>
+          <li><i class="fas fa-check"></i> Diseño responsive para móvil, tablet y desktop.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <footer>PlayStation Catalog Experience © <span id="year"></span> | JuegosGames</footer>
+  </div>
+
+  <div class="ps-controls">
+    <button id="audioBtn" type="button" aria-label="Controlar audio"><i class="fas fa-music"></i></button>
+    <button id="starBtn" type="button" aria-label="Desbloquear logro"><i class="fas fa-star"></i></button>
+  </div>
+
+  <div id="achievementToast" class="achievement-toast" aria-live="polite" aria-atomic="true"></div>
+
+  <div id="holoModal" class="holo-modal" role="dialog" aria-modal="true" aria-label="Catálogo PlayStation" tabindex="-1">
     <div class="holo-content">
-      <div class="carrusel-container">
-        <button class="carrusel-btn left" onclick="moverCarrusel(-1)">&#10094;</button>
-        <img id="carruselImagen" src="catalogo/Diapositiva1.png" alt="Catálogo" />
-        <button class="carrusel-btn right" onclick="moverCarrusel(1)">&#10095;</button>
+      <button class="holo-close" id="holoClose" type="button" aria-label="Cerrar catálogo">&times;</button>
+      <div class="carrusel-container" id="carruselContainer">
+        <button class="carrusel-btn left" id="prevBtn" type="button" aria-label="Imagen anterior">&#10094;</button>
+        <img id="carruselImagen" src="catalogo/Diapositiva1.png" alt="Catálogo PlayStation (imagen 1 de 9)">
+        <button class="carrusel-btn right" id="nextBtn" type="button" aria-label="Imagen siguiente">&#10095;</button>
+        <div class="carrusel-counter" id="carruselCounter" aria-live="polite">1/9</div>
       </div>
     </div>
   </div>
 
-  <footer>
-    <p>PlayStation® Universe - Experiencia Next-Gen</p>
-  </footer>
-
   <script>
-    let bgMusic;
-    let audioActivo = false;
-
-    window.addEventListener('DOMContentLoaded', () => {
-      bgMusic = document.getElementById('bgMusic');
-      document.body.addEventListener('pointerdown', iniciarMusica, { once: true });
-    });
-
-    function iniciarMusica() {
-      console.log("Intentando reproducir música...");
-      if (!audioActivo) {
-        bgMusic.volume = 0.4;
-        bgMusic.play().catch(e => console.warn("Reproducción bloqueada:", e));
-        audioActivo = true;
-      }
-    }
-
-    const audioBtn = document.getElementById('audioBtn');
-    audioBtn.addEventListener('click', () => {
-      if (audioActivo) {
-        bgMusic.pause();
-        audioBtn.innerHTML = '<i class="fas fa-music"></i>';
-      } else {
-        bgMusic.play();
-        audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      }
-      audioActivo = !audioActivo;
-    });
-
     const modal = document.getElementById('holoModal');
-    const closeBtn = document.querySelector('.holo-close');
+    const closeBtn = document.getElementById('holoClose');
+    const openCatalogBtn = document.getElementById('openCatalogBtn');
+    const carruselImagen = document.getElementById('carruselImagen');
+    const carruselCounter = document.getElementById('carruselCounter');
+    const carruselContainer = document.getElementById('carruselContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const bgMusic = document.getElementById('bgMusic');
+    const audioBtn = document.getElementById('audioBtn');
+    const starBtn = document.getElementById('starBtn');
+    const toast = document.getElementById('achievementToast');
+
+    const subnav = document.querySelector('.subnav');
+    const subnavToggle = document.getElementById('subnavToggle');
+    const subnavOpenCatalogo = document.getElementById('subnavOpenCatalogo');
+
     const imagenesCatalogo = [
-      "catalogo/Diapositiva1.png",
-      "catalogo/Diapositiva2.png",
-      "catalogo/Diapositiva3.png",
-      "catalogo/Diapositiva4.png",
-      "catalogo/Diapositiva5.png",
-      "catalogo/Diapositiva6.png",
-      "catalogo/Diapositiva7.png",
-      "catalogo/Diapositiva8.png",
-      "catalogo/Diapositiva9.png"
+      'catalogo/Diapositiva1.png',
+      'catalogo/Diapositiva2.png',
+      'catalogo/Diapositiva3.png',
+      'catalogo/Diapositiva4.png',
+      'catalogo/Diapositiva5.png',
+      'catalogo/Diapositiva6.png',
+      'catalogo/Diapositiva7.png',
+      'catalogo/Diapositiva8.png',
+      'catalogo/Diapositiva9.png'
     ];
+
     let indiceActual = 0;
 
-    function moverCarrusel(direccion) {
-      const img = document.getElementById("carruselImagen");
-      img.style.opacity = 0;
-      setTimeout(() => {
-        indiceActual += direccion;
-        if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
-        if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
-        img.src = imagenesCatalogo[indiceActual];
-        img.style.opacity = 1;
-      }, 150);
+    function precargarImagenes(lista) {
+      lista.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    }
+
+    function actualizarContador() {
+      carruselCounter.textContent = `${indiceActual + 1}/${imagenesCatalogo.length}`;
+      carruselImagen.alt = `Catálogo PlayStation (imagen ${indiceActual + 1} de ${imagenesCatalogo.length})`;
     }
 
     function abrirCatalogo() {
       modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
+      carruselImagen.src = imagenesCatalogo[indiceActual];
+      actualizarContador();
+      modal.focus();
     }
 
-    closeBtn.addEventListener('click', () => {
+    function cerrarCatalogo() {
       modal.style.display = 'none';
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
+      openCatalogBtn.focus();
+    }
+
+    function moverCarrusel(direccion) {
+      carruselImagen.style.opacity = '0';
+
+      window.setTimeout(() => {
+        indiceActual += direccion;
+        if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
+        if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
+        carruselImagen.src = imagenesCatalogo[indiceActual];
+        actualizarContador();
+        carruselImagen.style.opacity = '1';
+      }, 140);
+    }
+
+    function cerrarSubnav() {
+      subnav.classList.remove('open');
+      subnavToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    function toggleSubnav() {
+      const open = subnav.classList.contains('open');
+      if (open) cerrarSubnav();
+      else {
+        subnav.classList.add('open');
+        subnavToggle.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    subnavToggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleSubnav();
     });
 
-    window.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+    window.addEventListener('click', (event) => {
+      if (!subnav.contains(event.target)) cerrarSubnav();
+      if (event.target === modal) cerrarCatalogo();
+    });
+
+    subnavOpenCatalogo.addEventListener('click', () => {
+      cerrarSubnav();
+      abrirCatalogo();
+    });
+
+    openCatalogBtn.addEventListener('click', abrirCatalogo);
+    closeBtn.addEventListener('click', cerrarCatalogo);
+    prevBtn.addEventListener('click', () => moverCarrusel(-1));
+    nextBtn.addEventListener('click', () => moverCarrusel(1));
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        if (subnav.classList.contains('open')) cerrarSubnav();
+        if (modal.style.display === 'flex') cerrarCatalogo();
+      }
+
+      if (modal.style.display !== 'flex') return;
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        moverCarrusel(-1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        moverCarrusel(1);
       }
     });
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+
+    (function habilitarSwipe() {
+      let startX = 0;
+      let startY = 0;
+      let active = false;
+      const UMBRAL = 45;
+
+      carruselContainer.addEventListener('pointerdown', (event) => {
+        if (modal.style.display !== 'flex') return;
+        active = true;
+        startX = event.clientX;
+        startY = event.clientY;
+      });
+
+      carruselContainer.addEventListener('pointerup', (event) => {
+        if (!active) return;
+        active = false;
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        if (Math.abs(dx) < Math.abs(dy) || Math.abs(dx) < UMBRAL) return;
+        if (dx > 0) moverCarrusel(-1);
+        else moverCarrusel(1);
+      });
+
+      carruselContainer.addEventListener('pointercancel', () => { active = false; });
+      carruselContainer.addEventListener('pointerleave', () => { active = false; });
+    })();
+
+    let audioActivo = false;
+
+    async function iniciarMusica() {
+      if (audioActivo) return;
+      bgMusic.volume = 0.42;
+      try {
+        await bgMusic.play();
+        audioActivo = true;
+        audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      } catch (error) {
+        console.warn('No se pudo reproducir el audio:', error);
       }
+    }
+
+    document.body.addEventListener('pointerdown', iniciarMusica, { once: true });
+
+    audioBtn.addEventListener('click', async () => {
+      if (audioActivo) {
+        bgMusic.pause();
+        audioActivo = false;
+        audioBtn.innerHTML = '<i class="fas fa-music"></i>';
+        return;
+      }
+      await iniciarMusica();
     });
+
+    const GS_KEY = 'ps_gamerscore_demo';
+
+    function getGS() {
+      const val = Number(localStorage.getItem(GS_KEY) || '0');
+      return Number.isFinite(val) ? val : 0;
+    }
+
+    function setGS(val) {
+      localStorage.setItem(GS_KEY, String(val));
+    }
+
+    function mostrarToast({ titulo, descripcion, puntos }) {
+      toast.classList.remove('show');
+      void toast.offsetWidth;
+      toast.innerHTML = `
+        <p class="a-title">Logro desbloqueado</p>
+        <div class="a-body"><strong>${titulo}</strong><br>${descripcion}</div>
+        <span class="a-points">+${puntos}G</span>
+      `;
+      toast.classList.add('show');
+    }
+
+    function desbloquearLogro() {
+      const logros = [
+        { titulo: 'Blue Pulse', descripcion: 'Iniciaste la demo de PlayStation.', puntos: 10 },
+        { titulo: 'DualSense Pitch', descripcion: 'Mostraste el catálogo con ritmo de venta.', puntos: 15 },
+        { titulo: 'Console Closer', descripcion: 'Presentación lista para cierre comercial.', puntos: 20 }
+      ];
+
+      const pick = logros[Math.floor(Math.random() * logros.length)];
+      const nuevo = getGS() + pick.puntos;
+      setGS(nuevo);
+      starBtn.title = `Gamerscore: ${nuevo}G`;
+      mostrarToast(pick);
+    }
+
+    starBtn.title = `Gamerscore: ${getGS()}G`;
+    starBtn.addEventListener('click', () => {
+      desbloquearLogro();
+      if (modal.style.display !== 'flex') abrirCatalogo();
+    });
+
+    precargarImagenes(imagenesCatalogo);
+    actualizarContador();
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
-
 </html>

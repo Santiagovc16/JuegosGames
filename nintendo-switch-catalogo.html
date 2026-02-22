@@ -1,146 +1,340 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nintendo Cyberverse</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nintendo Switch | Catálogo Profesional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     :root {
-      --main-red: #e60012;
-      --neon-yellow: #ffdf6c;
-      --hologram-blue: #00f7ff;
-      --bg-dark: #0a081f;
+      --nt-red: #ff4a42;
+      --nt-coral: #ff8e5b;
+      --nt-cream: #fff4ea;
+      --nt-dark: #1a1020;
+      --nt-surface: rgba(33, 20, 38, 0.78);
+      --nt-surface-strong: rgba(23, 13, 28, 0.94);
+      --nt-line: rgba(255, 160, 122, 0.28);
+      --text-main: #fff9f4;
+      --text-soft: #e8cfc4;
+      --shadow: 0 16px 34px rgba(0, 0, 0, 0.36);
     }
 
+    * { box-sizing: border-box; }
+
+    html,
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg-dark) 100%);
-      color: #fff;
-      min-height: 100vh;
+      min-height: 100%;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 12% 0, #4a1f28 0, #28142f 42%, var(--nt-dark) 100%);
       overflow-x: hidden;
     }
 
-    .cyber-grid {
-      position: fixed;
-      width: 100vw;
-      height: 100vh;
-      background-image: 
-        linear-gradient(rgba(230, 0, 18, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(230, 0, 18, 0.05) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: 0;
-      animation: gridScan 10s linear infinite;
-    }
-
-    /* Efecto de partículas (sin librería) */
-    .particles {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    header {
-      position: relative;
-      padding: 6rem 0;
-      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-      margin-bottom: 5rem;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    header::before {
+    body::before {
       content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, var(--main-red), transparent 50%, var(--hologram-blue));
-      opacity: 0.1;
-      animation: hologram 8s infinite linear;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 142, 91, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 142, 91, 0.08) 1px, transparent 1px);
+      background-size: 36px 36px;
+      opacity: 0.28;
+      animation: grid 16s linear infinite;
     }
 
-    header h1 {
-      font-size: 4.5rem;
-      text-align: center;
-      margin: 0;
-      text-transform: uppercase;
-      letter-spacing: 0.8rem;
-      background: linear-gradient(45deg, var(--neon-yellow), #ffffff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 40px rgba(230, 0, 18, 0.5);
-      animation: titleFloat 3s ease-in-out infinite;
+    .bubble {
+      position: fixed;
+      border-radius: 999px;
+      filter: blur(26px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.46;
     }
 
-    .game-list {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
-      padding: 2rem;
+    .bubble-a {
+      width: 260px;
+      height: 260px;
+      top: -80px;
+      right: 7%;
+      background: rgba(255, 74, 66, 0.42);
+      animation: floatA 8s ease-in-out infinite;
+    }
+
+    .bubble-b {
+      width: 210px;
+      height: 210px;
+      left: 2%;
+      bottom: 4%;
+      background: rgba(255, 142, 91, 0.35);
+      animation: floatB 11s ease-in-out infinite;
+    }
+
+    .page {
+      position: relative;
       z-index: 1;
+      width: min(1120px, 100% - 2rem);
+      margin: 0 auto;
+      padding-bottom: 5rem;
     }
 
-    .game-card {
-      border-radius: 20px;
-      overflow: hidden;
-      width: 300px;
-      height: 300px;
-      background: linear-gradient(45deg, #2c2c4a 0%, #1a1a2e 100%);
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
-      transition: transform 0.3s ease;
+    .topbar {
+      margin-top: 1rem;
+      border: 1px solid var(--nt-line);
+      border-radius: 16px;
+      background: rgba(29, 17, 35, 0.73);
+      backdrop-filter: blur(9px);
+      box-shadow: var(--shadow);
+      padding: 0.75rem 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.03em;
+    }
+
+    .subnav { position: relative; }
+
+    .subnav-toggle {
+      border: 1px solid var(--nt-line);
+      border-radius: 999px;
+      padding: 0.48rem 0.82rem;
+      background: rgba(31, 18, 35, 0.85);
+      color: var(--text-main);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .subnav-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 9px);
+      width: 220px;
+      border-radius: 12px;
+      border: 1px solid var(--nt-line);
+      background: var(--nt-surface-strong);
+      box-shadow: var(--shadow);
+      padding: 0.45rem;
+    }
+
+    .subnav.open .subnav-menu {
+      display: block;
+      animation: show 180ms ease;
+    }
+
+    .subnav-menu a,
+    .subnav-menu button {
+      width: 100%;
+      border: 0;
+      border-radius: 8px;
+      font: inherit;
+      color: var(--text-main);
+      text-decoration: none;
+      background: transparent;
+      padding: 0.56rem;
+      display: flex;
+      align-items: center;
+      gap: 0.48rem;
+      text-align: left;
       cursor: pointer;
     }
 
-    .game-card:hover {
-      transform: scale(1.05);
+    .subnav-menu a:hover,
+    .subnav-menu button:hover {
+      background: rgba(255, 160, 122, 0.14);
     }
 
-    .game-card img {
+    .hero {
+      margin-top: 1.2rem;
+      border-radius: 24px;
+      border: 1px solid var(--nt-line);
+      background: linear-gradient(145deg, rgba(56, 25, 34, 0.9) 0, rgba(26, 16, 31, 0.9) 70%);
+      box-shadow: var(--shadow);
+      padding: clamp(1.2rem, 2.1vw, 2rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -120px;
+      top: -110px;
+      width: 300px;
+      height: 300px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 142, 91, 0.25), transparent 70%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      border: 1px solid var(--nt-line);
+      background: rgba(255, 160, 122, 0.12);
+      color: #ffd7c1;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      padding: 0.3rem 0.62rem;
+    }
+
+    h1 {
+      margin: 0.78rem 0 0.5rem;
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 0.98;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 66ch;
+      color: var(--text-soft);
+      line-height: 1.55;
+    }
+
+    .content {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 0.9rem;
+    }
+
+    .panel {
+      border-radius: 18px;
+      border: 1px solid var(--nt-line);
+      background: var(--nt-surface);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .preview {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 210px;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .preview img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid var(--nt-line);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.32);
+      display: block;
     }
 
-    .game-guide {
-      text-align: center;
-      font-size: 1.5rem;
-      color: var(--neon-yellow);
-      text-shadow: 0 0 15px var(--neon-yellow);
-      animation: pulseText 2s infinite;
+    .title {
+      margin: 0 0 0.4rem;
+      font-size: 1.2rem;
+      font-family: 'Fredoka', sans-serif;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .text {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.45;
+      font-size: 0.95rem;
+    }
+
+    .actions {
+      margin-top: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.62rem;
+    }
+
+    .btn {
+      border-radius: 10px;
+      border: 1px solid var(--nt-line);
+      background: rgba(31, 18, 35, 0.86);
+      color: var(--text-main);
+      font: inherit;
+      text-decoration: none;
+      padding: 0.6rem 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      transition: transform 180ms ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--nt-red), var(--nt-coral));
+      color: #2a0d12;
+      border-color: transparent;
+      font-weight: 800;
+    }
+
+    .features {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.56rem;
+    }
+
+    .features li {
+      border-radius: 10px;
+      border: 1px solid var(--nt-line);
+      background: rgba(31, 18, 35, 0.76);
+      padding: 0.64rem;
+      color: var(--text-soft);
+      font-size: 0.93rem;
+    }
+
+    .features i {
+      color: #ffc39f;
+      margin-right: 0.42rem;
     }
 
     .holo-modal {
-      display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.98);
-      justify-content: center;
+      inset: 0;
+      display: none;
       align-items: center;
-      z-index: 1000;
-      backdrop-filter: blur(10px);
+      justify-content: center;
+      background: rgba(14, 8, 19, 0.88);
+      z-index: 95;
+      padding: 1rem;
+      backdrop-filter: blur(8px);
     }
 
     .holo-content {
+      width: min(1100px, 100%);
+      height: min(86vh, 760px);
+      border-radius: 18px;
+      border: 1px solid var(--nt-line);
+      background: rgba(22, 12, 27, 0.95);
+      box-shadow: var(--shadow);
       position: relative;
-      width: 90%;
-      height: 90vh;
-      max-width: 1400px;
-      background: rgba(26, 26, 46, 0.95);
-      border-radius: 30px;
-      border: 3px solid var(--main-red);
-      box-shadow: 0 0 60px rgba(230, 0, 18, 0.4);
+      padding: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -148,334 +342,446 @@
 
     .holo-close {
       position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      color: var(--neon-yellow);
-      font-size: 2.8rem;
+      right: 0.8rem;
+      top: 0.8rem;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--nt-line);
+      background: rgba(26, 14, 31, 0.82);
+      color: #ffd3be;
       cursor: pointer;
-      z-index: 1001;
+      font-size: 1.45rem;
+      line-height: 1;
+    }
+
+    .carrusel-container {
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--nt-line);
+      border-radius: 12px;
+      background: #130c16;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carrusel-container img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: opacity 120ms ease;
     }
 
     .carrusel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 2.5rem;
-      background: rgba(0, 0, 0, 0.5);
-      border: none;
-      color: var(--neon-yellow);
-      cursor: pointer;
-      padding: 1rem;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      z-index: 10;
-      transition: background 0.3s;
+      border: 1px solid var(--nt-line);
+      background: rgba(27, 15, 32, 0.86);
+      color: #ffd3be;
+      cursor: pointer;
+      font-size: 1.3rem;
     }
 
-    .carrusel-btn.left { left: 10px; }
-    .carrusel-btn.right { right: 10px; }
+    .carrusel-btn.left { left: 0.8rem; }
+    .carrusel-btn.right { right: 0.8rem; }
 
-    .carrusel-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+    .carrusel-counter {
+      position: absolute;
+      bottom: 0.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      border: 1px solid var(--nt-line);
+      background: rgba(27, 15, 32, 0.86);
+      padding: 0.27rem 0.56rem;
+      font-size: 0.82rem;
+      color: var(--text-main);
     }
 
-    /* Carta personalizada */
+    .floating-controls {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 85;
+      display: flex;
+      gap: 0.55rem;
+    }
+
+    .floating-controls button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--nt-line);
+      background: rgba(24, 14, 29, 0.9);
+      color: #ffd3be;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
     .carta {
       position: fixed;
-      top: 50%;
       left: 50%;
+      top: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(26, 26, 46, 0.95);
-      border: 3px solid var(--neon-yellow);
-      border-radius: 20px;
-      padding: 2rem;
-      max-width: 80%;
-      max-height: 80vh;
-      overflow-y: auto;
-      z-index: 2000;
-      box-shadow: 0 0 60px rgba(255, 223, 108, 0.4);
-      animation: cartaEntrada 0.8s ease-out, cartaSalida 0.8s ease-out 6s forwards;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      width: min(520px, calc(100vw - 2rem));
+      border-radius: 16px;
+      border: 1px solid var(--nt-line);
+      background: rgba(24, 14, 29, 0.96);
+      box-shadow: var(--shadow);
+      z-index: 100;
+      padding: 1rem;
       text-align: center;
+      display: none;
     }
 
     .carta h2 {
-      color: var(--neon-yellow);
-      font-size: 2rem;
-      margin-bottom: 1rem;
+      margin: 0;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.5rem;
+      color: #ffd3be;
     }
 
     .carta p {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
+      margin: 0.6rem 0 0;
+      color: var(--text-soft);
+      line-height: 1.45;
     }
 
     .carta button {
-      background: var(--main-red);
-      color: #fff;
-      border: none;
-      padding: 0.8rem 1.5rem;
+      margin-top: 0.82rem;
+      border: 0;
       border-radius: 10px;
+      background: linear-gradient(135deg, var(--nt-red), var(--nt-coral));
+      color: #2f1117;
+      font-weight: 800;
+      font: inherit;
+      padding: 0.56rem 0.9rem;
       cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
     }
 
-    .carta button:hover {
-      background: #c5000f;
+    footer {
+      margin-top: 1.2rem;
+      color: var(--text-soft);
+      text-align: center;
+      font-size: 0.84rem;
     }
 
-    /* Botón secreto */
-    .secreto {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      width: 50px;
-      height: 50px;
-      background: var(--main-red);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 100;
-      box-shadow: 0 0 20px rgba(230, 0, 18, 0.4);
-      transition: transform 0.3s;
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid #ffd3be;
+      outline-offset: 2px;
     }
 
-    .secreto:hover {
-      transform: scale(1.1);
+    @keyframes grid {
+      from { background-position: 0 0; }
+      to { background-position: 36px 36px; }
     }
 
-    /* Audio */
-    .audio-btn {
-      position: fixed;
-      bottom: 2rem;
-      left: 2rem;
-      width: 50px;
-      height: 50px;
-      background: var(--neon-yellow);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 100;
-      box-shadow: 0 0 20px rgba(255, 223, 108, 0.4);
-      transition: transform 0.3s;
-    }
-
-    .audio-btn:hover {
-      transform: scale(1.1);
-    }
-
-    /* Animaciones */
-    @keyframes pulseText {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.05); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes gridScan {
-      0% { background-position: 0 0; }
-      100% { background-position: 40px 40px; }
-    }
-
-    @keyframes hologram {
-      0% { transform: rotate(0deg) scale(2); }
-      100% { transform: rotate(360deg) scale(2); }
-    }
-
-    @keyframes titleFloat {
+    @keyframes floatA {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
+      50% { transform: translateY(20px); }
     }
 
-    @keyframes cartaEntrada {
-      0% { opacity: 0; transform: translate(-50%, -40%); }
-      100% { opacity: 1; transform: translate(-50%, -50%); }
+    @keyframes floatB {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(14px, -16px); }
     }
 
-    @keyframes cartaSalida {
-      0% { opacity: 1; transform: translate(-50%, -50%); }
-      100% { opacity: 0; transform: translate(-50%, -60%); }
+    @keyframes show {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2.5rem;
-      }
-      .game-card {
-        width: 250px;
-        height: 250px;
-      }
-      .carta {
-        max-width: 90%;
-        padding: 1.5rem;
-      }
-      .carta h2 {
-        font-size: 1.6rem;
-      }
-      .carta p {
-        font-size: 1rem;
+    @media (max-width: 920px) {
+      .content { grid-template-columns: 1fr; }
+      .preview { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .floating-controls { right: 0.75rem; bottom: 0.75rem; }
+      .carrusel-btn { width: 36px; height: 36px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
       }
     }
   </style>
 </head>
 <body>
-  <div class="cyber-grid"></div>
-  <div class="particles" id="particles"></div>
-  
-  <header>
-    <h1>Nintendo Switch</h1>
-  </header>
+  <div class="bubble bubble-a" aria-hidden="true"></div>
+  <div class="bubble bubble-b" aria-hidden="true"></div>
 
-  <main>
-    <section class="game-list">
-      <div class="game-guide"><i class="fas fa-mouse-pointer"></i> Haz clic para ver el catálogo</div>
-      <div class="game-card" onclick="abrirCatalogo()">
-        <img src="catalogo2/nintendo1.png" alt="Vista previa Nintendo" id="previewImg">
+  <audio id="bgMusic" loop>
+    <source src="assets/audio/super-mario-theme.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <i class="fas fa-gamepad"></i>
+        <strong>Nintendo Switch Catalog Pro</strong>
       </div>
-    </section>
-  </main>
+      <nav class="subnav" aria-label="Navegación del catálogo">
+        <button class="subnav-toggle" id="subnavToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="subnavMenu">
+          <i class="fas fa-bars"></i>
+          Menú
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="subnav-menu" id="subnavMenu" role="menu">
+          <a role="menuitem" href="index.html"><i class="fas fa-house"></i> Inicio</a>
+          <a role="menuitem" href="playstation.html"><i class="fab fa-playstation"></i> PlayStation</a>
+          <a role="menuitem" href="xbox-catalogo.html"><i class="fab fa-xbox"></i> Xbox</a>
+          <a role="menuitem" href="nintendo-switch-catalogo.html"><i class="fas fa-ghost"></i> Nintendo</a>
+          <button role="menuitem" type="button" id="subnavOpenCatalogo"><i class="fas fa-images"></i> Abrir catálogo</button>
+        </div>
+      </nav>
+    </header>
 
-  <div class="holo-modal" id="holoModal">
+    <section class="hero">
+      <span class="eyebrow"><i class="fas fa-star"></i> Edición 2026</span>
+      <h1>Nintendo Switch</h1>
+      <p class="lead">Presentación compacta y profesional para catálogos Nintendo. Incluye acceso inmediato al visor, controles ligeros y experiencia optimizada para móviles.</p>
+    </section>
+
+    <section class="content">
+      <article class="panel preview">
+        <div>
+          <h2 class="title">Catálogo Visual</h2>
+          <p class="text">Abre el catálogo en modal para mostrar producto a pantalla completa. Funciona con teclado, clic exterior y navegación por botones.</p>
+          <div class="actions">
+            <button class="btn btn-primary" type="button" id="openCatalogBtn"><i class="fas fa-play"></i> Ver catálogo</button>
+            <button class="btn" type="button" id="openCartaBtn"><i class="fas fa-envelope-open-text"></i> Mostrar bienvenida</button>
+          </div>
+        </div>
+        <img src="catalogo2/nintendo1.png" alt="Vista previa del catálogo Nintendo Switch" loading="lazy">
+      </article>
+
+      <aside class="panel">
+        <h2 class="title">Herramientas</h2>
+        <ul class="features">
+          <li><i class="fas fa-check"></i> Vista limpia para presentaciones rápidas de producto.</li>
+          <li><i class="fas fa-check"></i> Mensaje de bienvenida personalizado en formato carta.</li>
+          <li><i class="fas fa-check"></i> Botón secreto para interacción durante demostración.</li>
+          <li><i class="fas fa-check"></i> Audio ambiental controlado por botón flotante.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <footer>Nintendo Catalog Experience © <span id="year"></span> | JuegosGames</footer>
+  </div>
+
+  <div class="floating-controls">
+    <button id="audioBtn" type="button" aria-label="Controlar audio"><i class="fas fa-music"></i></button>
+    <button id="secretoBtn" type="button" aria-label="Botón secreto"><i class="fas fa-star"></i></button>
+  </div>
+
+  <div class="holo-modal" id="holoModal" role="dialog" aria-modal="true" aria-label="Catálogo Nintendo" tabindex="-1">
     <div class="holo-content">
-      <span class="holo-close" onclick="cerrarCatalogo()">&times;</span>
-      <button class="carrusel-btn left" onclick="moverCarrusel(-1)">&#10094;</button>
-      <img id="carruselImagen" src="catalogo2/nintendo1.png" alt="Catálogo Nintendo" style="max-height: 90vh; max-width: 100%; border-radius: 20px;">
-      <button class="carrusel-btn right" onclick="moverCarrusel(1)">&#10095;</button>
+      <button class="holo-close" id="holoClose" type="button" aria-label="Cerrar catálogo">&times;</button>
+      <div class="carrusel-container" id="carruselContainer">
+        <button class="carrusel-btn left" id="prevBtn" type="button" aria-label="Imagen anterior">&#10094;</button>
+        <img id="carruselImagen" src="catalogo2/nintendo1.png" alt="Catálogo Nintendo (imagen 1 de 1)">
+        <button class="carrusel-btn right" id="nextBtn" type="button" aria-label="Imagen siguiente">&#10095;</button>
+        <div class="carrusel-counter" id="carruselCounter" aria-live="polite">1/1</div>
+      </div>
     </div>
   </div>
 
-  <!-- Carta personalizada -->
-  <div class="carta" id="carta">
+  <div class="carta" id="carta" role="dialog" aria-modal="true" aria-label="Mensaje de bienvenida">
     <h2>¡Bienvenido a Gamer Edge!</h2>
     <p>
-      Gracias por visitar este espacio creado con cariño para ti.<br>
-      Aquí encontrarás los mejores juegos, recuerdos y aventuras.<br>
-      ¡Que la magia de Nintendo te acompañe en cada partida!
+      Gracias por visitar este espacio creado para presentar nuestro catálogo Nintendo.<br>
+      Aquí encontrarás juegos y experiencias para cada tipo de jugador.<br>
+      Disfruta la demo y que la diversión te acompañe en cada partida.
     </p>
-    <button onclick="cerrarCarta()">¡A jugar!</button>
+    <button type="button" id="cerrarCartaBtn">¡A jugar!</button>
   </div>
-
-  <!-- Botón secreto -->
-  <div class="secreto" id="secreto">
-    <i class="fas fa-star" style="color: #fff;"></i>
-  </div>
-
-  <!-- Audio -->
-  <div class="audio-btn" id="audioBtn">
-    <i class="fas fa-music" style="color: #000;"></i>
-  </div>
-  <audio id="bgMusic" loop>
-  <source src="assets/audio/super-mario-theme.mp3" type="audio/mpeg">
-  Tu navegador no soporta audio.
-</audio>
 
   <script>
-    // Variables
     const modal = document.getElementById('holoModal');
-    const imagenesCatalogo = ["catalogo2/nintendo1.png"];
+    const closeBtn = document.getElementById('holoClose');
+    const openCatalogBtn = document.getElementById('openCatalogBtn');
+    const carruselImagen = document.getElementById('carruselImagen');
+    const carruselCounter = document.getElementById('carruselCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const subnav = document.querySelector('.subnav');
+    const subnavToggle = document.getElementById('subnavToggle');
+    const subnavOpenCatalogo = document.getElementById('subnavOpenCatalogo');
+
+    const bgMusic = document.getElementById('bgMusic');
+    const audioBtn = document.getElementById('audioBtn');
+    const secretoBtn = document.getElementById('secretoBtn');
+
+    const carta = document.getElementById('carta');
+    const openCartaBtn = document.getElementById('openCartaBtn');
+    const cerrarCartaBtn = document.getElementById('cerrarCartaBtn');
+
+    const imagenesCatalogo = ['catalogo2/nintendo1.png'];
     let indiceActual = 0;
 
-    // Carta personalizada
-    const carta = document.getElementById('carta');
-    setTimeout(() => carta.style.display = 'flex', 500);
+    function actualizarContador() {
+      carruselCounter.textContent = `${indiceActual + 1}/${imagenesCatalogo.length}`;
+      carruselImagen.alt = `Catálogo Nintendo (imagen ${indiceActual + 1} de ${imagenesCatalogo.length})`;
+      const disabled = imagenesCatalogo.length <= 1;
+      prevBtn.disabled = disabled;
+      nextBtn.disabled = disabled;
+      prevBtn.style.opacity = disabled ? '0.35' : '1';
+      nextBtn.style.opacity = disabled ? '0.35' : '1';
+    }
+
+    function precargarImagenes(lista) {
+      lista.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    }
+
+    function abrirCatalogo() {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      carruselImagen.src = imagenesCatalogo[indiceActual];
+      actualizarContador();
+      modal.focus();
+    }
+
+    function cerrarCatalogo() {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+      openCatalogBtn.focus();
+    }
+
+    function moverCarrusel(direccion) {
+      if (imagenesCatalogo.length <= 1) return;
+      carruselImagen.style.opacity = '0';
+      window.setTimeout(() => {
+        indiceActual += direccion;
+        if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
+        if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
+        carruselImagen.src = imagenesCatalogo[indiceActual];
+        actualizarContador();
+        carruselImagen.style.opacity = '1';
+      }, 120);
+    }
+
+    function abrirCarta() {
+      carta.style.display = 'block';
+    }
 
     function cerrarCarta() {
       carta.style.display = 'none';
     }
 
-    // Carrusel
-    function abrirCatalogo() {
-      modal.style.display = 'flex';
-      document.getElementById("carruselImagen").src = imagenesCatalogo[indiceActual];
+    function cerrarSubnav() {
+      subnav.classList.remove('open');
+      subnavToggle.setAttribute('aria-expanded', 'false');
     }
 
-    function cerrarCatalogo() {
-      modal.style.display = 'none';
+    function toggleSubnav() {
+      const open = subnav.classList.contains('open');
+      if (open) cerrarSubnav();
+      else {
+        subnav.classList.add('open');
+        subnavToggle.setAttribute('aria-expanded', 'true');
+      }
     }
 
-    function moverCarrusel(direccion) {
-      indiceActual += direccion;
-      if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
-      if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
-      document.getElementById("carruselImagen").src = imagenesCatalogo[indiceActual];
-    }
-
-    // Modal: cerrar al hacer clic fuera
-    window.addEventListener('click', e => {
-      if (e.target === modal) cerrarCatalogo();
+    subnavToggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleSubnav();
     });
 
-    // Botón secreto
-    const secreto = document.getElementById('secreto');
-    secreto.addEventListener('click', () => {
-      alert("¡Has encontrado el secreto!\n\nGracias por ser parte de esta aventura. Recuerda: la magia está en cada momento que compartes.\n\n¡Sigue jugando y soñando!");
+    window.addEventListener('click', (event) => {
+      if (!subnav.contains(event.target)) cerrarSubnav();
+      if (event.target === modal) cerrarCatalogo();
     });
 
-    // Audio
-    const audioBtn = document.getElementById('audioBtn');
-    const bgMusic = document.getElementById('bgMusic');
+    subnavOpenCatalogo.addEventListener('click', () => {
+      cerrarSubnav();
+      abrirCatalogo();
+    });
+
+    openCatalogBtn.addEventListener('click', abrirCatalogo);
+    closeBtn.addEventListener('click', cerrarCatalogo);
+    prevBtn.addEventListener('click', () => moverCarrusel(-1));
+    nextBtn.addEventListener('click', () => moverCarrusel(1));
+
+    openCartaBtn.addEventListener('click', abrirCarta);
+    cerrarCartaBtn.addEventListener('click', cerrarCarta);
+
+    const CARTA_KEY = 'gamerEdgeCartaMostrada';
+    if (!sessionStorage.getItem(CARTA_KEY)) {
+      window.setTimeout(() => {
+        abrirCarta();
+        sessionStorage.setItem(CARTA_KEY, '1');
+      }, 420);
+    }
+
+    secretoBtn.addEventListener('click', () => {
+      alert('¡Has encontrado el secreto!\n\nGracias por ser parte de esta aventura Nintendo.');
+    });
+
     let audioActivo = false;
 
-    // Reproducir música tras la primera interacción del usuario
-    function iniciarMusica() {
-      if (!audioActivo) {
-        bgMusic.volume = 0.5;
-        bgMusic.play().then(() => {
-          audioActivo = true;
-          audioBtn.innerHTML = '<i class="fas fa-pause" style="color: #000;"></i>';
-        }).catch(e => console.warn('Reproducción bloqueada:', e));
-        window.removeEventListener('click', iniciarMusica);
+    async function iniciarMusica() {
+      if (audioActivo) return;
+      bgMusic.volume = 0.44;
+      try {
+        await bgMusic.play();
+        audioActivo = true;
+        audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      } catch (error) {
+        console.warn('No se pudo reproducir el audio:', error);
       }
     }
-    window.addEventListener('click', iniciarMusica);
 
-    audioBtn.addEventListener('click', () => {
+    document.body.addEventListener('pointerdown', iniciarMusica, { once: true });
+
+    audioBtn.addEventListener('click', async () => {
       if (audioActivo) {
         bgMusic.pause();
-        audioBtn.innerHTML = '<i class="fas fa-music" style="color: #000;"></i>';
-      } else {
-        bgMusic.play();
-        audioBtn.innerHTML = '<i class="fas fa-pause" style="color: #000;"></i>';
+        audioActivo = false;
+        audioBtn.innerHTML = '<i class="fas fa-music"></i>';
+        return;
       }
-      audioActivo = !audioActivo;
+      await iniciarMusica();
     });
 
-    // Efecto de partículas (sin librería)
-    function crearParticulas() {
-      const particles = document.getElementById('particles');
-      particles.innerHTML = '';
-      const cantidad = 50;
-      for (let i = 0; i < cantidad; i++) {
-        const particula = document.createElement('div');
-        particula.style.position = 'absolute';
-        particula.style.width = Math.random() * 6 + 2 + 'px';
-        particula.style.height = particula.style.width;
-        particula.style.backgroundColor = 'rgba(255, 223, 108, 0.8)';
-        particula.style.borderRadius = '50%';
-        particula.style.top = Math.random() * 100 + '%';
-        particula.style.left = Math.random() * 100 + '%';
-        particula.style.animation = `particulaFlota ${Math.random() * 10 + 10}s linear infinite`;
-        particles.appendChild(particula);
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        if (subnav.classList.contains('open')) cerrarSubnav();
+        if (modal.style.display === 'flex') cerrarCatalogo();
+        if (carta.style.display === 'block') cerrarCarta();
       }
-    }
 
-    // Añadir animación de partículas al CSS
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes particulaFlota {
-        0%, 100% { transform: translateY(0) translateX(0); opacity: 0.8; }
-        50% { transform: translateY(-100px) translateX(50px); opacity: 0.3; }
+      if (modal.style.display !== 'flex') return;
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        moverCarrusel(-1);
       }
-    `;
-    document.head.appendChild(style);
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        moverCarrusel(1);
+      }
+    });
 
-    crearParticulas();
+    precargarImagenes(imagenesCatalogo);
+    actualizarContador();
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>

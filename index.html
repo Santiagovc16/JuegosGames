@@ -1,441 +1,595 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next-Gen Consolas</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --ps-color: #0f32ce;
-            --xbox-color: #03852e;
-            --nintendo-color: #f72216;
-            --neon-effect: cubic-bezier(0.25, 1, 0.5, 1);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JuegosGames | Catálogo de Consolas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Sora:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-a: #070b19;
+      --bg-b: #0f1733;
+      --text-main: #ebf0ff;
+      --text-soft: #aeb8d3;
+      --line: rgba(255, 255, 255, 0.14);
+      --panel: rgba(12, 20, 42, 0.78);
+      --ps: #2f73ff;
+      --xbox: #3fd66e;
+      --nintendo: #ff4b4b;
+      --shadow: 0 18px 38px rgba(0, 0, 0, 0.38);
+    }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at center, #0a081f 0%, #1a1a2e 100%);
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        .cyber-grid {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            pointer-events: none;
-            z-index: 0;
-            animation: gridScan 8s linear infinite;
-        }
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      color: var(--text-main);
+      font-family: 'Sora', sans-serif;
+      background: radial-gradient(circle at 15% 0, #1f2f5f 0, var(--bg-b) 32%, var(--bg-a) 100%);
+      overflow-x: hidden;
+    }
 
-        /* Efecto de partículas */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 38px 38px;
+      opacity: 0.28;
+      animation: grid 18s linear infinite;
+    }
 
-        header {
-            position: relative;
-            padding: 4rem 0;
-            background: linear-gradient(45deg, rgba(0,0,0,0.5), transparent);
-            clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-            margin-bottom: 5rem;
-            overflow: hidden;
-            z-index: 1;
-        }
+    .orb {
+      position: fixed;
+      border-radius: 999px;
+      filter: blur(30px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
 
-        header h1 {
-            font-size: 4rem;
-            text-align: center;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5rem;
-            background: linear-gradient(45deg, var(--ps-color), var(--xbox-color), var(--nintendo-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-            animation: titleFloat 3s ease-in-out infinite;
-        }
+    .orb-1 {
+      width: 280px;
+      height: 280px;
+      top: -90px;
+      right: 6%;
+      background: rgba(47, 115, 255, 0.55);
+      animation: orbA 10s ease-in-out infinite;
+    }
 
-        .button-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 4rem;
-            padding: 2rem;
-            max-width: 1500px;
-            margin: 0 auto;
-            perspective: 2000px;
-            position: relative;
-            z-index: 1;
-        }
+    .orb-2 {
+      width: 220px;
+      height: 220px;
+      bottom: 2%;
+      left: 2%;
+      background: rgba(63, 214, 110, 0.4);
+      animation: orbB 12s ease-in-out infinite;
+    }
 
-        .catalog-btn {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            padding: 2.5rem;
-            font-size: 2rem;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            text-transform: uppercase;
-            text-decoration: none;
-            transition: all 0.6s var(--neon-effect);
-            transform-style: preserve-3d;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-        }
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, 100% - 2rem);
+      margin: 0 auto;
+      padding-bottom: 4rem;
+    }
 
-        .catalog-btn::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(45deg, var(--btn-color-1), var(--btn-color-2));
-            border-radius: inherit;
-            filter: blur(25px);
-            opacity: 0.5;
-            transition: opacity 0.4s;
-            z-index: -1;
-        }
+    .topbar {
+      margin-top: 1rem;
+      border: 1px solid var(--line);
+      background: rgba(9, 16, 35, 0.72);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      padding: 0.7rem 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
 
-        .catalog-btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, 
-                rgba(255,255,255,0.1) 0%,
-                rgba(255,255,255,0) 60%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: 'Chakra Petch', sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
 
-        .catalog-btn:hover {
-            transform: translateY(-10px) rotateX(15deg) rotateY(10deg) scale(1.05);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-        }
+    .brand i {
+      color: #76b2ff;
+    }
 
-        .catalog-btn:hover::before {
-            opacity: 0.8;
-        }
+    .tag {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.3rem 0.6rem;
+      white-space: nowrap;
+    }
 
-        .catalog-btn:hover::after {
-            opacity: 1;
-        }
+    .hero {
+      margin-top: 1.2rem;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(140deg, rgba(17, 28, 58, 0.94) 0%, rgba(9, 14, 30, 0.9) 70%);
+      box-shadow: var(--shadow);
+      padding: clamp(1.2rem, 2.4vw, 2.2rem);
+      position: relative;
+      overflow: hidden;
+    }
 
-        .catalog-btn i {
-            font-size: 2.5rem;
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
-            transition: transform 0.4s, color 0.4s;
-            color: white;
-        }
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -110px;
+      top: -100px;
+      width: 320px;
+      height: 320px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(118, 178, 255, 0.36), transparent 70%);
+      pointer-events: none;
+    }
 
-        .catalog-btn:hover i {
-            transform: scale(1.2) rotate(15deg);
-        }
+    .eyebrow {
+      display: inline-flex;
+      gap: 0.45rem;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.32rem 0.65rem;
+      color: #b9c9ff;
+      font-weight: 700;
+    }
 
-        .ps-btn {
-            --btn-color-1: #029be8;
-            --btn-color-2: #91e1ea;
-        }
-        .ps-btn span {
-            color: var(--ps-color);
-        }
+    h1 {
+      margin: 0.8rem 0 0.58rem;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: clamp(2rem, 5.3vw, 4rem);
+      line-height: 0.95;
+    }
 
-        .xbox-btn {
-            --btn-color-1: #04461a;
-            --btn-color-2: #30a153;
-        }
-        .xbox-btn span {
-            color: var(--xbox-color);
-        }
+    .lead {
+      margin: 0;
+      max-width: 68ch;
+      color: var(--text-soft);
+      line-height: 1.58;
+    }
 
-        .nintendo-btn {
-            --btn-color-1: #ff4136;
-            --btn-color-2: #d62c2c;
-        }
-        .nintendo-btn span {
-            color: var(--nintendo-color);
-        }
+    .stats {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
 
-        footer {
-            margin-top: 8rem;
-            padding: 3rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            border-top: 2px solid rgba(255,255,255,0.1);
-        }
+    .stat {
+      border: 1px solid var(--line);
+      background: rgba(8, 14, 30, 0.75);
+      border-radius: 12px;
+      padding: 0.78rem;
+    }
 
-        @keyframes gridScan {
-            0% { background-position: 0 0; }
-            100% { background-position: 30px 30px; }
-        }
+    .stat span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.2rem;
+    }
 
-        @keyframes titleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+    .stat strong {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.28rem;
+    }
 
-        /* Estilos para el efecto holográfico */
-        .hologram-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s;
-        }
-        .hologram-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        .hologram {
-            width: 80%;
-            max-width: 600px;
-            height: 70vh;
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.2));
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            animation: hologramFloat 4s ease-in-out infinite;
-        }
-        .hologram img {
-            max-width: 60%;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.7));
-        }
-        .hologram h2 {
-            font-size: 2.5rem;
-            margin: 0;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
-        }
-        .hologram p {
-            font-size: 1.2rem;
-            max-width: 80%;
-            text-align: center;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
-        }
-        .hologram-close {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
-        }
-        @keyframes hologramFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
-        }
+    .cards {
+      margin-top: 1rem;
+      display: grid;
+      gap: 0.9rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5rem;
-            }
-            .button-container {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .catalog-btn {
-                font-size: 1.6rem;
-                padding: 2rem;
-            }
-            .hologram {
-                width: 90%;
-                height: 60vh;
-            }
-        }
-    </style>
+    .console-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      min-height: 260px;
+      transition: transform 220ms ease, border-color 220ms ease;
+    }
+
+    .console-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .console-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+    }
+
+    .console-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .console-name {
+      margin: 0;
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .console-text {
+      margin: 0.2rem 0 0;
+      color: var(--text-soft);
+      line-height: 1.45;
+      font-size: 0.95rem;
+      flex: 1;
+    }
+
+    .console-footer {
+      margin-top: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 0.24rem 0.58rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .ps-card { border-color: rgba(47, 115, 255, 0.34); }
+    .ps-card .console-icon { background: rgba(47, 115, 255, 0.18); color: #9ec0ff; }
+
+    .xbox-card { border-color: rgba(63, 214, 110, 0.34); }
+    .xbox-card .console-icon { background: rgba(63, 214, 110, 0.18); color: #9bf2b6; }
+
+    .nintendo-card { border-color: rgba(255, 75, 75, 0.34); }
+    .nintendo-card .console-icon { background: rgba(255, 75, 75, 0.18); color: #ffbbbb; }
+
+    .radio-control {
+      position: fixed;
+      left: 1rem;
+      bottom: 1rem;
+      z-index: 50;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.46rem 0.8rem;
+      background: rgba(8, 14, 30, 0.88);
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      font: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    footer {
+      margin-top: 1.2rem;
+      text-align: center;
+      color: var(--text-soft);
+      font-size: 0.85rem;
+    }
+
+    .hologram-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      z-index: 70;
+      align-items: center;
+      justify-content: center;
+      background: rgba(4, 8, 20, 0.82);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+    }
+
+    .hologram-overlay.active {
+      display: flex;
+      animation: show 220ms ease;
+    }
+
+    .hologram {
+      width: min(560px, 100%);
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(8, 14, 30, 0.96);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      position: relative;
+      text-align: center;
+    }
+
+    .hologram-close {
+      position: absolute;
+      right: 0.6rem;
+      top: 0.6rem;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .hologram img {
+      width: 86px;
+      height: 86px;
+      object-fit: contain;
+      margin: 0.2rem auto 0.8rem;
+      display: block;
+      filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.24));
+    }
+
+    .hologram h2 {
+      font-family: 'Chakra Petch', sans-serif;
+      margin: 0;
+      font-size: 1.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .hologram p {
+      margin: 0.55rem auto 0;
+      color: var(--text-soft);
+      line-height: 1.45;
+      max-width: 42ch;
+    }
+
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 2px;
+    }
+
+    @keyframes grid {
+      from { background-position: 0 0; }
+      to { background-position: 38px 38px; }
+    }
+
+    @keyframes orbA {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(24px); }
+    }
+
+    @keyframes orbB {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(18px, -16px); }
+    }
+
+    @keyframes show {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 930px) {
+      .stats,
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="cyber-grid"></div>
-    <audio id="gameRadio" loop autoplay controls style="position: fixed; left: -9999px; top: -9999px;">
-      <source src="https://stream.nightride.fm/nightride.mp3" type="audio/mpeg">
-    </audio>
-    <div id="particles-js"></div>
-    
-    <header>
-        <h1>Next-Gen Consolas</h1>
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+
+  <audio id="gameRadio" loop>
+    <source src="https://stream.nightride.fm/nightride.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <i class="fas fa-layer-group"></i>
+        <strong>JuegosGames Console Hub</strong>
+      </div>
+      <span class="tag">Catálogo Comercial 2026</span>
     </header>
 
-    <main>
-        <div class="button-container">
-            <a href="playstation.html" class="catalog-btn ps-btn">
-                <i class="fab fa-playstation"></i>
-                <span>PlayStation 5 - 4</span>
-            </a>
-            <a href="xbox-catalogo.html" class="catalog-btn xbox-btn">
-                <i class="fab fa-xbox"></i>
-                <span>Xbox Series X - S</span>
-            </a>
-            <a href="nintendo-switch-catalogo.html" class="catalog-btn nintendo-btn">
-                <i class="fas fa-gamepad"></i>
-                <span>Nintendo Switch</span>
-            </a>
+    <section class="hero">
+      <span class="eyebrow"><i class="fas fa-sparkles"></i> Plataforma central</span>
+      <h1>Next-Gen Consolas</h1>
+      <p class="lead">
+        Centro unificado para presentar catálogos de PlayStation, Xbox y Nintendo con una experiencia visual premium, navegación rápida y enfoque comercial.
+      </p>
+
+      <div class="stats">
+        <article class="stat"><span>Consolas</span><strong>3 marcas</strong></article>
+        <article class="stat"><span>Experiencia</span><strong>Full responsive</strong></article>
+        <article class="stat"><span>Uso recomendado</span><strong>Ventas y showroom</strong></article>
+      </div>
+    </section>
+
+    <main class="cards">
+      <a href="playstation.html" class="console-card ps-card" data-console="ps">
+        <div class="console-header">
+          <div class="console-icon"><i class="fab fa-playstation"></i></div>
+          <span class="pill">PS4 / PS5</span>
         </div>
-        <div style="position: fixed; bottom: 2rem; left: 2rem; z-index: 1001;">
-          <button id="toggleRadioBtn" style="background: rgba(255,255,255,0.1); border: 2px solid white; color: white; font-size: 1.2rem; border-radius: 10px; padding: 0.5rem 1rem; cursor: pointer;">
-            🔊
-          </button>
+        <h2 class="console-name">PlayStation</h2>
+        <p class="console-text">Experiencia enfocada en catálogo completo, descarga directa y carrusel para presentar múltiples diapositivas.</p>
+        <div class="console-footer">
+          <span>Entrar al catálogo</span>
+          <i class="fas fa-arrow-right"></i>
         </div>
+      </a>
+
+      <a href="xbox-catalogo.html" class="console-card xbox-card" data-console="xbox">
+        <div class="console-header">
+          <div class="console-icon"><i class="fab fa-xbox"></i></div>
+          <span class="pill">Series X/S</span>
+        </div>
+        <h2 class="console-name">Xbox</h2>
+        <p class="console-text">Vista ejecutiva con controles inmersivos, audio reactivo y presentación optimizada para reuniones de producto.</p>
+        <div class="console-footer">
+          <span>Entrar al catálogo</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+
+      <a href="nintendo-switch-catalogo.html" class="console-card nintendo-card" data-console="nintendo">
+        <div class="console-header">
+          <div class="console-icon"><i class="fas fa-gamepad"></i></div>
+          <span class="pill">Switch</span>
+        </div>
+        <h2 class="console-name">Nintendo</h2>
+        <p class="console-text">Presentación limpia y dinámica para Nintendo Switch con acceso rápido al catálogo y elementos interactivos.</p>
+        <div class="console-footer">
+          <span>Entrar al catálogo</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
     </main>
 
     <footer>
-        <p>© 2024 Next-Gen Universe - Todos los derechos reservados</p>
+      © <span id="year"></span> JuegosGames | Catálogo de consolas
     </footer>
+  </div>
 
-    <!-- Overlay holográfico -->
-    <div class="hologram-overlay">
-        <button class="hologram-close"><i class="fas fa-times"></i></button>
-        <div class="hologram">
-            <img id="hologram-img" src="https://cdn-icons-png.flaticon.com/512/5962/5962385.png" alt="Consola">
-            <h2 id="hologram-title">PlayStation 5</h2>
-            <p id="hologram-desc">La nueva generación de consolas Sony. ¡Experimenta gráficos 4K, velocidad de carga ultrarrápida y una nueva era de juegos!</p>
-        </div>
+  <button id="toggleRadioBtn" class="radio-control" type="button" aria-label="Activar o silenciar radio">
+    <span id="radioIcon">🔊</span>
+    <span>Radio</span>
+  </button>
+
+  <div class="hologram-overlay" id="hologramOverlay" aria-hidden="true">
+    <div class="hologram">
+      <button class="hologram-close" id="hologramClose" type="button" aria-label="Cerrar vista previa">×</button>
+      <img id="hologramImg" src="https://cdn-icons-png.flaticon.com/512/5962/5962385.png" alt="Consola">
+      <h2 id="hologramTitle">PlayStation</h2>
+      <p id="hologramDesc">Vista previa informativa del catálogo seleccionado.</p>
     </div>
+  </div>
 
-    <script>
-        // Cambia el color del ícono al hacer hover
-        document.querySelectorAll('.catalog-btn').forEach(btn => {
-            const icon = btn.querySelector('i');
-            
-            btn.addEventListener('mouseenter', () => {
-                if (btn.classList.contains('ps-btn')) {
-                    icon.style.color = 'var(--ps-color)';
-                } else if (btn.classList.contains('xbox-btn')) {
-                    icon.style.color = 'var(--xbox-color)';
-                } else if (btn.classList.contains('nintendo-btn')) {
-                    icon.style.color = 'var(--nintendo-color)';
-                }
-            });
+  <script>
+    const dataByConsole = {
+      ps: {
+        img: 'https://cdn-icons-png.flaticon.com/512/5962/5962385.png',
+        title: 'PlayStation',
+        desc: 'Catálogo de PlayStation 4 y 5 con enfoque en presentación visual, descargas y recorrido por diapositivas.'
+      },
+      xbox: {
+        img: 'https://cdn-icons-png.flaticon.com/512/732/732221.png',
+        title: 'Xbox',
+        desc: 'Catálogo de Xbox Series X/S diseñado para demostraciones comerciales y navegación inmersiva.'
+      },
+      nintendo: {
+        img: 'https://cdn-icons-png.flaticon.com/512/2580/2580996.png',
+        title: 'Nintendo Switch',
+        desc: 'Catálogo de Nintendo Switch listo para presentación rápida con elementos interactivos y experiencia móvil.'
+      }
+    };
 
-            btn.addEventListener('mouseleave', () => {
-                icon.style.color = 'white';
-            });
+    const cards = document.querySelectorAll('.console-card');
+    const overlay = document.getElementById('hologramOverlay');
+    const closeBtn = document.getElementById('hologramClose');
+    const img = document.getElementById('hologramImg');
+    const title = document.getElementById('hologramTitle');
+    const desc = document.getElementById('hologramDesc');
 
-            // Efecto holográfico solo si se mantiene pulsada la tecla Alt
-            btn.addEventListener('click', (e) => {
-                if (e.altKey) { // Si se mantiene Alt pulsada al hacer clic
-                    e.preventDefault(); // Solo aquí previene la navegación
-                    const overlay = document.querySelector('.hologram-overlay');
-                    const img = document.getElementById('hologram-img');
-                    const title = document.getElementById('hologram-title');
-                    const desc = document.getElementById('hologram-desc');
+    cards.forEach((card) => {
+      card.addEventListener('click', (event) => {
+        if (!event.altKey) return;
+        event.preventDefault();
 
-                    if (btn.classList.contains('ps-btn')) {
-                        img.src = 'https://cdn-icons-png.flaticon.com/512/5962/5962385.png';
-                        title.textContent = 'PlayStation 5';
-                        desc.textContent = 'La nueva generación de consolas Sony. ¡Experimenta gráficos 4K, velocidad de carga ultrarrápida y una nueva era de juegos!';
-                    } else if (btn.classList.contains('xbox-btn')) {
-                        img.src = 'https://cdn-icons-png.flaticon.com/512/732/732221.png';
-                        title.textContent = 'Xbox Series X';
-                        desc.textContent = 'La consola más potente de Microsoft. Disfruta de juegos en 4K, HDR y una experiencia de juego increíblemente rápida.';
-                    } else if (btn.classList.contains('nintendo-btn')) {
-                        img.src = 'https://cdn-icons-png.flaticon.com/512/2580/2580996.png';
-                        title.textContent = 'Nintendo Switch';
-                        desc.textContent = 'Juega donde quieras, como quieras. Combina la potencia de una consola de sobremesa con la portabilidad de una consola portátil.';
-                    }
+        const key = card.getAttribute('data-console');
+        const data = dataByConsole[key];
+        if (!data) return;
 
-                    overlay.classList.add('active');
-                }
-                // Si no se pulsa Alt, la navegación funciona normalmente
-            });
-        });
+        img.src = data.img;
+        title.textContent = data.title;
+        desc.textContent = data.desc;
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+      });
+    });
 
-        // Cerrar overlay
-        document.querySelector('.hologram-close').addEventListener('click', () => {
-            document.querySelector('.hologram-overlay').classList.remove('active');
-        });
+    function closeOverlay() {
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
 
-        // Efecto de partículas (requiere la librería particles.js)
-        // Puedes agregar el script: <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-        // y luego la configuración (ejemplo en comentario):
-        /*
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: "#ffffff" },
-                shape: { type: "circle" },
-                opacity: { value: 0.5, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
-            }
-        });
-        */
-        // Si no quieres usar particles.js, puedes eliminar el div #particles-js y su estilo
+    closeBtn.addEventListener('click', closeOverlay);
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) closeOverlay();
+    });
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeOverlay();
+    });
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.querySelector('.hologram-overlay').classList.remove('active');
-            }
-        });
+    const radio = document.getElementById('gameRadio');
+    const toggleRadioBtn = document.getElementById('toggleRadioBtn');
+    const radioIcon = document.getElementById('radioIcon');
 
-        // Iniciar la emisora de videojuegos y botón de mute (bloque robusto)
-        window.addEventListener('DOMContentLoaded', () => {
-            const radio = document.getElementById('gameRadio');
-            const toggleBtn = document.getElementById('toggleRadioBtn');
+    async function iniciarRadio() {
+      radio.volume = 0.5;
+      try {
+        await radio.play();
+      } catch (error) {
+        console.warn('Reproduccion de radio bloqueada:', error);
+      }
+      window.removeEventListener('pointerdown', iniciarRadio);
+    }
 
-            const iniciar = () => {
-                if (!radio) return;
-                radio.volume = 0.6;
+    window.addEventListener('pointerdown', iniciarRadio, { once: true });
 
-                if (radio.readyState >= 2) {
-                    radio.play().then(() => {
-                        console.log("🎧 Radio en reproducción");
-                    }).catch(err => console.warn("❌ Error al reproducir:", err));
-                } else {
-                    radio.addEventListener('canplay', () => {
-                        radio.play().then(() => {
-                            console.log("🎧 Radio comenzó tras 'canplay'");
-                        }).catch(err => console.warn("❌ Error tras canplay:", err));
-                    }, { once: true });
-                }
+    toggleRadioBtn.addEventListener('click', () => {
+      radio.muted = !radio.muted;
+      radioIcon.textContent = radio.muted ? '🔇' : '🔊';
+    });
 
-                window.removeEventListener('pointerdown', iniciar);
-            };
-
-            window.addEventListener('pointerdown', iniciar);
-
-            // Botón de mute
-            toggleBtn.addEventListener('click', () => {
-                radio.muted = !radio.muted;
-                toggleBtn.textContent = radio.muted ? '🔇' : '🔊';
-            });
-        });
-    </script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
