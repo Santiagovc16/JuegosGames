@@ -1,325 +1,1080 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Xbox Series</title>
+  <title>Xbox Series | Catálogo Profesional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     :root {
-      --neon-green: #0dffc2;
-      --cyber-purple: #bd00ff;
-      --matrix-green: #00ff4c;
-      --bg-dark: #000a00;
+      --xbox-green: #74ff87;
+      --xbox-accent: #16c95a;
+      --xbox-dark: #08120d;
+      --xbox-surface: rgba(17, 27, 21, 0.72);
+      --xbox-surface-strong: rgba(13, 20, 16, 0.94);
+      --xbox-border: rgba(116, 255, 135, 0.22);
+      --xbox-text: #e9fff0;
+      --xbox-muted: #97b9a0;
+      --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.35);
+      --shadow-neon: 0 0 28px rgba(116, 255, 135, 0.2);
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: radial-gradient(circle at center, #000, var(--bg-dark));
-      color: var(--neon-green);
-      min-height: 100vh;
+      min-height: 100%;
+      color: var(--xbox-text);
+      background: radial-gradient(circle at 20% 5%, #1b2a22 0%, #0b1510 42%, #050806 100%);
+      font-family: 'Space Grotesk', sans-serif;
       overflow-x: hidden;
     }
 
-    .cyber-grid {
+    body::before {
+      content: '';
       position: fixed;
-      width: 100vw;
-      height: 100vh;
-      background-image: 
-        linear-gradient(rgba(0, 255, 100, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 100, 0.1) 1px, transparent 1px);
-      background-size: 30px 30px;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(116, 255, 135, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(116, 255, 135, 0.06) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.36;
       pointer-events: none;
       z-index: 0;
-      animation: gridScan 8s linear infinite;
+      animation: drift 18s linear infinite;
     }
 
-    header {
-      text-align: center;
-      padding: 4rem 0;
-      border-bottom: 2px solid var(--neon-green);
-      backdrop-filter: blur(6px);
-      background: rgba(0, 0, 0, 0.7);
+    .orb {
+      position: fixed;
+      border-radius: 999px;
+      filter: blur(26px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.48;
+    }
+
+    .orb-a {
+      width: 280px;
+      height: 280px;
+      top: -80px;
+      right: 8%;
+      background: rgba(22, 201, 90, 0.42);
+      animation: floatA 8s ease-in-out infinite;
+    }
+
+    .orb-b {
+      width: 220px;
+      height: 220px;
+      bottom: 6%;
+      left: 3%;
+      background: rgba(116, 255, 135, 0.3);
+      animation: floatB 11s ease-in-out infinite;
+    }
+
+    .page {
       position: relative;
-      z-index: 2;
+      z-index: 1;
+      width: min(1120px, 100% - 2rem);
+      margin: 0 auto;
+      padding-bottom: 5rem;
     }
 
-    header h1 {
-      font-size: 4rem;
-      margin: 0;
-      background: linear-gradient(45deg, var(--neon-green), var(--cyber-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px var(--matrix-green);
-      animation: neonPulse 1.5s infinite alternate;
-    }
-
-    main {
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      margin-top: 1rem;
+      background: rgba(8, 16, 12, 0.7);
+      border: 1px solid var(--xbox-border);
+      border-radius: 18px;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-soft);
+      padding: 0.8rem;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 4rem 1rem;
-      text-align: center;
+      justify-content: space-between;
+      gap: 1rem;
     }
 
-    .guide-text {
-      font-size: 1.5rem;
-      color: var(--neon-green);
-      margin-bottom: 1.5rem;
-      text-shadow: 0 0 10px var(--neon-green);
-      animation: pulseText 2s infinite;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
     }
 
-    .game-card {
-      width: 300px;
-      height: 300px;
-      border-radius: 15px;
-      overflow: hidden;
+    .brand i {
+      color: var(--xbox-green);
+      font-size: 1.4rem;
+    }
+
+    .brand strong {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+    }
+
+    .subnav {
+      position: relative;
+    }
+
+    .subnav-toggle {
+      border: 1px solid var(--xbox-border);
+      background: rgba(12, 25, 18, 0.76);
+      color: var(--xbox-text);
+      border-radius: 999px;
+      padding: 0.56rem 0.9rem;
       cursor: pointer;
-      background: #000;
-      box-shadow: 0 0 30px rgba(0, 255, 100, 0.3);
-      border: 2px solid rgba(0, 255, 100, 0.2);
-      transition: transform 0.4s ease-in-out;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 600;
+      font-family: 'Space Grotesk', sans-serif;
     }
 
-    .game-card:hover {
-      transform: scale(1.05);
+    .subnav-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      width: 228px;
+      display: none;
+      padding: 0.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--xbox-border);
+      background: var(--xbox-surface-strong);
+      box-shadow: var(--shadow-soft);
     }
 
-    .game-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .subnav.open .subnav-menu {
       display: block;
+      animation: reveal 200ms ease;
+    }
+
+    .subnav-menu a,
+    .subnav-menu button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      border: 0;
+      background: transparent;
+      text-decoration: none;
+      color: var(--xbox-text);
+      padding: 0.65rem 0.6rem;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .subnav-menu a:hover,
+    .subnav-menu button:hover {
+      background: rgba(116, 255, 135, 0.12);
+    }
+
+    .hero {
+      margin-top: 1.7rem;
+      border: 1px solid var(--xbox-border);
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(17, 31, 22, 0.88) 0%, rgba(10, 16, 13, 0.88) 70%);
+      box-shadow: var(--shadow-soft), var(--shadow-neon);
+      overflow: hidden;
+      position: relative;
+      padding: clamp(1.3rem, 2.4vw, 2.4rem);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -120px;
+      top: -90px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(116, 255, 135, 0.2) 0%, transparent 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid var(--xbox-border);
+      border-radius: 999px;
+      color: var(--xbox-green);
+      padding: 0.35rem 0.7rem;
+      font-size: 0.82rem;
+      background: rgba(116, 255, 135, 0.1);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0.95rem 0 0.6rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 62ch;
+      color: var(--xbox-muted);
+      font-size: clamp(1rem, 1.8vw, 1.12rem);
+      line-height: 1.55;
+    }
+
+    .hero-grid {
+      margin-top: 1.4rem;
+      display: grid;
+      gap: 0.9rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .metric {
+      border: 1px solid var(--xbox-border);
+      border-radius: 14px;
+      background: rgba(7, 14, 10, 0.74);
+      padding: 0.95rem;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--xbox-muted);
+      font-size: 0.83rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric strong {
+      font-size: 1.35rem;
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--xbox-green);
+    }
+
+    .content {
+      margin-top: 1.35rem;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1.18fr 0.82fr;
+    }
+
+    .panel {
+      border: 1px solid var(--xbox-border);
+      border-radius: 20px;
+      background: var(--xbox-surface);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-soft);
+      padding: 1rem;
+    }
+
+    .catalog-preview {
+      display: grid;
+      gap: 1rem;
+      align-items: center;
+      grid-template-columns: minmax(0, 1fr) 200px;
+    }
+
+    .preview-image {
+      border: 1px solid var(--xbox-border);
+      border-radius: 16px;
+      width: 100%;
+      height: auto;
+      display: block;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    .title {
+      margin: 0 0 0.45rem;
+      font-size: 1.25rem;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.8px;
+    }
+
+    .text {
+      margin: 0;
+      color: var(--xbox-muted);
+      line-height: 1.45;
+      font-size: 0.96rem;
+    }
+
+    .actions {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      border: 1px solid var(--xbox-border);
+      border-radius: 10px;
+      font: inherit;
+      padding: 0.65rem 1rem;
+      cursor: pointer;
+      color: var(--xbox-text);
+      text-decoration: none;
+      display: inline-flex;
+      gap: 0.5rem;
+      align-items: center;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--xbox-accent), #2fe36f);
+      color: #05210f;
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .btn-secondary {
+      background: rgba(10, 19, 14, 0.8);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .feature-list li {
+      border: 1px solid var(--xbox-border);
+      border-radius: 10px;
+      padding: 0.7rem;
+      background: rgba(10, 19, 14, 0.7);
+      color: var(--xbox-muted);
+      font-size: 0.94rem;
+      line-height: 1.4;
+    }
+
+    .feature-list i {
+      color: var(--xbox-green);
+      margin-right: 0.45rem;
+    }
+
+    .xbox-controls {
+      position: fixed;
+      right: 1.1rem;
+      bottom: 1.2rem;
+      z-index: 70;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .xbox-controls button {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid var(--xbox-border);
+      background: rgba(8, 15, 11, 0.88);
+      color: var(--xbox-green);
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .audio-viz {
+      position: fixed;
+      right: 6.2rem;
+      bottom: 1.45rem;
+      width: 200px;
+      height: 58px;
+      border-radius: 9px;
+      border: 1px solid var(--xbox-border);
+      background: rgba(8, 15, 11, 0.83);
+      box-shadow: var(--shadow-soft);
+      z-index: 69;
+      pointer-events: none;
+    }
+
+    .achievement-toast {
+      position: fixed;
+      left: 1rem;
+      bottom: 1rem;
+      width: min(360px, calc(100vw - 2rem));
+      border-radius: 14px;
+      border: 1px solid var(--xbox-border);
+      background: rgba(10, 19, 14, 0.9);
+      padding: 0.9rem;
+      box-shadow: var(--shadow-soft);
+      opacity: 0;
+      transform: translateY(28px);
+      pointer-events: none;
+      z-index: 80;
+    }
+
+    .achievement-toast.show {
+      animation: toast 3.2s ease forwards;
+    }
+
+    .achievement-title {
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--xbox-green);
+      margin-bottom: 0.36rem;
+      font-weight: 700;
+    }
+
+    .achievement-body {
+      color: var(--xbox-muted);
+      line-height: 1.4;
+      font-size: 0.95rem;
+    }
+
+    .achievement-points {
+      margin-top: 0.52rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      color: #04220f;
+      display: inline-block;
+      border-radius: 999px;
+      padding: 0.25rem 0.6rem;
+      background: linear-gradient(135deg, var(--xbox-green), #27d060);
+      font-weight: 700;
     }
 
     .holo-modal {
-      display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      justify-content: center;
+      inset: 0;
+      display: none;
       align-items: center;
-      z-index: 1000;
+      justify-content: center;
+      background: rgba(3, 8, 5, 0.85);
+      z-index: 90;
+      backdrop-filter: blur(8px);
+      padding: 1rem;
     }
 
     .holo-content {
+      width: min(1100px, 100%);
+      height: min(86vh, 760px);
+      border-radius: 20px;
+      border: 1px solid var(--xbox-border);
+      background: rgba(8, 14, 10, 0.94);
+      box-shadow: var(--shadow-soft), var(--shadow-neon);
       position: relative;
-      width: 90%;
-      max-width: 1000px;
-      height: 90vh;
-      background: rgba(0, 17, 0, 0.9);
-      border-radius: 15px;
-      border: 3px solid var(--neon-green);
-      box-shadow: 0 0 50px rgba(0, 255, 100, 0.5);
+      padding: 1rem;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+    }
+
+    .holo-close {
+      position: absolute;
+      right: 0.8rem;
+      top: 0.8rem;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--xbox-border);
+      border-radius: 50%;
+      background: rgba(8, 14, 10, 0.8);
+      color: var(--xbox-green);
+      cursor: pointer;
+      font-size: 1.5rem;
+      line-height: 1;
     }
 
     .carrusel-container {
-      position: relative;
-      width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      touch-action: pan-y;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--xbox-border);
+      background: #050a07;
     }
 
     .carrusel-container img {
-      max-height: 100%;
       max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 255, 100, 0.3);
+      transition: opacity 140ms ease;
     }
 
     .carrusel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 2.5rem;
-      background: rgba(0, 0, 0, 0.5);
-      border: none;
-      color: var(--neon-green);
-      cursor: pointer;
-      padding: 1rem;
+      border: 1px solid var(--xbox-border);
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      z-index: 10;
-      transition: background 0.3s;
+      background: rgba(8, 14, 10, 0.85);
+      color: var(--xbox-green);
+      cursor: pointer;
+      font-size: 1.4rem;
     }
 
-    .carrusel-btn:hover {
-      background: rgba(0, 0, 0, 0.8);
+    .carrusel-btn.left {
+      left: 0.8rem;
     }
 
-    .carrusel-btn.left { left: 10px; }
-    .carrusel-btn.right { right: 10px; }
+    .carrusel-btn.right {
+      right: 0.8rem;
+    }
+
+    .carrusel-counter {
+      position: absolute;
+      bottom: 0.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      border: 1px solid var(--xbox-border);
+      background: rgba(8, 14, 10, 0.85);
+      padding: 0.34rem 0.62rem;
+      font-size: 0.82rem;
+      color: var(--xbox-text);
+    }
 
     footer {
+      margin-top: 1.2rem;
+      color: var(--xbox-muted);
       text-align: center;
-      padding: 3rem 1rem;
-      margin-top: 4rem;
-      color: var(--neon-green);
-      font-size: 1rem;
-      background: rgba(0, 0, 0, 0.6);
-      border-top: 2px solid var(--neon-green);
+      font-size: 0.86rem;
     }
 
-    @keyframes pulseText {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.05); }
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--xbox-green);
+      outline-offset: 2px;
     }
 
-    @keyframes neonPulse {
-      from { text-shadow: 0 0 10px var(--matrix-green); }
-      to { text-shadow: 0 0 30px var(--matrix-green); }
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    @keyframes gridScan {
-      0% { background-position: 0 0; }
-      100% { background-position: 30px 30px; }
+    @keyframes toast {
+      0% {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      12%,
+      84% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(28px);
+      }
     }
 
-    @media (max-width: 768px) {
-      header h1 { font-size: 2.5rem; }
-      .game-card { width: 90vw; height: 90vw; }
-    }
-    .xbox-controls {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      display: flex;
-      gap: 1rem;
-      z-index: 1001;
+    @keyframes drift {
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: 42px 42px;
+      }
     }
 
-    .xbox-controls button {
-      background: rgba(0, 255, 100, 0.1);
-      border: 2px solid var(--neon-green);
-      border-radius: 50%;
-      padding: 1rem;
-      font-size: 1.5rem;
-      color: var(--neon-green);
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 10px rgba(0, 255, 100, 0.3);
-      transition: transform 0.3s, background 0.3s;
+    @keyframes floatA {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(24px);
+      }
     }
 
-    .xbox-controls button:hover {
-      background: rgba(0, 255, 100, 0.3);
-      transform: scale(1.1);
+    @keyframes floatB {
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+      50% {
+        transform: translate(18px, -20px);
+      }
+    }
+
+    @media (max-width: 930px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .catalog-preview {
+        grid-template-columns: 1fr;
+      }
+
+      .audio-viz {
+        width: 156px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .xbox-controls {
+        right: 0.8rem;
+        bottom: 0.8rem;
+      }
+
+      .audio-viz {
+        right: 4.7rem;
+        width: 120px;
+      }
+
+      .carrusel-btn {
+        width: 38px;
+        height: 38px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .audio-viz,
+      .orb {
+        display: none !important;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="cyber-grid"></div>
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <div class="orb orb-b" aria-hidden="true"></div>
 
   <audio id="bgMusic" loop>
     <source src="assets/audio/halo2-theme.mp3" type="audio/mpeg">
     Tu navegador no soporta audio.
   </audio>
 
-  <header>
-    <h1>Xbox Series X </h1>
-  </header>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <i class="fab fa-xbox" aria-hidden="true"></i>
+        <strong>Xbox Professional Catalog</strong>
+      </div>
+      <nav class="subnav" aria-label="Navegación del catálogo">
+        <button class="subnav-toggle" id="subnavToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="subnavMenu">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+          Menú
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
 
-  <main>
-    <div class="guide-text">
-      <i class="fas fa-mouse-pointer"></i> Presiona clic para ver catálogo
-    </div>
-    <div class="game-card" onclick="abrirCatalogo()">
-      <img src="catalogo2/Diapositiva1.png" alt="Vista previa catálogo Xbox">
-    </div>
-  </main>
-  <div class="xbox-controls">
-    <button class="audio-btn" id="audioBtn">
-      <i class="fas fa-music"></i>
-    </button>
-    <button class="star-btn">
-      <i class="fas fa-star"></i>
-    </button>
+        <div class="subnav-menu" id="subnavMenu" role="menu">
+          <a role="menuitem" href="index.html"><i class="fas fa-house"></i> Inicio</a>
+          <a role="menuitem" href="playstation.html"><i class="fas fa-gamepad"></i> PlayStation</a>
+          <a role="menuitem" href="xbox-catalogo.html"><i class="fab fa-xbox"></i> Xbox</a>
+          <a role="menuitem" href="nintendo-switch-catalogo.html"><i class="fas fa-ghost"></i> Nintendo</a>
+          <button role="menuitem" type="button" id="subnavOpenCatalogo"><i class="fas fa-images"></i> Abrir catálogo</button>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <span class="eyebrow"><i class="fas fa-bolt"></i> Temporada 2026</span>
+      <h1>Xbox Series X</h1>
+      <p class="lead">
+        Catálogo visual optimizado para demostración comercial: navegación rápida, experiencia inmersiva y control completo de presentación para cerrar ventas con una interfaz moderna.
+      </p>
+
+      <div class="hero-grid">
+        <article class="metric">
+          <span>Calidad visual</span>
+          <strong>4K Ready</strong>
+        </article>
+        <article class="metric">
+          <span>Interacción</span>
+          <strong>Modal + Swipe</strong>
+        </article>
+        <article class="metric">
+          <span>Experiencia</span>
+          <strong>Audio reactivo</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="content">
+      <article class="panel catalog-preview">
+        <div>
+          <h2 class="title">Presentación de Catálogo</h2>
+          <p class="text">
+            Abre el carrusel en pantalla completa para enseñar el producto sin distracciones. Incluye navegación por botones, teclado y gestos táctiles.
+          </p>
+
+          <div class="actions">
+            <button class="btn btn-primary" type="button" id="openCatalogBtn">
+              <i class="fas fa-play"></i>
+              Ver catálogo
+            </button>
+            <a class="btn btn-secondary" href="catalogo/catalogo.pdf" target="_blank" rel="noopener noreferrer">
+              <i class="fas fa-file-pdf"></i>
+              Descargar PDF
+            </a>
+          </div>
+        </div>
+        <img class="preview-image" src="catalogo2/Diapositiva1.png" alt="Vista previa del catálogo Xbox" loading="lazy">
+      </article>
+
+      <aside class="panel">
+        <h2 class="title">Herramientas de venta</h2>
+        <ul class="feature-list">
+          <li><i class="fas fa-check"></i> Vista premium para reuniones de clientes y showroom.</li>
+          <li><i class="fas fa-check"></i> Gamerscore local para interacción rápida con el cliente.</li>
+          <li><i class="fas fa-check"></i> Controles flotantes para audio y logros en tiempo real.</li>
+          <li><i class="fas fa-check"></i> Diseño responsive para desktop, tablet y móvil.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <footer>
+      Xbox Catalog Experience © <span id="year"></span> | JuegosGames
+    </footer>
   </div>
 
-  <div class="holo-modal" id="holoModal">
+  <div class="xbox-controls">
+    <button class="audio-btn" id="audioBtn" type="button" aria-label="Controlar audio"><i class="fas fa-music"></i></button>
+    <button class="star-btn" id="starBtn" type="button" aria-label="Desbloquear logro"><i class="fas fa-star"></i></button>
+  </div>
+
+  <canvas id="audioViz" class="audio-viz" width="200" height="58" aria-hidden="true"></canvas>
+  <div id="achievementToast" class="achievement-toast" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="holo-modal" id="holoModal" role="dialog" aria-modal="true" aria-label="Catálogo Xbox" tabindex="-1">
     <div class="holo-content">
-      <div class="carrusel-container">
-        <button class="carrusel-btn left" onclick="moverCarrusel(-1)">&#10094;</button>
-        <img id="carruselImagen" src="catalogo2/Diapositiva1.png" alt="Catálogo Xbox">
-        <button class="carrusel-btn right" onclick="moverCarrusel(1)">&#10095;</button>
+      <button class="holo-close" type="button" aria-label="Cerrar catálogo">&times;</button>
+      <div class="carrusel-container" id="carruselContainer">
+        <button class="carrusel-btn left" type="button" id="prevBtn" aria-label="Imagen anterior">&#10094;</button>
+        <img id="carruselImagen" src="catalogo2/Diapositiva1.png" alt="Catálogo Xbox (imagen 1 de 1)">
+        <button class="carrusel-btn right" type="button" id="nextBtn" aria-label="Imagen siguiente">&#10095;</button>
+        <div class="carrusel-counter" id="carruselCounter" aria-live="polite">1/1</div>
       </div>
     </div>
   </div>
 
-  <footer>
-    Xbox® Cyberverse - El futuro del juego está aquí
-  </footer>
-
   <script>
-    let bgMusic;
-    let audioActivo = false;
-
-    window.addEventListener('DOMContentLoaded', () => {
-      bgMusic = document.getElementById('bgMusic');
-      // Iniciar la música al tocar cualquier parte del cuerpo del documento
-      document.body.addEventListener('pointerdown', iniciarMusica, { once: true });
-    });
-
     const modal = document.getElementById('holoModal');
-    const imagenesCatalogo = [
-      "catalogo2/Diapositiva1.png",
-      "catalogo2/Diapositiva2.png",
-      "catalogo2/Diapositiva3.png",
-      "catalogo2/Diapositiva4.png",
-      "catalogo2/Diapositiva5.png"
-    ];
+    const closeBtn = document.querySelector('.holo-close');
+    const carruselImagen = document.getElementById('carruselImagen');
+    const carruselContainer = document.getElementById('carruselContainer');
+    const carruselCounter = document.getElementById('carruselCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const bgMusic = document.getElementById('bgMusic');
+    const audioBtn = document.getElementById('audioBtn');
+    const starBtn = document.getElementById('starBtn');
+
+    const vizCanvas = document.getElementById('audioViz');
+    const vizCtx = vizCanvas ? vizCanvas.getContext('2d') : null;
+    const toast = document.getElementById('achievementToast');
+
+    const subnav = document.querySelector('.subnav');
+    const subnavToggle = document.getElementById('subnavToggle');
+    const subnavOpenCatalogo = document.getElementById('subnavOpenCatalogo');
+    const openCatalogBtn = document.getElementById('openCatalogBtn');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const imagenesCatalogo = ['catalogo2/Diapositiva1.png'];
     let indiceActual = 0;
 
-    function iniciarMusica() {
-      console.log("Intentando reproducir música...");
-      if (!audioActivo) {
-        bgMusic.volume = 0.4;
-        bgMusic.play().catch(e => console.warn("Reproducción bloqueada:", e));
-        audioActivo = true;
-      }
+    function precargarImagenes(lista) {
+      lista.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    }
+
+    function actualizarContador() {
+      carruselCounter.textContent = `${indiceActual + 1}/${imagenesCatalogo.length}`;
+      carruselImagen.alt = `Catálogo Xbox (imagen ${indiceActual + 1} de ${imagenesCatalogo.length})`;
+      const disabled = imagenesCatalogo.length <= 1;
+      prevBtn.disabled = disabled;
+      nextBtn.disabled = disabled;
+      prevBtn.style.opacity = disabled ? '0.35' : '1';
+      nextBtn.style.opacity = disabled ? '0.35' : '1';
+      prevBtn.style.cursor = disabled ? 'not-allowed' : 'pointer';
+      nextBtn.style.cursor = disabled ? 'not-allowed' : 'pointer';
     }
 
     function abrirCatalogo() {
       modal.style.display = 'flex';
-      document.getElementById("carruselImagen").src = imagenesCatalogo[indiceActual];
+      document.body.style.overflow = 'hidden';
+      carruselImagen.src = imagenesCatalogo[indiceActual];
+      actualizarContador();
+      modal.focus();
+    }
+
+    function cerrarCatalogo() {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+      openCatalogBtn.focus();
     }
 
     function moverCarrusel(direccion) {
-      indiceActual += direccion;
-      if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
-      if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
-      document.getElementById("carruselImagen").src = imagenesCatalogo[indiceActual];
+      if (imagenesCatalogo.length <= 1) return;
+      carruselImagen.style.opacity = '0';
+
+      window.setTimeout(() => {
+        indiceActual += direccion;
+        if (indiceActual < 0) indiceActual = imagenesCatalogo.length - 1;
+        if (indiceActual >= imagenesCatalogo.length) indiceActual = 0;
+        carruselImagen.src = imagenesCatalogo[indiceActual];
+        actualizarContador();
+        carruselImagen.style.opacity = '1';
+      }, 140);
     }
 
-    window.addEventListener('click', e => {
-      if (e.target === modal) modal.style.display = 'none';
+    function cerrarSubnav() {
+      subnav.classList.remove('open');
+      subnavToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    function toggleSubnav() {
+      const open = subnav.classList.contains('open');
+      if (open) {
+        cerrarSubnav();
+      } else {
+        subnav.classList.add('open');
+        subnavToggle.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    subnavToggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleSubnav();
     });
 
-    const audioBtn = document.getElementById('audioBtn');
-    audioBtn.addEventListener('click', () => {
+    window.addEventListener('click', (event) => {
+      if (!subnav.contains(event.target)) {
+        cerrarSubnav();
+      }
+      if (event.target === modal) {
+        cerrarCatalogo();
+      }
+    });
+
+    subnavOpenCatalogo.addEventListener('click', () => {
+      cerrarSubnav();
+      abrirCatalogo();
+    });
+
+    openCatalogBtn.addEventListener('click', abrirCatalogo);
+    closeBtn.addEventListener('click', cerrarCatalogo);
+    prevBtn.addEventListener('click', () => moverCarrusel(-1));
+    nextBtn.addEventListener('click', () => moverCarrusel(1));
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        if (subnav.classList.contains('open')) {
+          cerrarSubnav();
+        }
+        if (modal.style.display === 'flex') {
+          cerrarCatalogo();
+        }
+      }
+
+      if (modal.style.display !== 'flex') return;
+
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        moverCarrusel(-1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        moverCarrusel(1);
+      }
+    });
+
+    (function habilitarSwipe() {
+      let startX = 0;
+      let startY = 0;
+      let active = false;
+      const UMBRAL = 45;
+
+      carruselContainer.addEventListener('pointerdown', (event) => {
+        if (modal.style.display !== 'flex') return;
+        active = true;
+        startX = event.clientX;
+        startY = event.clientY;
+      });
+
+      carruselContainer.addEventListener('pointerup', (event) => {
+        if (!active) return;
+        active = false;
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        if (Math.abs(dx) < Math.abs(dy) || Math.abs(dx) < UMBRAL) return;
+        if (dx > 0) moverCarrusel(-1);
+        else moverCarrusel(1);
+      });
+
+      carruselContainer.addEventListener('pointercancel', () => {
+        active = false;
+      });
+
+      carruselContainer.addEventListener('pointerleave', () => {
+        active = false;
+      });
+    })();
+
+    let audioActivo = false;
+    let audioCtx = null;
+    let analyser = null;
+    let sourceNode = null;
+    let rafId = null;
+
+    function setupAudioGraph() {
+      if (!vizCtx || !vizCanvas || audioCtx) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 128;
+
+      sourceNode = audioCtx.createMediaElementSource(bgMusic);
+      sourceNode.connect(analyser);
+      analyser.connect(audioCtx.destination);
+    }
+
+    function drawViz() {
+      if (!analyser || !vizCtx) return;
+      const width = vizCanvas.width;
+      const height = vizCanvas.height;
+      const data = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(data);
+
+      vizCtx.clearRect(0, 0, width, height);
+      vizCtx.fillStyle = 'rgba(8, 14, 10, 0.66)';
+      vizCtx.fillRect(0, 0, width, height);
+
+      const bars = 26;
+      const step = Math.max(1, Math.floor(data.length / bars));
+      const gap = 2;
+      const barW = Math.floor((width - (bars - 1) * gap) / bars);
+
+      for (let i = 0; i < bars; i += 1) {
+        const val = data[i * step] / 255;
+        const barH = Math.max(4, Math.floor(val * (height - 8)));
+        const x = i * (barW + gap);
+        const y = height - barH;
+
+        const grad = vizCtx.createLinearGradient(0, y, 0, height);
+        grad.addColorStop(0, 'rgba(116, 255, 135, 0.95)');
+        grad.addColorStop(1, 'rgba(22, 201, 90, 0.8)');
+        vizCtx.fillStyle = grad;
+        vizCtx.fillRect(x, y, barW, barH);
+      }
+
+      rafId = requestAnimationFrame(drawViz);
+    }
+
+    async function iniciarMusica() {
+      if (audioActivo) return;
+      bgMusic.volume = 0.4;
+
+      try {
+        setupAudioGraph();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          await audioCtx.resume();
+        }
+
+        await bgMusic.play();
+        audioActivo = true;
+        audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+        if (!rafId) drawViz();
+      } catch (error) {
+        console.warn('No se pudo reproducir el audio automáticamente:', error);
+      }
+    }
+
+    document.body.addEventListener('pointerdown', iniciarMusica, { once: true });
+
+    audioBtn.addEventListener('click', async () => {
       if (audioActivo) {
         bgMusic.pause();
+        audioActivo = false;
         audioBtn.innerHTML = '<i class="fas fa-music"></i>';
-      } else {
-        bgMusic.play();
-        audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        return;
       }
-      audioActivo = !audioActivo;
-    });
-  </script>
 
+      await iniciarMusica();
+    });
+
+    const GS_KEY = 'xbox_gamerscore_demo';
+
+    function getGS() {
+      const value = Number(localStorage.getItem(GS_KEY) || '0');
+      return Number.isFinite(value) ? value : 0;
+    }
+
+    function setGS(value) {
+      localStorage.setItem(GS_KEY, String(value));
+    }
+
+    function mostrarToast({ titulo, descripcion, puntos }) {
+      toast.classList.remove('show');
+      void toast.offsetWidth;
+      toast.innerHTML = `
+        <div class="achievement-title">Logro desbloqueado</div>
+        <div class="achievement-body"><strong>${titulo}</strong><br>${descripcion}</div>
+        <div class="achievement-points">+${puntos}G</div>
+      `;
+      toast.classList.add('show');
+    }
+
+    function desbloquearLogro() {
+      const logros = [
+        { titulo: 'Collector Pro', descripcion: 'Abriste el catálogo en modo presentación.', puntos: 10 },
+        { titulo: 'Pitch Master', descripcion: 'Lanzaste la demo comercial con estilo.', puntos: 15 },
+        { titulo: 'Neon Seller', descripcion: 'Activaste la experiencia inmersiva.', puntos: 20 }
+      ];
+
+      const pick = logros[Math.floor(Math.random() * logros.length)];
+      const nuevoScore = getGS() + pick.puntos;
+      setGS(nuevoScore);
+      starBtn.title = `Gamerscore: ${nuevoScore}G`;
+      mostrarToast(pick);
+    }
+
+    starBtn.title = `Gamerscore: ${getGS()}G`;
+    starBtn.addEventListener('click', () => {
+      desbloquearLogro();
+      if (modal.style.display !== 'flex') abrirCatalogo();
+    });
+
+    precargarImagenes(imagenesCatalogo);
+    actualizarContador();
+  </script>
 </body>
 </html>
